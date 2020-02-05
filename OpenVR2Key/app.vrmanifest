@@ -1,0 +1,16 @@
+{
+	"applications": [{
+		"app_key": "boll7708.openvr2key",
+		"launch_type": "binary",
+		"binary_path_windows": "OpenVR2Key.exe",
+		"is_dashboard_overlay": false,
+		"action_manifest_path": "./actions.json",
+
+		"strings": {
+			"en_us": {
+				"name": "OpenVR2Key",
+				"description": "Trigger keys on your desktop."
+			}
+		}
+	}]
+}

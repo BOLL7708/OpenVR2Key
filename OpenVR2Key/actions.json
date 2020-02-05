@@ -1,0 +1,122 @@
+{
+	"default_bindings": [
+		{
+			"controller_type": "knuckles",
+			"binding_url": "bindings_knuckles.json"
+		}
+	],
+	"actions": [
+		{
+			"name": "/actions/default/in/enable_chord",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key1",
+			"requirement": "optional",
+			"type": "boolean"
+		},		{
+			"name": "/actions/default/in/key2",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key3",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key4",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key5",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key6",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key7",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key8",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key9",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key10",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key11",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key12",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key13",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key14",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key15",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key16",
+			"requirement": "optional",
+			"type": "boolean"
+		}
+	],
+	"action_sets": [
+		{
+			"name": "/actions/default",
+			"usage": "leftright"
+		}
+	],
+	"localization" : [
+		{
+			"language_tag": "en_US",
+			"/actions/default/in/enable_chord": "Enable Chord (dummy)",
+			"/actions/default/in/key1": "Key 1",
+			"/actions/default/in/key2": "Key 2",
+			"/actions/default/in/key3": "Key 3",
+			"/actions/default/in/key4": "Key 4",
+			"/actions/default/in/key5": "Key 5",
+			"/actions/default/in/key6": "Key 6",
+			"/actions/default/in/key7": "Key 7",
+			"/actions/default/in/key8": "Key 8",
+			"/actions/default/in/key9": "Key 9",
+			"/actions/default/in/key10": "Key 10",
+			"/actions/default/in/key11": "Key 11",
+			"/actions/default/in/key12": "Key 12",
+			"/actions/default/in/key13": "Key 13",
+			"/actions/default/in/key14": "Key 14",
+			"/actions/default/in/key15": "Key 15",
+			"/actions/default/in/key16": "Key 16"
+		}
+	]
+}

@@ -1,0 +1,3 @@
+[submodule "OpenVR2Key/EasyOpenVR"]
+	path = OpenVR2Key/EasyOpenVR
+	url = https://github.com/BOLL7708/EasyOpenVR.git

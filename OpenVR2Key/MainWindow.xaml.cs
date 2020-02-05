@@ -23,6 +23,7 @@ namespace OpenVR2Key
         public MainWindow()
         {
             InitializeComponent();
+            var controller = new MainController();
         }
     }
 }
