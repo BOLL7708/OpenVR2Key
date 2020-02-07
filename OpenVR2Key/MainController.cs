@@ -7,12 +7,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using BOLL7708;
 using Valve.VR;
+using WindowsInput;
+using System.Windows.Input;
 
 namespace OpenVR2Key
 {
     class MainController
     {
         private EasyOpenVRSingleton ovr = EasyOpenVRSingleton.Instance;
+        private Dictionary<int, HashSet<Key>> bindings = new Dictionary<int, HashSet<Key>>();
+        private readonly object bindingsLock = new object();
         public MainController()
         {
             var workerThread = new Thread(WorkerThread);
@@ -56,7 +60,7 @@ namespace OpenVR2Key
         {
             ovr.RegisterActionSet("/actions/default");
             ovr.RegisterDigitalAction("/actions/default/in/enable_chord", (data) => { Pressed("Key0", data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key1", (data) => { Pressed("Key1", data); });
+            ovr.RegisterDigitalAction("/actions/default/in/key1", (data) => { DoStuff(data); });
             ovr.RegisterDigitalAction("/actions/default/in/key2", (data) => { Pressed("Key2", data); });
             ovr.RegisterDigitalAction("/actions/default/in/key3", (data) => { Pressed("Key3", data); });
             ovr.RegisterDigitalAction("/actions/default/in/key4", (data) => { Pressed("Key4", data); });
@@ -77,7 +81,28 @@ namespace OpenVR2Key
         private void Pressed(string label, InputDigitalActionData_t data)
         {
             Debug.WriteLine($"{label} - "+(data.bState ? "PRESSED" : "RELEASED"));
-            OpenVR.System.TriggerHapticPulse(ovr.GetIndexForControllerRole(ETrackedControllerRole.LeftHand), 0, 10000);
+            // OpenVR.System.TriggerHapticPulse(ovr.GetIndexForControllerRole(ETrackedControllerRole.LeftHand), 0, 10000); // This works: https://github.com/ValveSoftware/openvr/wiki/IVRSystem::TriggerHapticPulse
+            // ovr.GetRunningApplicationId();
+        }
+
+        private void DoStuff(InputDigitalActionData_t data)
+        {
+            var sim = new InputSimulator();
+            if(data.bState)
+            {
+                sim.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.F8);
+            } else
+            {
+                sim.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.F8);
+            }
+        }
+
+        public void RegisterKeyBinding(int keyNumber, HashSet<Key> keys)
+        {
+            lock(bindingsLock)
+            {
+                bindings[keyNumber] = keys;
+            }
         }
     }
 }
