@@ -89,6 +89,85 @@
 			"name": "/actions/default/in/key16",
 			"requirement": "optional",
 			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key17",
+			"requirement": "optional",
+			"type": "boolean"
+		},		{
+			"name": "/actions/default/in/key18",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key19",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key20",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key21",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key22",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key23",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key24",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key25",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key26",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key27",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key28",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key29",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key30",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key31",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/default/in/key32",
+			"requirement": "optional",
+			"type": "boolean"
 		}
 	],
 	"action_sets": [
@@ -116,7 +195,23 @@
 			"/actions/default/in/key13": "Key 13",
 			"/actions/default/in/key14": "Key 14",
 			"/actions/default/in/key15": "Key 15",
-			"/actions/default/in/key16": "Key 16"
+			"/actions/default/in/key16": "Key 16",
+			"/actions/default/in/key17": "Key 17",
+			"/actions/default/in/key18": "Key 18",
+			"/actions/default/in/key19": "Key 19",
+			"/actions/default/in/key20": "Key 20",
+			"/actions/default/in/key21": "Key 21",
+			"/actions/default/in/key22": "Key 22",
+			"/actions/default/in/key23": "Key 23",
+			"/actions/default/in/key24": "Key 24",
+			"/actions/default/in/key25": "Key 25",
+			"/actions/default/in/key26": "Key 26",
+			"/actions/default/in/key27": "Key 27",
+			"/actions/default/in/key28": "Key 28",
+			"/actions/default/in/key29": "Key 29",
+			"/actions/default/in/key30": "Key 30",
+			"/actions/default/in/key31": "Key 31",
+			"/actions/default/in/key32": "Key 32"
 		}
 	]
 }

@@ -22,10 +22,11 @@ namespace OpenVR2Key
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainController controller;
         public MainWindow()
         {
             InitializeComponent();
-            var controller = new MainController();
+            controller = new MainController();
         }
         
         private int registeringKey = 0;
@@ -43,17 +44,20 @@ namespace OpenVR2Key
             {
                 registeringKey = 1;
                 registeringObject = sender;
+                keysDown.Clear();
+                keys.Clear();
             } else
             {
+                controller.RegisterKeyBinding(registeringKey, keys);
                 registeringKey = 0;
                 registeringObject = null;
-                // TODO: Send the binding to MainController, and update config file?
             }
         }
 
+        #region events
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (MainUtils.MatchVirtualKey(e.Key) != 0)
+            if (MainUtils.MatchVirtualKey(e.Key) != null)
             {
                 if (keysDown.Count == 0) keys.Clear();
                 keys.Add(e.Key);
@@ -68,12 +72,14 @@ namespace OpenVR2Key
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
+            if(e.Key == Key.RightAlt) keysDown.Remove(Key.LeftCtrl); // Because AltGr records as RightAlt+LeftCtrl
             keysDown.Remove(e.Key);
             UpdateCurrentObject();
 
             if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt) e.Handled = true;
             else base.OnKeyUp(e);
         }
+        #endregion
 
         private void UpdateCurrentObject()
         {
