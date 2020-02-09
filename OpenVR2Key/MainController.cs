@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Valve.VR;
 using WindowsInput;
@@ -13,17 +14,71 @@ namespace OpenVR2Key
     class MainController
     {
         private EasyOpenVRSingleton ovr = EasyOpenVRSingleton.Instance;
+        private InputSimulator sim = new InputSimulator();
+
+        private int registeringKey = 0;
+        private TextBlock registeringElement = null;
+        private HashSet<Key> keys = new HashSet<Key>();
+        private HashSet<Key> keysDown = new HashSet<Key>();
         private Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>> bindings = new Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>>();
         private readonly object bindingsLock = new object();
-        private InputSimulator sim = new InputSimulator();
+
         public MainController()
         {
             var workerThread = new Thread(WorkerThread);
             workerThread.Start();
         }
 
+        #region bindings
+        public void ToggleRegisteringKey(TextBlock sender)
+        {
+            if (registeringKey == 0)
+            {
+                registeringKey = 1;
+                registeringElement = sender;
+                keysDown.Clear();
+                keys.Clear();
+            }
+            else
+            {
+                RegisterKeyBinding(registeringKey, keys);
+                registeringKey = 0;
+                registeringElement = null;
+            }
+        }
+        public void OnKeyDown(Key key)
+        {
+            if (MainUtils.MatchVirtualKey(key) != null)
+            {
+                if (keysDown.Count == 0) keys.Clear();
+                keys.Add(key);
+                keysDown.Add(key);
+                UpdateCurrentObject();
+            }
+        }
+        public void OnKeyUp(Key key)
+        {
+            if (key == Key.RightAlt) keysDown.Remove(Key.LeftCtrl); // Because AltGr records as RightAlt+LeftCtrl
+            keysDown.Remove(key);
+            UpdateCurrentObject();
+        }
+        private void UpdateCurrentObject()
+        {
+            if (registeringElement != null) registeringElement.Text = GetKeysLabel();
+        }
+
+        private string GetKeysLabel()
+        {
+            List<string> result = new List<string>();
+            foreach (Key k in keys)
+            {
+                result.Add(k.ToString());
+            }
+            return String.Join(" + ", result.ToArray());
+        }
+
         /**
-         * Store incoming key codes as virtual key codes.
+         * Store key codes as virtual key codes.
          */
         public void RegisterKeyBinding(int keyNumber, HashSet<Key> keys)
         {
@@ -51,6 +106,9 @@ namespace OpenVR2Key
                 bindings.Clear();
             }
         }
+
+
+        #endregion
 
         private void WorkerThread()
         {
@@ -86,6 +144,7 @@ namespace OpenVR2Key
             }
         }
 
+        #region vr_input
         private void RegisterActions()
         {
             ovr.RegisterActionSet("/actions/default");
@@ -136,7 +195,9 @@ namespace OpenVR2Key
                 }
             }
         }
+        #endregion
 
+        #region keyboard_out
         private void SimulateKeyPress(InputDigitalActionData_t data, Tuple<VirtualKeyCode[], VirtualKeyCode[]> binding)
         {
             // TODO: I don't seem to get modifiers+key to work with this nor .ModifiedKeyStroke
@@ -151,6 +212,7 @@ namespace OpenVR2Key
                 foreach (var vk in binding.Item1) sim.Keyboard.KeyUp(vk);
             }
         }
+        #endregion
 
         public void TestStuff()
         {

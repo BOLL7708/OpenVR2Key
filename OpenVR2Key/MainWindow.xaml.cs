@@ -29,41 +29,17 @@ namespace OpenVR2Key
             controller = new MainController();
         }
         
-        private int registeringKey = 0;
-        private object registeringObject = null;
-        private HashSet<Key> keys = new HashSet<Key>();
-        private HashSet<Key> keysDown = new HashSet<Key>();
-        private InputSimulator sim = new InputSimulator();
-
         // TODO: Use this for every input
         private void TextBlock_Test_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine(((TextBlock)sender).Name); // TODO: Parse the key number from the name of the element
-
-            if(registeringKey == 0)
-            {
-                registeringKey = 1;
-                registeringObject = sender;
-                keysDown.Clear();
-                keys.Clear();
-            } else
-            {
-                controller.RegisterKeyBinding(registeringKey, keys);
-                registeringKey = 0;
-                registeringObject = null;
-            }
+            controller.ToggleRegisteringKey((TextBlock)sender);
         }
 
         #region events
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (MainUtils.MatchVirtualKey(e.Key) != null)
-            {
-                if (keysDown.Count == 0) keys.Clear();
-                keys.Add(e.Key);
-                keysDown.Add(e.Key);
-                UpdateCurrentObject();
-            }
+            controller.OnKeyDown(e.Key);
 
             // Doesn't seem like this is preventing the ALT behavior at all. https://stackoverflow.com/a/2277355
             if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt) e.Handled = true;
@@ -72,28 +48,11 @@ namespace OpenVR2Key
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            if(e.Key == Key.RightAlt) keysDown.Remove(Key.LeftCtrl); // Because AltGr records as RightAlt+LeftCtrl
-            keysDown.Remove(e.Key);
-            UpdateCurrentObject();
+            controller.OnKeyUp(e.Key);
 
             if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt) e.Handled = true;
             else base.OnKeyUp(e);
         }
         #endregion
-
-        private void UpdateCurrentObject()
-        {
-            if(registeringObject != null) ((TextBlock)registeringObject).Text = GetKeysLabel();
-        }
-
-        private string GetKeysLabel()
-        {
-            List<string> result = new List<string>();
-            foreach(Key k in keys)
-            {
-                result.Add(k.ToString());
-            }
-            return String.Join(" + ", result.ToArray<string>());
-        }
     }
 }
