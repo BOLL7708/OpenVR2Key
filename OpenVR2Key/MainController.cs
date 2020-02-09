@@ -1,4 +1,6 @@
 ﻿using BOLL7708;
+using GregsStack.InputSimulatorStandard;
+using GregsStack.InputSimulatorStandard.Native;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,8 +8,8 @@ using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Valve.VR;
-using GregsStack.InputSimulatorStandard;
-using GregsStack.InputSimulatorStandard.Native;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace OpenVR2Key
 {
@@ -21,10 +23,20 @@ namespace OpenVR2Key
         private HashSet<Key> keys = new HashSet<Key>();
         private HashSet<Key> keysDown = new HashSet<Key>();
         private Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>> bindings = new Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>>();
+
         private readonly object bindingsLock = new object();
+        public Action<bool> statusUpdateAction { get; set; } = (status) => { Debug.WriteLine("No status action set."); };
+        public Action<string> appUpdateAction { get; set; } = (appId) => { Debug.WriteLine("No appID action set."); };
+        private string currentApplicationId = "";
 
         public MainController()
         {
+        }
+
+        public void Init()
+        {
+            statusUpdateAction.Invoke(false);
+            appUpdateAction.Invoke(currentApplicationId);
             var workerThread = new Thread(WorkerThread);
             workerThread.Start();
         }
@@ -93,7 +105,7 @@ namespace OpenVR2Key
 
         public void RegisterKeyBindings(Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>> bindings)
         {
-            lock(bindingsLock)
+            lock (bindingsLock)
             {
                 this.bindings = bindings;
             }
@@ -101,7 +113,7 @@ namespace OpenVR2Key
 
         public void ClearBindings()
         {
-            lock(bindingsLock)
+            lock (bindingsLock)
             {
                 bindings.Clear();
             }
@@ -124,6 +136,9 @@ namespace OpenVR2Key
                         ovr.LoadAppManifest("./app.vrmanifest");
                         ovr.LoadActionManifest("./actions.json");
                         RegisterActions();
+                        currentApplicationId = ovr.GetRunningApplicationId();
+                        appUpdateAction.Invoke(currentApplicationId);
+                        statusUpdateAction.Invoke(true);
                         initComplete = true;
                     }
 
@@ -132,6 +147,20 @@ namespace OpenVR2Key
                     {
                         var message = Enum.GetName(typeof(EVREventType), e.eventType);
                         Debug.WriteLine(message);
+
+                        switch((EVREventType) e.eventType)
+                        {
+                            case EVREventType.VREvent_Quit:
+                                initComplete = false;
+                                ovr.AcknowledgeShutdown();
+                                ovr.Shutdown();
+                                statusUpdateAction.Invoke(false);
+                                break;
+                            case EVREventType.VREvent_SceneApplicationChanged:
+                                currentApplicationId = ovr.GetRunningApplicationId();
+                                appUpdateAction.Invoke(currentApplicationId);
+                                break;
+                        }
                     }
 
                     ovr.UpdateActionStates();
@@ -185,10 +214,9 @@ namespace OpenVR2Key
         private void OnAction(int index, InputDigitalActionData_t data)
         {
             Debug.WriteLine($"Key{index} - " + (data.bState ? "PRESSED" : "RELEASED"));
-            // OpenVR.System.TriggerHapticPulse(ovr.GetIndexForControllerRole(ETrackedControllerRole.LeftHand), 0, 10000); // This works: https://github.com/ValveSoftware/openvr/wiki/IVRSystem::TriggerHapticPulse
-            lock(bindingsLock)
+            lock (bindingsLock)
             {
-                if(bindings.ContainsKey(index))
+                if (bindings.ContainsKey(index))
                 {
                     var binding = bindings[index];
                     SimulateKeyPress(data, binding);
@@ -200,7 +228,6 @@ namespace OpenVR2Key
         #region keyboard_out
         private void SimulateKeyPress(InputDigitalActionData_t data, Tuple<VirtualKeyCode[], VirtualKeyCode[]> binding)
         {
-            // TODO: I don't seem to get modifiers+key to work with this nor .ModifiedKeyStroke
             if (data.bState)
             {
                 foreach (var vk in binding.Item1) sim.Keyboard.KeyDown(vk);
@@ -217,7 +244,7 @@ namespace OpenVR2Key
         public void TestStuff()
         {
             var values = Enum.GetValues(typeof(ETrackedDeviceProperty));
-            foreach(ETrackedDeviceProperty i in values)
+            foreach (ETrackedDeviceProperty i in values)
             {
                 var name = Enum.GetName(typeof(ETrackedDeviceProperty), i);
                 if (name.Contains("_String")) ovr.GetStringTrackedDeviceProperty(0, i);

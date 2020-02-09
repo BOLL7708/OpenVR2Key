@@ -5,9 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenVR2Key"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TextBlock x:Name="TextBlock_Test" HorizontalAlignment="Left" Margin="10,38,0,0" TextWrapping="Wrap" Text="Test" VerticalAlignment="Top" Height="28" Width="120" MouseUp="TextBlock_Test_MouseUp"/>
-
-    </Grid>
+        Title="OpenVR2Key" Height="450" Width="800">
+    <DockPanel LastChildFill="True">
+        <DockPanel LastChildFill="True" DockPanel.Dock="Top">
+            <GroupBox Header="Settings" HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Top" DockPanel.Dock="Left">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="CheckBox_Minimize" Margin="5" Content="Minimized on launch" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="CheckBox_Tray" Margin="5" Content="to system tray" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    </StackPanel>
+                    <Button x:Name="Button_AppBinding"  Margin="5,0,5,5" Content="Add/remove app specific binding" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Status" Margin="0 10 10 10" VerticalAlignment="Top" DockPanel.Dock="Left">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <Label Content="OpenVR Status:" VerticalAlignment="Center"/>
+                        <Label x:Name="Label_OpenVR" Background="Gray" HorizontalAlignment="Left" Content="OpenVR Status" Padding="5" Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
+                        <Label Content="Current AppID:" VerticalAlignment="Center"/>
+                        <Label x:Name="Label_Application" Background="Gray" HorizontalAlignment="Left" Content="Current AppID" Padding="5" Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+        </DockPanel>
+        <ListView HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top">
+            <ListViewItem>
+                <DockPanel LastChildFill="True">
+                    <Label x:Name="Label_Key" Content="Label" DockPanel.Dock="Left"/>
+                    <Label x:Name="Label_Binding" Content="Binding" BorderBrush="Gray" Background="WhiteSmoke"/>
+                    <Button x:Name="Button_RecordSave" Content="Record" Width="75" DockPanel.Dock="Left"/>
+                    <Button x:Name="Button_ClearCancel" Content="Clear" Width="75" DockPanel.Dock="Left"/>
+                </DockPanel>
+            </ListViewItem>
+        </ListView>
+    </DockPanel>
 </Window>

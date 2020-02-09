@@ -1,8 +1,8 @@
-﻿using System;
+﻿using GregsStack.InputSimulatorStandard.Native;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Input;
-using GregsStack.InputSimulatorStandard.Native;
 
 namespace OpenVR2Key
 {
@@ -35,7 +35,7 @@ namespace OpenVR2Key
         {
             Debug.WriteLine(key.ToString());
             var keyStr = key.ToString().ToUpper();
-            
+
             // Check for direct translation
             if (translationTableKeys.ContainsKey(key)) return new Tuple<VirtualKeyCode, bool>(translationTableKeys[key], false);
             if (translationTableModifiers.ContainsKey(key)) return new Tuple<VirtualKeyCode, bool>(translationTableModifiers[key], true);
@@ -55,7 +55,7 @@ namespace OpenVR2Key
         {
             var vModifiers = new List<VirtualKeyCode>();
             var vKeys = new List<VirtualKeyCode>();
-            for(var i=0; i<keys.Length; i++)
+            for (var i = 0; i < keys.Length; i++)
             {
                 var match = MatchVirtualKey(keys[i]);
                 if (match != null)
