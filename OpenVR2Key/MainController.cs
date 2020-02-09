@@ -6,8 +6,8 @@ using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Valve.VR;
-using WindowsInput;
-using WindowsInput.Native;
+using GregsStack.InputSimulatorStandard;
+using GregsStack.InputSimulatorStandard.Native;
 
 namespace OpenVR2Key
 {

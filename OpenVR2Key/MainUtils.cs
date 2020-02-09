@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Input;
-using WindowsInput.Native;
+using GregsStack.InputSimulatorStandard.Native;
 
 namespace OpenVR2Key
 {

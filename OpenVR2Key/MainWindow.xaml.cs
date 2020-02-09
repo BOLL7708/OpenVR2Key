@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WindowsInput;
 
 namespace OpenVR2Key
 {
@@ -28,7 +16,7 @@ namespace OpenVR2Key
             InitializeComponent();
             controller = new MainController();
         }
-        
+
         // TODO: Use this for every input
         private void TextBlock_Test_MouseUp(object sender, MouseButtonEventArgs e)
         {
