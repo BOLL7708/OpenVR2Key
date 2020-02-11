@@ -29,6 +29,8 @@ namespace OpenVR2Key
         public Action<string> appUpdateAction { get; set; } = (appId) => { Debug.WriteLine("No appID action set."); };
         private string currentApplicationId = "";
 
+        ulong inputSourceHandleLeft = 0, inputSourceHandleRight = 0;
+
         public MainController()
         {
         }
@@ -119,7 +121,6 @@ namespace OpenVR2Key
             }
         }
 
-
         #endregion
 
         private void WorkerThread()
@@ -139,6 +140,7 @@ namespace OpenVR2Key
                         currentApplicationId = ovr.GetRunningApplicationId();
                         appUpdateAction.Invoke(currentApplicationId);
                         statusUpdateAction.Invoke(true);
+                        UpdateInputSourceHandles();
                         initComplete = true;
                     }
 
@@ -160,10 +162,14 @@ namespace OpenVR2Key
                                 currentApplicationId = ovr.GetRunningApplicationId();
                                 appUpdateAction.Invoke(currentApplicationId);
                                 break;
+                            case EVREventType.VREvent_TrackedDeviceRoleChanged:
+                            case EVREventType.VREvent_TrackedDeviceUpdated:
+                            case EVREventType.VREvent_TrackedDeviceActivated:
+                                UpdateInputSourceHandles();
+                                break;
                         }
                     }
-
-                    ovr.UpdateActionStates();
+                    ovr.UpdateActionStates(new ulong[] { inputSourceHandleLeft, inputSourceHandleRight});
                 }
                 else
                 {
@@ -173,47 +179,26 @@ namespace OpenVR2Key
             }
         }
 
+        private void UpdateInputSourceHandles()
+        {
+            inputSourceHandleLeft = ovr.GetInputSourceHandle("/user/hand/left", ref _);
+            inputSourceHandleRight = ovr.GetInputSourceHandle("/user/hand/right", ref _);
+        }
+
         #region vr_input
         private void RegisterActions()
         {
             ovr.RegisterActionSet("/actions/default");
-            ovr.RegisterDigitalAction("/actions/default/in/key1", (data) => { OnAction(1, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key2", (data) => { OnAction(2, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key3", (data) => { OnAction(3, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key4", (data) => { OnAction(4, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key5", (data) => { OnAction(5, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key6", (data) => { OnAction(6, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key7", (data) => { OnAction(7, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key8", (data) => { OnAction(8, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key9", (data) => { OnAction(9, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key10", (data) => { OnAction(10, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key11", (data) => { OnAction(11, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key12", (data) => { OnAction(12, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key13", (data) => { OnAction(13, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key14", (data) => { OnAction(14, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key15", (data) => { OnAction(15, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key16", (data) => { OnAction(16, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key17", (data) => { OnAction(17, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key18", (data) => { OnAction(18, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key19", (data) => { OnAction(19, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key20", (data) => { OnAction(20, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key21", (data) => { OnAction(21, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key22", (data) => { OnAction(22, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key23", (data) => { OnAction(23, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key24", (data) => { OnAction(24, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key25", (data) => { OnAction(25, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key26", (data) => { OnAction(26, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key27", (data) => { OnAction(27, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key28", (data) => { OnAction(28, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key29", (data) => { OnAction(29, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key30", (data) => { OnAction(30, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key31", (data) => { OnAction(31, data); });
-            ovr.RegisterDigitalAction("/actions/default/in/key32", (data) => { OnAction(32, data); });
+            for(var i=1; i<=32; i++)
+            {
+                int localI = i;
+                ovr.RegisterDigitalAction($"/actions/default/in/key{i}", (data, handle) => { OnAction(localI, data, handle); });
+            }
         }
 
-        private void OnAction(int index, InputDigitalActionData_t data)
+        private void OnAction(int index, InputDigitalActionData_t data, ulong inputSourceHandle)
         {
-            Debug.WriteLine($"Key{index} - " + (data.bState ? "PRESSED" : "RELEASED"));
+            Debug.WriteLine($"Key{index} - {inputSourceHandle} : " + (data.bState ? "PRESSED" : "RELEASED"));
             lock (bindingsLock)
             {
                 if (bindings.ContainsKey(index))

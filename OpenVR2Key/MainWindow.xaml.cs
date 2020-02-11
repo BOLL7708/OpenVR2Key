@@ -15,29 +15,32 @@ namespace OpenVR2Key
         public MainWindow()
         {
             InitializeComponent();
-            controller = new MainController();
-            controller.statusUpdateAction = (connected) => {
-                var message = connected ? "Connected" : "Disconnected";
-                var color = connected ? Colors.OliveDrab : Colors.Tomato;
-                Dispatcher.Invoke(() =>
-                {
-                    Label_OpenVR.Content = message;
-                    Label_OpenVR.Background = new SolidColorBrush(color);
-                });
-            };
-            controller.appUpdateAction = (appId) =>
+            controller = new MainController
             {
-                var color = Colors.OliveDrab;
-                if (appId.Length == 0)
+                statusUpdateAction = (connected) =>
                 {
-                    color = Colors.Tomato;
-                    appId = "None";
+                    var message = connected ? "Connected" : "Disconnected";
+                    var color = connected ? Colors.OliveDrab : Colors.Tomato;
+                    Dispatcher.Invoke(() =>
+                    {
+                        Label_OpenVR.Content = message;
+                        Label_OpenVR.Background = new SolidColorBrush(color);
+                    });
+                },
+                appUpdateAction = (appId) =>
+                {
+                    var color = Colors.OliveDrab;
+                    if (appId.Length == 0)
+                    {
+                        color = Colors.Tomato;
+                        appId = "None";
+                    }
+                    Dispatcher.Invoke(() =>
+                    {
+                        Label_Application.Content = appId;
+                        Label_Application.Background = new SolidColorBrush(color);
+                    });
                 }
-                Dispatcher.Invoke(() =>
-                {
-                    Label_Application.Content = appId;
-                    Label_Application.Background = new SolidColorBrush(color);
-                });
             };
             controller.Init();
         }
