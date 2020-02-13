@@ -17,7 +17,7 @@ namespace OpenVR2Key
         private InputSimulator sim = new InputSimulator();
 
         private int registeringKey = 0;
-        private TextBlock registeringElement = null;
+        private Button registeringElement = null;
         private HashSet<Key> keys = new HashSet<Key>();
         private HashSet<Key> keysDown = new HashSet<Key>();
         private Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>> bindings = new Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>>();
@@ -46,21 +46,25 @@ namespace OpenVR2Key
         }
 
         #region bindings
-        public void ToggleRegisteringKey(TextBlock sender)
+        public bool ToggleRegisteringKey(int index, Button sender, out Button activeButton)
         {
-            if (registeringKey == 0)
+            var active = registeringKey == 0;
+            if (active)
             {
-                registeringKey = 1;
+                registeringKey = index;
                 registeringElement = sender;
                 keysDown.Clear();
                 keys.Clear();
+                activeButton = sender;
             }
             else
             {
+                activeButton = registeringElement;
                 RegisterKeyBinding(registeringKey, keys);
                 registeringKey = 0;
                 registeringElement = null;
             }
+            return active;
         }
         public void OnKeyDown(Key key)
         {
@@ -80,7 +84,7 @@ namespace OpenVR2Key
         }
         private void UpdateCurrentObject()
         {
-            if (registeringElement != null) registeringElement.Text = GetKeysLabel();
+            if (registeringElement != null) registeringElement.Content = GetKeysLabel();
         }
 
         private string GetKeysLabel()
@@ -120,6 +124,14 @@ namespace OpenVR2Key
             lock (bindingsLock)
             {
                 bindings.Clear();
+            }
+        }
+
+        public void RemoveBinding(int index)
+        {
+            lock (bindingsLock)
+            {
+                bindings.Remove(index);
             }
         }
 
