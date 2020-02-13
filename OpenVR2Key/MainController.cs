@@ -8,8 +8,6 @@ using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Valve.VR;
-using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace OpenVR2Key
 {
@@ -41,6 +39,10 @@ namespace OpenVR2Key
             appUpdateAction.Invoke(currentApplicationId);
             var workerThread = new Thread(WorkerThread);
             workerThread.Start();
+        }
+        public void SetDebugLogAction(Action<string> action)
+        {
+            ovr.SetDebugLogAction(action);
         }
 
         #region bindings
@@ -150,7 +152,7 @@ namespace OpenVR2Key
                         var message = Enum.GetName(typeof(EVREventType), e.eventType);
                         Debug.WriteLine(message);
 
-                        switch((EVREventType) e.eventType)
+                        switch ((EVREventType)e.eventType)
                         {
                             case EVREventType.VREvent_Quit:
                                 initComplete = false;
@@ -169,7 +171,7 @@ namespace OpenVR2Key
                                 break;
                         }
                     }
-                    ovr.UpdateActionStates(new ulong[] { inputSourceHandleLeft, inputSourceHandleRight});
+                    ovr.UpdateActionStates(new ulong[] { inputSourceHandleLeft, inputSourceHandleRight });
                 }
                 else
                 {
@@ -181,15 +183,15 @@ namespace OpenVR2Key
 
         private void UpdateInputSourceHandles()
         {
-            inputSourceHandleLeft = ovr.GetInputSourceHandle("/user/hand/left", ref _);
-            inputSourceHandleRight = ovr.GetInputSourceHandle("/user/hand/right", ref _);
+            inputSourceHandleLeft = ovr.GetInputSourceHandle("/user/hand/left");
+            inputSourceHandleRight = ovr.GetInputSourceHandle("/user/hand/right");
         }
 
         #region vr_input
         private void RegisterActions()
         {
             ovr.RegisterActionSet("/actions/default");
-            for(var i=1; i<=32; i++)
+            for (var i = 1; i <= 32; i++)
             {
                 int localI = i;
                 ovr.RegisterDigitalAction($"/actions/default/in/key{i}", (data, handle) => { OnAction(localI, data, handle); });
@@ -201,6 +203,10 @@ namespace OpenVR2Key
             Debug.WriteLine($"Key{index} - {inputSourceHandle} : " + (data.bState ? "PRESSED" : "RELEASED"));
             lock (bindingsLock)
             {
+                // TODO: Move this inside bottom if block as soon as we have actual buttons bound...
+                if (data.bState && inputSourceHandle == inputSourceHandleLeft) ovr.TriggerHapticPulseInController(ETrackedControllerRole.LeftHand);
+                if (data.bState && inputSourceHandle == inputSourceHandleRight) ovr.TriggerHapticPulseInController(ETrackedControllerRole.RightHand);
+
                 if (bindings.ContainsKey(index))
                 {
                     var binding = bindings[index];

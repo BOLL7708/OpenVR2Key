@@ -4,6 +4,22 @@
    "app_key" : "boll7708.openvr2key",
    "bindings" : {
       "/actions/default" : {
+		 "chords" : [
+            {
+               "inputs" : [
+                  [ "/user/hand/left/input/trigger", "click" ],
+                  [ "/user/hand/right/input/trigger", "click" ]
+               ],
+               "output" : "/actions/default/in/key5"
+            },
+			{
+               "inputs" : [
+                  [ "/user/hand/left/input/trackpad", "click" ],
+                  [ "/user/hand/right/input/trackpad", "click" ]
+               ],
+               "output" : "/actions/default/in/key6"
+            }
+         ],
          "sources" : [
             {
                "inputs" : {

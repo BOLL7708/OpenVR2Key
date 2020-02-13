@@ -29,6 +29,9 @@
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
+            <GroupBox Header="Log" Margin="0 10 10 10" DockPanel.Dock="Left" VerticalAlignment="Stretch">
+                <TextBox Margin="5" x:Name="TextBox_Log" IsEnabled="False"></TextBox>
+            </GroupBox>
         </DockPanel>
         <ListView HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top">
             <ListViewItem>

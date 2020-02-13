@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -42,6 +43,17 @@ namespace OpenVR2Key
                     });
                 }
             };
+            controller.SetDebugLogAction((message) =>{
+                Dispatcher.Invoke(() =>
+                {
+                    var time = DateTime.Now.ToString("HH:mm:ss");
+                    var oldLog = TextBox_Log.Text;
+                    var lines = oldLog.Split('\n');
+                    Array.Resize(ref lines, 3);
+                    var newLog = String.Join("\n", lines);
+                    TextBox_Log.Text = $"{time}: {message}\n{newLog}";
+                });
+            });
             controller.Init();
         }
 
