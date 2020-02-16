@@ -11,11 +11,11 @@
             <GroupBox Header="Settings" HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Top" DockPanel.Dock="Left">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="CheckBox_Minimize" Margin="5" Content="Minimized on launch" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <CheckBox x:Name="CheckBox_Tray" Margin="5" Content="to system tray" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="CheckBox_Minimize" Margin="5" Focusable="False" Content="Minimized on launch" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="CheckBox_Tray" Margin="5" Focusable="False" Content="to system tray" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     </StackPanel>
-                    <Button x:Name="Button_AppBinding"  Margin="5,0,5,5" Content="Add/remove app specific binding" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_AppBinding_Click" />
-                    <Button x:Name="Button_ClearAll"  Margin="5,0,5,5" Content="Clear all bindings" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_ClearAll_Click"/>
+                    <Button x:Name="Button_AppBinding"  Margin="5,0,5,5" Focusable="False" Content="Add/remove app specific binding" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_AppBinding_Click" />
+                    <Button x:Name="Button_ClearAll"  Margin="5,0,5,5" Focusable="False" Content="Clear all bindings" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_ClearAll_Click"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Status" Margin="0 10 10 10" VerticalAlignment="Top" DockPanel.Dock="Left">
@@ -34,7 +34,7 @@
                 <TextBox Margin="5" x:Name="TextBox_Log" IsEnabled="False"></TextBox>
             </GroupBox>
         </DockPanel>
-        <ScrollViewer HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
+        <ScrollViewer Focusable="False" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
                 <ItemsControl x:Name="ItemsControl_Bindings">
                     <ItemsControl.ItemTemplate>
@@ -42,7 +42,7 @@
                             <DockPanel LastChildFill="True" x:Name="ListViewItem_Binding" HorizontalAlignment="Stretch">
                                 <Label x:Name="Label_Key" Width="50" HorizontalContentAlignment="Right" Content="{Binding Label}" DockPanel.Dock="Left"/>
                                 <Button x:Name="Button_ClearCancel" Content="Clear" Width="75" DockPanel.Dock="Left" Click="Button_ClearCancel_Click" Focusable="False" BorderBrush="Gray"/>
-                                <Button x:Name="Button_RecordSave" Content="{Binding Text}" Click="Button_RecordSave_Click"/>
+                                <Label x:Name="Label_RecordSave" BorderThickness="1" Background="LightGray" HorizontalContentAlignment="Center" Content="{Binding Text}" MouseUp="Label_RecordSave_Click"/>
                             </DockPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

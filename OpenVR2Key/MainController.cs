@@ -16,15 +16,19 @@ namespace OpenVR2Key
         private EasyOpenVRSingleton ovr = EasyOpenVRSingleton.Instance;
         private InputSimulator sim = new InputSimulator();
 
+        // Active key registration
         private int registeringKey = 0;
-        private Button registeringElement = null;
+        private object registeringElement = null;
         private HashSet<Key> keys = new HashSet<Key>();
         private HashSet<Key> keysDown = new HashSet<Key>();
+
+        // Binding storage, move to model
         private Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>> bindings = new Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>>();
 
         private readonly object bindingsLock = new object();
         public Action<bool> statusUpdateAction { get; set; } = (status) => { Debug.WriteLine("No status action set."); };
         public Action<string> appUpdateAction { get; set; } = (appId) => { Debug.WriteLine("No appID action set."); };
+        public Action<string> keyTextUpdateAction { get; set; } = (status) => { Debug.WriteLine("No key text action set."); };
         private string currentApplicationId = "";
 
         ulong inputSourceHandleLeft = 0, inputSourceHandleRight = 0;
@@ -46,7 +50,7 @@ namespace OpenVR2Key
         }
 
         #region bindings
-        public bool ToggleRegisteringKey(int index, Button sender, out Button activeButton)
+        public bool ToggleRegisteringKey(int index, object sender, out object activeElement)
         {
             var active = registeringKey == 0;
             if (active)
@@ -55,11 +59,11 @@ namespace OpenVR2Key
                 registeringElement = sender;
                 keysDown.Clear();
                 keys.Clear();
-                activeButton = sender;
+                activeElement = sender;
             }
             else
             {
-                activeButton = registeringElement;
+                activeElement = registeringElement;
                 RegisterKeyBinding(registeringKey, keys);
                 registeringKey = 0;
                 registeringElement = null;
@@ -84,7 +88,7 @@ namespace OpenVR2Key
         }
         private void UpdateCurrentObject()
         {
-            if (registeringElement != null) registeringElement.Content = GetKeysLabel();
+            keyTextUpdateAction.Invoke(GetKeysLabel());
         }
 
         private string GetKeysLabel()
@@ -183,7 +187,11 @@ namespace OpenVR2Key
                                 break;
                         }
                     }
-                    ovr.UpdateActionStates(new ulong[] { inputSourceHandleLeft, inputSourceHandleRight });
+                    
+                    ovr.UpdateActionStates(new ulong[] {
+                        inputSourceHandleLeft,
+                        inputSourceHandleRight
+                    });
                 }
                 else
                 {
@@ -212,7 +220,10 @@ namespace OpenVR2Key
 
         private void OnAction(int index, InputDigitalActionData_t data, ulong inputSourceHandle)
         {
-            Debug.WriteLine($"Key{index} - {inputSourceHandle} : " + (data.bState ? "PRESSED" : "RELEASED"));
+            var inputName = inputSourceHandle == inputSourceHandleLeft ? "Left CTRL" :
+                inputSourceHandle == inputSourceHandleRight ? "Right CTRL" :
+                "N/A";
+            Debug.WriteLine($"Key{index} - {inputName} : " + (data.bState ? "PRESSED" : "RELEASED"));
             lock (bindingsLock)
             {
                 // TODO: Move this inside bottom if block as soon as we have actual buttons bound...

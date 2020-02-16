@@ -16,6 +16,8 @@ namespace OpenVR2Key
     {
         private MainController _controller;
         private List<BindingItem> _items = new List<BindingItem>();
+        private object activeElement;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -24,25 +26,31 @@ namespace OpenVR2Key
                 statusUpdateAction = (connected) =>
                 {
                     var message = connected ? "Connected" : "Disconnected";
-                    var color = connected ? Colors.OliveDrab : Colors.Tomato;
+                    var color = connected ? Brushes.OliveDrab : Brushes.Tomato;
                     Dispatcher.Invoke(() =>
                     {
                         Label_OpenVR.Content = message;
-                        Label_OpenVR.Background = new SolidColorBrush(color);
+                        Label_OpenVR.Background = color;
                     });
                 },
                 appUpdateAction = (appId) =>
                 {
-                    var color = Colors.OliveDrab;
+                    var color = Brushes.OliveDrab;
                     if (appId.Length == 0)
                     {
-                        color = Colors.Tomato;
+                        color = Brushes.Tomato;
                         appId = "None";
                     }
                     Dispatcher.Invoke(() =>
                     {
                         Label_Application.Content = appId;
-                        Label_Application.Background = new SolidColorBrush(color);
+                        Label_Application.Background = color;
+                    });
+                },
+                keyTextUpdateAction = (keyText) => {
+                    Dispatcher.Invoke(() =>
+                    {
+                        if(activeElement != null) (activeElement as Label).Content = keyText;
                     });
                 }
             };
@@ -74,12 +82,20 @@ namespace OpenVR2Key
             ItemsControl_Bindings.ItemsSource = _items;
         }
 
+        #region bindings
         public class BindingItem
         {
             public int Index { get; set; }
             public string Label { get; set; }
             public string Text { get; set; }
+            public BindingState State { get; set; }
         }
+
+        public enum BindingState
+        {
+            Unset, Set, Recording
+        }
+        #endregion
 
         #region events
         protected override void OnKeyDown(KeyEventArgs e)
@@ -99,15 +115,6 @@ namespace OpenVR2Key
             if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt) e.Handled = true;
             else base.OnKeyUp(e);
         }
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            // TODO: Doesn't even register? Supposed to fix enter/space triggering buttons: https://stackoverflow.com/a/17977670
-            if (e.Key == Key.Enter || e.Key == Key.Space)
-            {
-                Debug.WriteLine($"Should block this?! {e.Key}");
-                e.Handled = true;
-            }
-        }
         #endregion
 
         #region buttons
@@ -121,13 +128,16 @@ namespace OpenVR2Key
 
         }
 
-        private void Button_RecordSave_Click(object sender, RoutedEventArgs e)
+        private void Label_RecordSave_Click(object sender, MouseButtonEventArgs e)
         {
-            var button = sender as Button;
-            var dataItem = button.DataContext as BindingItem;
-            var active = _controller.ToggleRegisteringKey(dataItem.Index, button, out Button activeButton);
-            activeButton.Foreground = active ? Brushes.Tomato: Brushes.Black;
-            activeButton.BorderBrush = active ? Brushes.Tomato : Brushes.Gray;
+            var element = sender as Label;
+            var dataItem = element.DataContext as BindingItem;
+            var active = _controller.ToggleRegisteringKey(dataItem.Index, element, out object activeElement);
+            var label = activeElement as Label;
+            label.Foreground = active ? Brushes.Tomato: Brushes.Black;
+            label.BorderBrush = active ? Brushes.Tomato : Brushes.Gray;
+            label.Background = active ? Brushes.LightPink : Brushes.Olive;
+            if (active) this.activeElement = activeElement;
         }
 
         private void Button_ClearCancel_Click(object sender, RoutedEventArgs e)
@@ -136,8 +146,8 @@ namespace OpenVR2Key
             var dataItem = button.DataContext as BindingItem;
             _controller.RemoveBinding(dataItem.Index);
             DockPanel sp = VisualTreeHelper.GetParent(button) as DockPanel;
-            Button bindingButton = sp.Children[2] as Button;
-            bindingButton.Content = "[Not configured]";
+            var element = sp.Children[2] as Label;
+            element.Content = "[Not configured]";
         }
         #endregion
     }

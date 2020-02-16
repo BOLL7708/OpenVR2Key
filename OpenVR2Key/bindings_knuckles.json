@@ -10,14 +10,14 @@
                   [ "/user/hand/left/input/trigger", "click" ],
                   [ "/user/hand/right/input/trigger", "click" ]
                ],
-               "output" : "/actions/default/in/key5"
+               "output" : "/actions/default/in/key13"
             },
 			{
                "inputs" : [
                   [ "/user/hand/left/input/trackpad", "click" ],
                   [ "/user/hand/right/input/trackpad", "click" ]
                ],
-               "output" : "/actions/default/in/key6"
+               "output" : "/actions/default/in/key14"
             }
          ],
          "sources" : [
