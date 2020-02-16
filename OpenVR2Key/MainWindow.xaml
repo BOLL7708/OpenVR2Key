@@ -11,11 +11,11 @@
             <GroupBox Header="Settings" HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Top" DockPanel.Dock="Left">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="CheckBox_Minimize" Margin="5" Focusable="False" Content="Minimized on launch" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <CheckBox x:Name="CheckBox_Tray" Margin="5" Focusable="False" Content="to system tray" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="CheckBox_Minimize" Margin="5" Focusable="False" Content="Minimize on launch" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="CheckBox_Minimize_Checked" Unchecked="CheckBox_Minimize_Checked"/>
+                        <CheckBox x:Name="CheckBox_Tray" Margin="5" Focusable="False" Content="to system tray" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="CheckBox_Tray_Checked"/>
                     </StackPanel>
-                    <Button x:Name="Button_AppBinding"  Margin="5,0,5,5" Focusable="False" Content="Add/remove app specific binding" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_AppBinding_Click" />
-                    <Button x:Name="Button_ClearAll"  Margin="5,0,5,5" Focusable="False" Content="Clear all bindings" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_ClearAll_Click"/>
+                    <CheckBox x:Name="CheckBox_DebugNotifications" Content="Show debug notifications in headset" Margin="5 0 5 5" Focusable="False" Checked="CheckBox_DebugNotifications_Checked"/>
+                    <CheckBox x:Name="CheckBox_HapticFeedback" Content="Do haptic pulse on triggering key" Margin="5 0 5 5" Focusable="False" Checked="CheckBox_HapticFeedback_Checked"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Status" Margin="0 10 10 10" VerticalAlignment="Top" DockPanel.Dock="Left">
@@ -34,6 +34,12 @@
                 <TextBox Margin="5" x:Name="TextBox_Log" IsEnabled="False"></TextBox>
             </GroupBox>
         </DockPanel>
+        <GroupBox Header="Actions" Margin="10 0 10 10" HorizontalAlignment="Stretch"  DockPanel.Dock="Top">
+            <WrapPanel Orientation="Horizontal" Margin="5">
+                <Button x:Name="Button_AppBinding"  Margin="5,0,5,5" Focusable="False" Content="Add/remove app specific config" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_AppBinding_Click" />
+                <Button x:Name="Button_ClearAll"  Margin="5,0,5,5" Focusable="False" Content="Clear all current bindings" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_ClearAll_Click"/>
+            </WrapPanel>
+        </GroupBox>
         <ScrollViewer Focusable="False" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
                 <ItemsControl x:Name="ItemsControl_Bindings">

@@ -220,8 +220,8 @@ namespace OpenVR2Key
 
         private void OnAction(int index, InputDigitalActionData_t data, ulong inputSourceHandle)
         {
-            var inputName = inputSourceHandle == inputSourceHandleLeft ? "Left CTRL" :
-                inputSourceHandle == inputSourceHandleRight ? "Right CTRL" :
+            var inputName = inputSourceHandle == inputSourceHandleLeft ? "Left" :
+                inputSourceHandle == inputSourceHandleRight ? "Right" :
                 "N/A";
             Debug.WriteLine($"Key{index} - {inputName} : " + (data.bState ? "PRESSED" : "RELEASED"));
             lock (bindingsLock)

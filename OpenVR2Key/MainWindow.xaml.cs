@@ -66,6 +66,7 @@ namespace OpenVR2Key
                 });
             });
             _controller.Init();
+            InitSettings();
             InitList();
         }
 
@@ -117,7 +118,7 @@ namespace OpenVR2Key
         }
         #endregion
 
-        #region buttons
+        #region actions
         private void Button_AppBinding_Click(object sender, RoutedEventArgs e)
         {
             
@@ -148,6 +149,41 @@ namespace OpenVR2Key
             DockPanel sp = VisualTreeHelper.GetParent(button) as DockPanel;
             var element = sp.Children[2] as Label;
             element.Content = "[Not configured]";
+        }
+        #endregion
+
+        #region settings
+        private void InitSettings()
+        {
+            CheckBox_Minimize.IsChecked = MainModel.LoadSetting(MainModel.Setting.Minimize);
+            CheckBox_Tray.IsChecked = MainModel.LoadSetting(MainModel.Setting.Tray);
+            CheckBox_DebugNotifications.IsChecked = MainModel.LoadSetting(MainModel.Setting.Notification);
+            CheckBox_HapticFeedback.IsChecked = MainModel.LoadSetting(MainModel.Setting.Haptic);
+        }
+        private bool CheckboxValue(RoutedEventArgs e)
+        {
+            var name = e.RoutedEvent.Name;
+            return name == "Checked";
+        }
+
+        private void CheckBox_Minimize_Checked(object sender, RoutedEventArgs e)
+        {
+            MainModel.UpdateSetting(MainModel.Setting.Minimize, CheckboxValue(e));
+        }
+        
+        private void CheckBox_Tray_Checked(object sender, RoutedEventArgs e)
+        {
+            MainModel.UpdateSetting(MainModel.Setting.Tray, CheckboxValue(e));
+        }
+
+        private void CheckBox_DebugNotifications_Checked(object sender, RoutedEventArgs e)
+        {
+            MainModel.UpdateSetting(MainModel.Setting.Notification, CheckboxValue(e));
+        }
+
+        private void CheckBox_HapticFeedback_Checked(object sender, RoutedEventArgs e)
+        {
+            MainModel.UpdateSetting(MainModel.Setting.Haptic, CheckboxValue(e));
         }
         #endregion
     }

@@ -90,6 +90,7 @@
     </Compile>
     <Compile Include="EasyOpenVR\EasyOpenVRSingleton.cs" />
     <Compile Include="MainController.cs" />
+    <Compile Include="MainModel.cs" />
     <Compile Include="MainUtils.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
