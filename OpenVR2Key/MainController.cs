@@ -4,6 +4,7 @@ using GregsStack.InputSimulatorStandard.Native;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -25,13 +26,17 @@ namespace OpenVR2Key
         // Binding storage, move to model
         private Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>> bindings = new Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>>();
 
+        // Actions
         private readonly object bindingsLock = new object();
         public Action<bool> statusUpdateAction { get; set; } = (status) => { Debug.WriteLine("No status action set."); };
         public Action<string> appUpdateAction { get; set; } = (appId) => { Debug.WriteLine("No appID action set."); };
         public Action<string> keyTextUpdateAction { get; set; } = (status) => { Debug.WriteLine("No key text action set."); };
-        private string currentApplicationId = "";
 
+        // Other
+        private string currentApplicationId = "";
         ulong inputSourceHandleLeft = 0, inputSourceHandleRight = 0;
+        ulong notificationOverlayHandle = 0;
+        NotificationBitmap_t notificationBitmap = new NotificationBitmap_t();
 
         public MainController()
         {
@@ -106,6 +111,7 @@ namespace OpenVR2Key
          */
         public void RegisterKeyBinding(int keyNumber, HashSet<Key> keys)
         {
+            // TODO: Store original key codes as well
             var keysArr = new Key[keys.Count];
             keys.CopyTo(keysArr);
             var binding = MainUtils.ConvertKeys(keysArr);
@@ -159,6 +165,11 @@ namespace OpenVR2Key
                         appUpdateAction.Invoke(currentApplicationId);
                         statusUpdateAction.Invoke(true);
                         UpdateInputSourceHandles();
+                        notificationOverlayHandle = ovr.InitNotificationOverlay("OpenVR2Key");
+                        /* // TODO: Bitmap loads but it crashes on trying to use it for the notification. Cannot read from protected memory.
+                        var bitmapPath = $"{Directory.GetCurrentDirectory()}\\icon.png";
+                        notificationBitmap = EasyOpenVRSingleton.BitmapUtils.NotificationBitmapFromBitmap(new System.Drawing.Bitmap(bitmapPath));
+                        */
                         initComplete = true;
                     }
 
@@ -227,11 +238,20 @@ namespace OpenVR2Key
             lock (bindingsLock)
             {
                 // TODO: Move this inside bottom if block as soon as we have actual buttons bound...
-                if (data.bState && inputSourceHandle == inputSourceHandleLeft) ovr.TriggerHapticPulseInController(ETrackedControllerRole.LeftHand);
-                if (data.bState && inputSourceHandle == inputSourceHandleRight) ovr.TriggerHapticPulseInController(ETrackedControllerRole.RightHand);
-
                 if (bindings.ContainsKey(index))
                 {
+                    if(data.bState)
+                    {
+                        if(MainModel.LoadSetting(MainModel.Setting.Haptic))
+                        {
+                            if (inputSourceHandle == inputSourceHandleLeft) ovr.TriggerHapticPulseInController(ETrackedControllerRole.LeftHand);
+                            if (inputSourceHandle == inputSourceHandleRight) ovr.TriggerHapticPulseInController(ETrackedControllerRole.RightHand);
+                        }
+                        if (MainModel.LoadSetting(MainModel.Setting.Notification))
+                        {
+                            ovr.EnqueueNotification(notificationOverlayHandle, $"Activated: Key {index}", notificationBitmap);
+                        }
+                    }
                     var binding = bindings[index];
                     SimulateKeyPress(data, binding);
                 }

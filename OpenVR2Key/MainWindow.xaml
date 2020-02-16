@@ -12,10 +12,10 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <CheckBox x:Name="CheckBox_Minimize" Margin="5" Focusable="False" Content="Minimize on launch" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="CheckBox_Minimize_Checked" Unchecked="CheckBox_Minimize_Checked"/>
-                        <CheckBox x:Name="CheckBox_Tray" Margin="5" Focusable="False" Content="to system tray" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="CheckBox_Tray_Checked"/>
+                        <CheckBox x:Name="CheckBox_Tray" Margin="5" Focusable="False" Content="to system tray" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="CheckBox_Tray_Checked" Unchecked="CheckBox_Tray_Checked"/>
                     </StackPanel>
-                    <CheckBox x:Name="CheckBox_DebugNotifications" Content="Show debug notifications in headset" Margin="5 0 5 5" Focusable="False" Checked="CheckBox_DebugNotifications_Checked"/>
-                    <CheckBox x:Name="CheckBox_HapticFeedback" Content="Do haptic pulse on triggering key" Margin="5 0 5 5" Focusable="False" Checked="CheckBox_HapticFeedback_Checked"/>
+                    <CheckBox x:Name="CheckBox_DebugNotifications" Content="Show debug notifications in headset" Margin="5 0 5 5" Focusable="False" Checked="CheckBox_DebugNotifications_Checked" Unchecked="CheckBox_DebugNotifications_Checked"/>
+                    <CheckBox x:Name="CheckBox_HapticFeedback" Content="Do haptic pulse on triggering key" Margin="5 0 5 5" Focusable="False" Checked="CheckBox_HapticFeedback_Checked" Unchecked="CheckBox_HapticFeedback_Checked"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Status" Margin="0 10 10 10" VerticalAlignment="Top" DockPanel.Dock="Left">
