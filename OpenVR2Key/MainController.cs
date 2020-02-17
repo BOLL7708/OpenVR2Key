@@ -1,14 +1,10 @@
 ﻿using BOLL7708;
 using GregsStack.InputSimulatorStandard;
 using GregsStack.InputSimulatorStandard.Native;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Valve.VR;
 
@@ -23,7 +19,7 @@ namespace OpenVR2Key
         private int _registeringKey = 0;
         private object _registeringElement = null;
         private HashSet<Key> _keys = new HashSet<Key>();
-        private HashSet<Key> _keysDown = new HashSet<Key>();     
+        private HashSet<Key> _keysDown = new HashSet<Key>();
 
         // Actions
         public Action<bool> StatusUpdateAction { get; set; } = (status) => { Debug.WriteLine("No status action set."); };
@@ -33,9 +29,9 @@ namespace OpenVR2Key
 
         // Other
         private string _currentApplicationId = "";
-        ulong _inputSourceHandleLeft = 0, _inputSourceHandleRight = 0;
-        ulong _notificationOverlayHandle = 0;
-        NotificationBitmap_t _notificationBitmap = new NotificationBitmap_t();
+        private ulong _inputSourceHandleLeft = 0, _inputSourceHandleRight = 0;
+        private ulong _notificationOverlayHandle = 0;
+        private NotificationBitmap_t _notificationBitmap = new NotificationBitmap_t();
 
         public MainController()
         {
@@ -74,6 +70,8 @@ namespace OpenVR2Key
             }
             return active;
         }
+
+        // TODO: Should be used to interrupt recording keys
         private void StopRegisteringKeys()
         {
             // TODO: We need to be able to affect the GUI here to turn off recording.
@@ -82,6 +80,8 @@ namespace OpenVR2Key
             _registeringKey = 0;
             _registeringElement = null;
         }
+
+        // Add incoming keys to the current binding
         public void OnKeyDown(Key key)
         {
             if (MainUtils.MatchVirtualKey(key) != null)
@@ -98,19 +98,21 @@ namespace OpenVR2Key
             _keysDown.Remove(key);
             UpdateCurrentObject();
         }
+
+        // Send text to UI to update label
         private void UpdateCurrentObject()
         {
             KeyTextUpdateAction.Invoke(GetKeysLabel());
         }
 
-        private string GetKeysLabel()
+        // Generate label text from keys
+        public string GetKeysLabel(Key[] keys = null)
         {
-            var keyArr = new Key[_keys.Count];
-            _keys.CopyTo(keyArr);
-            return GetKeysLabel(keyArr);
-        }
-        public string GetKeysLabel(Key[] keys)
-        {
+            if (keys == null)
+            {
+                keys = new Key[_keys.Count];
+                _keys.CopyTo(keys);
+            }
             List<string> result = new List<string>();
             foreach (Key k in keys)
             {
@@ -121,6 +123,7 @@ namespace OpenVR2Key
 
         #endregion
 
+        #region worker
         private void WorkerThread()
         {
             Thread.CurrentThread.IsBackground = true;
@@ -170,7 +173,7 @@ namespace OpenVR2Key
                                 break;
                         }
                     }
-                    
+
                     _ovr.UpdateActionStates(new ulong[] {
                         _inputSourceHandleLeft,
                         _inputSourceHandleRight
@@ -184,12 +187,14 @@ namespace OpenVR2Key
             }
         }
 
+        // Controller roles have updated, refresh controller handles
         private void UpdateInputSourceHandles()
         {
             _inputSourceHandleLeft = _ovr.GetInputSourceHandle("/user/hand/left");
             _inputSourceHandleRight = _ovr.GetInputSourceHandle("/user/hand/right");
         }
 
+        // New app is running, distribute new app ID
         private void UpdateAppId()
         {
             StopRegisteringKeys();
@@ -197,14 +202,17 @@ namespace OpenVR2Key
             if (_currentApplicationId == String.Empty) _currentApplicationId = MainModel.CONFIG_DEFAULT;
             AppUpdateAction.Invoke(_currentApplicationId);
             var config = MainModel.RetrieveConfig();
-            if(config != null)
+            if (config != null)
             {
                 Debug.WriteLine($"Config for {_currentApplicationId} found.");
                 ConfigRetrievedAction.Invoke(config);
             }
         }
+        #endregion
 
         #region vr_input
+
+        // Register all actions with the input system
         private void RegisterActions()
         {
             _ovr.RegisterActionSet("/actions/default");
@@ -215,6 +223,7 @@ namespace OpenVR2Key
             }
         }
 
+        // Action was triggered, handle it
         private void OnAction(int index, InputDigitalActionData_t data, ulong inputSourceHandle)
         {
             var inputName = inputSourceHandle == _inputSourceHandleLeft ? "Left" :
@@ -223,9 +232,9 @@ namespace OpenVR2Key
             Debug.WriteLine($"Key{index} - {inputName} : " + (data.bState ? "PRESSED" : "RELEASED"));
             if (MainModel.BindingExists(index))
             {
-                if(data.bState)
+                if (data.bState)
                 {
-                    if(MainModel.LoadSetting(MainModel.Setting.Haptic))
+                    if (MainModel.LoadSetting(MainModel.Setting.Haptic))
                     {
                         if (inputSourceHandle == _inputSourceHandleLeft) _ovr.TriggerHapticPulseInController(ETrackedControllerRole.LeftHand);
                         if (inputSourceHandle == _inputSourceHandleRight) _ovr.TriggerHapticPulseInController(ETrackedControllerRole.RightHand);
@@ -242,6 +251,8 @@ namespace OpenVR2Key
         #endregion
 
         #region keyboard_out
+
+        // Simulate a keyboard press
         private void SimulateKeyPress(InputDigitalActionData_t data, Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]> binding)
         {
             if (data.bState)
@@ -256,17 +267,5 @@ namespace OpenVR2Key
             }
         }
         #endregion
-
-        public void TestStuff()
-        {
-            var values = Enum.GetValues(typeof(ETrackedDeviceProperty));
-            foreach (ETrackedDeviceProperty i in values)
-            {
-                var name = Enum.GetName(typeof(ETrackedDeviceProperty), i);
-                if (name.Contains("_String")) _ovr.GetStringTrackedDeviceProperty(0, i);
-                else if (name.Contains("_Float")) _ovr.GetFloatTrackedDeviceProperty(0, i);
-                else if (name.Contains("_Bool")) _ovr.GetBooleanTrackedDeviceProperty(0, i);
-            }
-        }
     }
 }

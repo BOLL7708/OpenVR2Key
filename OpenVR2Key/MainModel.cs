@@ -3,10 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace OpenVR2Key
@@ -60,7 +57,7 @@ namespace OpenVR2Key
         }
         public static Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]> GetBinding(int keyNumber)
         {
-            lock(_bindingsLock)
+            lock (_bindingsLock)
             {
                 return _bindings[keyNumber];
             }
@@ -90,7 +87,7 @@ namespace OpenVR2Key
         #region config
         static private string _configName = CONFIG_DEFAULT;
 
-        static private void SetConfigName(string configName)
+        static public void SetConfigName(string configName)
         {
             CleanConfigName(ref configName);
             _configName = configName;
@@ -108,9 +105,9 @@ namespace OpenVR2Key
             if (config == null)
             {
                 config = new Dictionary<int, Key[]>();
-                lock(_bindingsLock)
+                lock (_bindingsLock)
                 {
-                    foreach(var index in _bindings.Keys)
+                    foreach (var index in _bindings.Keys)
                     {
                         config.Add(index, _bindings[index].Item1);
                     }
@@ -157,7 +154,7 @@ namespace OpenVR2Key
         static public bool LoadSetting(Setting setting)
         {
             var propertyName = Enum.GetName(typeof(Setting), setting);
-            return (bool) p[propertyName];
+            return (bool)p[propertyName];
         }
         #endregion
 

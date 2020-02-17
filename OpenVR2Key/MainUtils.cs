@@ -39,8 +39,10 @@ namespace OpenVR2Key
             // Check for direct translation
             if (translationTableKeys.ContainsKey(key)) return new Tuple<VirtualKeyCode, bool>(translationTableKeys[key], false);
             if (translationTableModifiers.ContainsKey(key)) return new Tuple<VirtualKeyCode, bool>(translationTableModifiers[key], true);
+
             // Character keys which come in as A-Z
             if (keyStr.Length == 1) keyStr = $"VK_{keyStr}";
+
             // Number keys which come in as D0-D9
             else if (keyStr.Length == 2 && keyStr[0] == 'D' && Char.IsDigit(keyStr[1])) keyStr = $"VK_{keyStr[1]}";
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +23,7 @@ namespace OpenVR2Key
             InitializeComponent();
             _controller = new MainController
             {
+                // Reports on the status of OpenVR
                 StatusUpdateAction = (connected) =>
                 {
                     Debug.WriteLine($"Status Update Action: connected={connected}");
@@ -35,14 +35,15 @@ namespace OpenVR2Key
                         Label_OpenVR.Background = color;
                     });
                 },
+
+                // Triggered when a new scene app is detected
                 AppUpdateAction = (appId) =>
                 {
                     Debug.WriteLine($"App Update Action: appId={appId}");
                     var color = Brushes.OliveDrab;
-                    if (appId.Length == 0)
+                    if (appId == MainModel.CONFIG_DEFAULT)
                     {
                         color = Brushes.Tomato;
-                        appId = "None";
                     }
                     Dispatcher.Invoke(() =>
                     {
@@ -51,13 +52,18 @@ namespace OpenVR2Key
                     });
 
                 },
-                KeyTextUpdateAction = (keyText) => {
+
+                // We should update the text on the current binding we are recording
+                KeyTextUpdateAction = (keyText) =>
+                {
                     Debug.WriteLine($"Key Text Update Action: keyText={keyText}");
                     Dispatcher.Invoke(() =>
                     {
-                        if(_activeElement != null) (_activeElement as Label).Content = keyText;
+                        if (_activeElement != null) (_activeElement as Label).Content = keyText;
                     });
                 },
+
+                // We have loaded a config
                 ConfigRetrievedAction = (config) =>
                 {
                     Debug.WriteLine($"Config Retrieved Action: count()={config.Count}");
@@ -67,7 +73,10 @@ namespace OpenVR2Key
                     });
                 }
             };
-            _controller.SetDebugLogAction((message) =>{
+
+            // Receives error messages from OpenVR
+            _controller.SetDebugLogAction((message) =>
+            {
                 Dispatcher.Invoke(() =>
                 {
                     var time = DateTime.Now.ToString("HH:mm:ss");
@@ -78,22 +87,19 @@ namespace OpenVR2Key
                     TextBox_Log.Text = $"{time}: {message}\n{newLog}";
                 });
             });
+
+            // Init the things
+            InitList();
             _controller.Init();
             InitSettings();
         }
 
-        private void InitList()
-        {
-            var config = new Dictionary<int, Key[]>();
-            for(var i = 1; i <= NO_OF_KEYS; i++)
-            {
-                config.Add(i, new Key[0]);
-            }
-            InitList(config);
-        }
+        #region bindings
 
-        private void InitList(Dictionary<int, Key[]> config)
-        {           
+        // Fill list with entries
+        private void InitList(Dictionary<int, Key[]> config = null)
+        {
+            if (config == null) config = new Dictionary<int, Key[]>();
             _items.Clear();
             for (var i = 1; i <= NO_OF_KEYS; i++)
             {
@@ -102,7 +108,7 @@ namespace OpenVR2Key
                 _items.Add(new BindingItem()
                 {
                     Index = i,
-                    Label = $"Key {i}",
+                    Label = $"Key {i}", // TODO: Replace with stored labels
                     Text = text
                 });
             }
@@ -110,7 +116,7 @@ namespace OpenVR2Key
             ItemsControl_Bindings.ItemsSource = _items;
         }
 
-        #region bindings
+        // Binding data class
         public class BindingItem
         {
             public int Index { get; set; }
@@ -119,7 +125,7 @@ namespace OpenVR2Key
             public BindingState State { get; set; }
         }
 
-        // TODO: Use to know what style to use
+        // State that decides visual style
         public enum BindingState
         {
             Unset, Set, Recording
@@ -127,6 +133,8 @@ namespace OpenVR2Key
         #endregion
 
         #region events
+
+        // All key down events in the app
         protected override void OnKeyDown(KeyEventArgs e)
         {
             _controller.OnKeyDown(e.Key);
@@ -136,6 +144,7 @@ namespace OpenVR2Key
             else base.OnKeyDown(e);
         }
 
+        // All key up events in the app
         protected override void OnKeyUp(KeyEventArgs e)
         {
             _controller.OnKeyUp(e.Key);
@@ -147,30 +156,43 @@ namespace OpenVR2Key
         #endregion
 
         #region actions
+
+        // Click to either create new config for current app or remote the existing config.
         private void Button_AppBinding_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Fix so this actually does what it is supposed to do, now we create configs for everything!
+
+            // Check if we're currently using this config, is so delete it, else save out an empty one.
+
+            // MainModel.SetConfigName();
+            // MainModel.StoreConfig();
         }
 
+        // This should clear all bindings from the current config, might even delete the config?
         private void Button_ClearAll_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Implement
+            MainModel.ClearBindings();
+            InitList();
+            // TODO: This needs to save the config as well, or remove it?
         }
         #endregion
 
         #region bindings
+
+        // Main action that is clicked from the list to start and end registration of keys
         private void Label_RecordSave_Click(object sender, MouseButtonEventArgs e)
         {
             var element = sender as Label;
             var dataItem = element.DataContext as BindingItem;
             var active = _controller.ToggleRegisteringKey(dataItem.Index, element, out object activeElement);
             var label = activeElement as Label;
-            label.Foreground = active ? Brushes.Tomato: Brushes.Black;
+            label.Foreground = active ? Brushes.Tomato : Brushes.Black;
             label.BorderBrush = active ? Brushes.Tomato : Brushes.Gray;
             label.Background = active ? Brushes.LightPink : Brushes.Olive;
             if (active) this._activeElement = activeElement;
         }
 
+        // Clear the current binding completely, TODO: cancel recording?
         private void Button_ClearCancel_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -183,6 +205,8 @@ namespace OpenVR2Key
         #endregion
 
         #region settings
+
+        // Load settings and apply them to the checkboxes
         private void InitSettings()
         {
             CheckBox_Minimize.IsChecked = MainModel.LoadSetting(MainModel.Setting.Minimize);
@@ -195,12 +219,11 @@ namespace OpenVR2Key
             var name = e.RoutedEvent.Name;
             return name == "Checked";
         }
-
         private void CheckBox_Minimize_Checked(object sender, RoutedEventArgs e)
         {
             MainModel.UpdateSetting(MainModel.Setting.Minimize, CheckboxValue(e));
         }
-        
+
         private void CheckBox_Tray_Checked(object sender, RoutedEventArgs e)
         {
             MainModel.UpdateSetting(MainModel.Setting.Tray, CheckboxValue(e));
