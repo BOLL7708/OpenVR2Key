@@ -17,14 +17,14 @@ namespace OpenVR2Key
         private readonly static int NO_OF_KEYS = 32;
         private MainController _controller;
         private List<BindingItem> _items = new List<BindingItem>();
-        private object activeElement;
+        private object _activeElement;
 
         public MainWindow()
         {
             InitializeComponent();
             _controller = new MainController
             {
-                statusUpdateAction = (connected) =>
+                StatusUpdateAction = (connected) =>
                 {
                     Debug.WriteLine($"Status Update Action: connected={connected}");
                     var message = connected ? "Connected" : "Disconnected";
@@ -35,7 +35,7 @@ namespace OpenVR2Key
                         Label_OpenVR.Background = color;
                     });
                 },
-                appUpdateAction = (appId) =>
+                AppUpdateAction = (appId) =>
                 {
                     Debug.WriteLine($"App Update Action: appId={appId}");
                     var color = Brushes.OliveDrab;
@@ -51,14 +51,14 @@ namespace OpenVR2Key
                     });
 
                 },
-                keyTextUpdateAction = (keyText) => {
+                KeyTextUpdateAction = (keyText) => {
                     Debug.WriteLine($"Key Text Update Action: keyText={keyText}");
                     Dispatcher.Invoke(() =>
                     {
-                        if(activeElement != null) (activeElement as Label).Content = keyText;
+                        if(_activeElement != null) (_activeElement as Label).Content = keyText;
                     });
                 },
-                configRetrievedAction = (config) =>
+                ConfigRetrievedAction = (config) =>
                 {
                     Debug.WriteLine($"Config Retrieved Action: count()={config.Count}");
                     Dispatcher.Invoke(() =>
@@ -168,14 +168,14 @@ namespace OpenVR2Key
             label.Foreground = active ? Brushes.Tomato: Brushes.Black;
             label.BorderBrush = active ? Brushes.Tomato : Brushes.Gray;
             label.Background = active ? Brushes.LightPink : Brushes.Olive;
-            if (active) this.activeElement = activeElement;
+            if (active) this._activeElement = activeElement;
         }
 
         private void Button_ClearCancel_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var dataItem = button.DataContext as BindingItem;
-            _controller.RemoveBinding(dataItem.Index);
+            MainModel.RemoveBinding(dataItem.Index);
             DockPanel sp = VisualTreeHelper.GetParent(button) as DockPanel;
             var element = sp.Children[2] as Label;
             element.Content = "[Not configured]";
