@@ -27,5 +27,15 @@ namespace OpenVR2Key
             var propertyName = Enum.GetName(typeof(Setting), setting);
             return (bool) p[propertyName];
         }
+
+        static public void SaveConfig(string appId)
+        {
+
+        }
+
+        static public void LoadConfig(string appId)
+        {
+
+        }
     }
 }

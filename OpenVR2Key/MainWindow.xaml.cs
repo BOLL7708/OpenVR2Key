@@ -14,6 +14,7 @@ namespace OpenVR2Key
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly static int NO_OF_KEYS = 32;
         private MainController _controller;
         private List<BindingItem> _items = new List<BindingItem>();
         private object activeElement;
@@ -25,6 +26,7 @@ namespace OpenVR2Key
             {
                 statusUpdateAction = (connected) =>
                 {
+                    Debug.WriteLine($"Status Update Action: connected={connected}");
                     var message = connected ? "Connected" : "Disconnected";
                     var color = connected ? Brushes.OliveDrab : Brushes.Tomato;
                     Dispatcher.Invoke(() =>
@@ -35,6 +37,7 @@ namespace OpenVR2Key
                 },
                 appUpdateAction = (appId) =>
                 {
+                    Debug.WriteLine($"App Update Action: appId={appId}");
                     var color = Brushes.OliveDrab;
                     if (appId.Length == 0)
                     {
@@ -46,11 +49,21 @@ namespace OpenVR2Key
                         Label_Application.Content = appId;
                         Label_Application.Background = color;
                     });
+
                 },
                 keyTextUpdateAction = (keyText) => {
+                    Debug.WriteLine($"Key Text Update Action: keyText={keyText}");
                     Dispatcher.Invoke(() =>
                     {
                         if(activeElement != null) (activeElement as Label).Content = keyText;
+                    });
+                },
+                configRetrievedAction = (config) =>
+                {
+                    Debug.WriteLine($"Config Retrieved Action: count()={config.Count}");
+                    Dispatcher.Invoke(() =>
+                    {
+                        InitList(config);
                     });
                 }
             };
@@ -67,19 +80,33 @@ namespace OpenVR2Key
             });
             _controller.Init();
             InitSettings();
-            InitList();
         }
 
         private void InitList()
         {
-            for(var i=1; i<=32; i++)
+            var config = new Dictionary<int, Key[]>();
+            for(var i = 1; i <= NO_OF_KEYS; i++)
             {
-                _items.Add(new BindingItem() {
+                config.Add(i, new Key[0]);
+            }
+            InitList(config);
+        }
+
+        private void InitList(Dictionary<int, Key[]> config)
+        {           
+            _items.Clear();
+            for (var i = 1; i <= NO_OF_KEYS; i++)
+            {
+                var text = config.ContainsKey(i) ? _controller.GetKeysLabel(config[i]) : String.Empty;
+                if (text == String.Empty) text = "Click to set keys to simulate";
+                _items.Add(new BindingItem()
+                {
                     Index = i,
                     Label = $"Key {i}",
-                    Text = "Load from config."
+                    Text = text
                 });
             }
+            ItemsControl_Bindings.ItemsSource = null;
             ItemsControl_Bindings.ItemsSource = _items;
         }
 
@@ -92,6 +119,7 @@ namespace OpenVR2Key
             public BindingState State { get; set; }
         }
 
+        // TODO: Use to know what style to use
         public enum BindingState
         {
             Unset, Set, Recording
@@ -121,14 +149,16 @@ namespace OpenVR2Key
         #region actions
         private void Button_AppBinding_Click(object sender, RoutedEventArgs e)
         {
-            
+            // TODO: Fix so this actually does what it is supposed to do, now we create configs for everything!
         }
 
         private void Button_ClearAll_Click(object sender, RoutedEventArgs e)
         {
-
+            // TODO: Implement
         }
+        #endregion
 
+        #region bindings
         private void Label_RecordSave_Click(object sender, MouseButtonEventArgs e)
         {
             var element = sender as Label;

@@ -51,7 +51,7 @@ namespace OpenVR2Key
         /**
          * Match incoming key codes to virtual ones, sort out modifiers
          */
-        public static Tuple<VirtualKeyCode[], VirtualKeyCode[]> ConvertKeys(Key[] keys)
+        public static Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]> ConvertKeys(Key[] keys)
         {
             var vModifiers = new List<VirtualKeyCode>();
             var vKeys = new List<VirtualKeyCode>();
@@ -64,7 +64,7 @@ namespace OpenVR2Key
                     else vKeys.Add(match.Item1);
                 }
             }
-            return new Tuple<VirtualKeyCode[], VirtualKeyCode[]>(vModifiers.ToArray(), vKeys.ToArray());
+            return new Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]>(keys, vModifiers.ToArray(), vKeys.ToArray());
         }
     }
 }

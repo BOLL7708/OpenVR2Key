@@ -1,10 +1,12 @@
 ﻿using BOLL7708;
 using GregsStack.InputSimulatorStandard;
 using GregsStack.InputSimulatorStandard.Native;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,6 +16,8 @@ namespace OpenVR2Key
 {
     class MainController
     {
+        private static readonly string CONFIG_DEFAULT = "default";
+
         private EasyOpenVRSingleton ovr = EasyOpenVRSingleton.Instance;
         private InputSimulator sim = new InputSimulator();
 
@@ -24,13 +28,14 @@ namespace OpenVR2Key
         private HashSet<Key> keysDown = new HashSet<Key>();
 
         // Binding storage, move to model
-        private Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>> bindings = new Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>>();
+        private Dictionary<int, Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]>> bindings = new Dictionary<int, Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]>>();
 
         // Actions
         private readonly object bindingsLock = new object();
         public Action<bool> statusUpdateAction { get; set; } = (status) => { Debug.WriteLine("No status action set."); };
         public Action<string> appUpdateAction { get; set; } = (appId) => { Debug.WriteLine("No appID action set."); };
         public Action<string> keyTextUpdateAction { get; set; } = (status) => { Debug.WriteLine("No key text action set."); };
+        public Action<Dictionary<int, Key[]>> configRetrievedAction { get; set; } = (config) => { Debug.WriteLine("No config loaded."); };
 
         // Other
         private string currentApplicationId = "";
@@ -75,6 +80,14 @@ namespace OpenVR2Key
             }
             return active;
         }
+        private void StopRegisteringKeys()
+        {
+            // TODO: We need to be able to affect the GUI here to turn off recording.
+            keysDown.Clear();
+            keys.Clear();
+            registeringKey = 0;
+            registeringElement = null;
+        }
         public void OnKeyDown(Key key)
         {
             if (MainUtils.MatchVirtualKey(key) != null)
@@ -98,6 +111,12 @@ namespace OpenVR2Key
 
         private string GetKeysLabel()
         {
+            var keyArr = new Key[keys.Count];
+            keys.CopyTo(keyArr);
+            return GetKeysLabel(keyArr);
+        }
+        public string GetKeysLabel(Key[] keys)
+        {
             List<string> result = new List<string>();
             foreach (Key k in keys)
             {
@@ -111,28 +130,73 @@ namespace OpenVR2Key
          */
         public void RegisterKeyBinding(int keyNumber, HashSet<Key> keys)
         {
-            // TODO: Store original key codes as well
             var keysArr = new Key[keys.Count];
             keys.CopyTo(keysArr);
             var binding = MainUtils.ConvertKeys(keysArr);
             lock (bindingsLock)
             {
                 bindings[keyNumber] = binding;
+                var config = new Dictionary<int, Key[]>();
+                foreach(var index in bindings.Keys)
+                {
+                    config.Add(index, bindings[index].Item1);
+                }
+                StoreConfig(currentApplicationId, config);
             }
         }
 
-        public void RegisterKeyBindings(Dictionary<int, Tuple<VirtualKeyCode[], VirtualKeyCode[]>> bindings)
+        public void RegisterKeyBindings(Dictionary<int, Key[]> config)
         {
+            var bindings = new Dictionary<int, Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]>>();
+            foreach(var index in config.Keys)
+            {
+                var keys = config[index];
+                var binding = MainUtils.ConvertKeys(keys);
+                bindings[index] = binding;
+            }
+
             lock (bindingsLock)
             {
                 this.bindings = bindings;
             }
         }
 
+        private void CleanConfigName(ref string configName)
+        {
+            Regex rgx = new Regex(@"[^a-zA-Z0-9\.]");
+            var cleaned = rgx.Replace(configName, String.Empty).Trim(new char[] { '.' });
+            configName = cleaned == String.Empty ? CONFIG_DEFAULT : cleaned;
+        }
+
+        private void StoreConfig(string configName, Dictionary<int, Key[]> config)
+        {
+            CleanConfigName(ref configName);
+            var jsonString = JsonConvert.SerializeObject(config);
+            var configDir = $"{Directory.GetCurrentDirectory()}\\config\\";
+            var configFilePath = $"{configDir}{configName}.json";
+            if (!Directory.Exists(configDir)) Directory.CreateDirectory(configDir);
+            File.WriteAllText(configFilePath, jsonString);
+        }
+
+        private Dictionary<int, Key[]> RetrieveConfig(string configName)
+        {
+            CleanConfigName(ref configName);
+            var configDir = $"{Directory.GetCurrentDirectory()}\\config\\";
+            var configFilePath = $"{configDir}{configName}.json";
+            var jsonString = File.Exists(configFilePath) ? File.ReadAllText(configFilePath) : null;
+            if(jsonString != null)
+            {
+                var config = JsonConvert.DeserializeObject(jsonString, typeof(Dictionary<int, Key[]>));
+                return config as Dictionary<int, Key[]>;
+            }
+            return null;
+        }
+
         public void ClearBindings()
         {
             lock (bindingsLock)
             {
+                StopRegisteringKeys();
                 bindings.Clear();
             }
         }
@@ -161,8 +225,7 @@ namespace OpenVR2Key
                         ovr.LoadAppManifest("./app.vrmanifest");
                         ovr.LoadActionManifest("./actions.json");
                         RegisterActions();
-                        currentApplicationId = ovr.GetRunningApplicationId();
-                        appUpdateAction.Invoke(currentApplicationId);
+                        UpdateAppId();
                         statusUpdateAction.Invoke(true);
                         UpdateInputSourceHandles();
                         notificationOverlayHandle = ovr.InitNotificationOverlay("OpenVR2Key");
@@ -188,8 +251,7 @@ namespace OpenVR2Key
                                 statusUpdateAction.Invoke(false);
                                 break;
                             case EVREventType.VREvent_SceneApplicationChanged:
-                                currentApplicationId = ovr.GetRunningApplicationId();
-                                appUpdateAction.Invoke(currentApplicationId);
+                                UpdateAppId();
                                 break;
                             case EVREventType.VREvent_TrackedDeviceRoleChanged:
                             case EVREventType.VREvent_TrackedDeviceUpdated:
@@ -218,6 +280,20 @@ namespace OpenVR2Key
             inputSourceHandleRight = ovr.GetInputSourceHandle("/user/hand/right");
         }
 
+        private void UpdateAppId()
+        {
+            StopRegisteringKeys();
+            currentApplicationId = ovr.GetRunningApplicationId();
+            if (currentApplicationId == String.Empty) currentApplicationId = CONFIG_DEFAULT;
+            appUpdateAction.Invoke(currentApplicationId);
+            var config = RetrieveConfig(currentApplicationId);
+            if(config != null)
+            {
+                Debug.WriteLine($"Config for {currentApplicationId} found.");
+                configRetrievedAction.Invoke(config);
+            }
+        }
+
         #region vr_input
         private void RegisterActions()
         {
@@ -237,7 +313,6 @@ namespace OpenVR2Key
             Debug.WriteLine($"Key{index} - {inputName} : " + (data.bState ? "PRESSED" : "RELEASED"));
             lock (bindingsLock)
             {
-                // TODO: Move this inside bottom if block as soon as we have actual buttons bound...
                 if (bindings.ContainsKey(index))
                 {
                     if(data.bState)
@@ -249,7 +324,7 @@ namespace OpenVR2Key
                         }
                         if (MainModel.LoadSetting(MainModel.Setting.Notification))
                         {
-                            ovr.EnqueueNotification(notificationOverlayHandle, $"Activated: Key {index}", notificationBitmap);
+                            ovr.EnqueueNotification(notificationOverlayHandle, $"{inputName} Controller activated: Key {index}", notificationBitmap);
                         }
                     }
                     var binding = bindings[index];
@@ -260,17 +335,17 @@ namespace OpenVR2Key
         #endregion
 
         #region keyboard_out
-        private void SimulateKeyPress(InputDigitalActionData_t data, Tuple<VirtualKeyCode[], VirtualKeyCode[]> binding)
+        private void SimulateKeyPress(InputDigitalActionData_t data, Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]> binding)
         {
             if (data.bState)
             {
-                foreach (var vk in binding.Item1) sim.Keyboard.KeyDown(vk);
                 foreach (var vk in binding.Item2) sim.Keyboard.KeyDown(vk);
+                foreach (var vk in binding.Item3) sim.Keyboard.KeyDown(vk);
             }
             else
             {
+                foreach (var vk in binding.Item3) sim.Keyboard.KeyUp(vk);
                 foreach (var vk in binding.Item2) sim.Keyboard.KeyUp(vk);
-                foreach (var vk in binding.Item1) sim.Keyboard.KeyUp(vk);
             }
         }
         #endregion
