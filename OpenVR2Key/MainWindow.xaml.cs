@@ -14,6 +14,7 @@ namespace OpenVR2Key
     public partial class MainWindow : Window
     {
         private readonly static int NO_OF_KEYS = 32;
+        private readonly static string DEFAULT_KEY_LABEL = "Unbound: Click to bind keys to simulate";
         private MainController _controller;
         private List<BindingItem> _items = new List<BindingItem>();
         private object _activeElement;
@@ -71,10 +72,12 @@ namespace OpenVR2Key
                 // We have loaded a config
                 ConfigRetrievedAction = (config) =>
                 {
-                    Debug.WriteLine($"Config Retrieved Action: count()={config.Count}");
+                    var loaded = config != null;
+                    if(loaded) Debug.WriteLine($"Config Retrieved Action: count()={config.Count}");
                     Dispatcher.Invoke(() =>
                     {
-                        InitList(config);
+                        if(loaded) InitList(config);
+                        UpdateConfigButton(loaded);
                     });
                 }
             };
@@ -88,12 +91,13 @@ namespace OpenVR2Key
                     var oldLog = TextBox_Log.Text;
                     var lines = oldLog.Split('\n');
                     Array.Resize(ref lines, 3);
-                    var newLog = String.Join("\n", lines);
+                    var newLog = string.Join("\n", lines);
                     TextBox_Log.Text = $"{time}: {message}\n{newLog}";
                 });
             });
 
             // Init the things
+            UpdateConfigButton(true);
             InitList();
             _controller.Init();
             InitSettings();
@@ -108,8 +112,8 @@ namespace OpenVR2Key
             _items.Clear();
             for (var i = 1; i <= NO_OF_KEYS; i++)
             {
-                var text = config.ContainsKey(i) ? _controller.GetKeysLabel(config[i]) : String.Empty;
-                if (text == String.Empty) text = "Click to set keys to simulate";
+                var text = config.ContainsKey(i) ? _controller.GetKeysLabel(config[i]) : string.Empty;
+                if (text == string.Empty) text = DEFAULT_KEY_LABEL;
                 _items.Add(new BindingItem()
                 {
                     Index = i,
@@ -155,15 +159,32 @@ namespace OpenVR2Key
 
         #region actions
 
+        private void UpdateConfigButton(bool hasConfig)
+        {
+            Debug.WriteLine($"Update Config Button: {hasConfig}");
+            if(_controller.AppIsRunning())
+            {
+                Button_AppBinding.Content = hasConfig ? "Remove app-specific config" : "Add app-specific config";
+                Button_AppBinding.IsEnabled = true;
+                Button_AppBinding.Tag = hasConfig;
+            } else
+            {
+                Button_AppBinding.Content = "Current config is the default";
+                Button_AppBinding.IsEnabled = false;
+                Button_AppBinding.Tag = null;
+            }
+        }
+
         // Click to either create new config for current app or remote the existing config.
         private void Button_AppBinding_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Fix so this actually does what it is supposed to do, now we create configs for everything!
-
-            // Check if we're currently using this config, is so delete it, else save out an empty one.
-
-            // MainModel.SetConfigName();
-            // MainModel.StoreConfig();
+            var tag = (sender as Button).Tag;
+            switch(tag)
+            {
+                case null: Debug.WriteLine("DEFAULT CONFIG"); break;
+                case true: Debug.WriteLine("REMOVE CONFIG"); break;
+                case false: Debug.WriteLine("ADD CONFIG"); break;
+            }
         }
 
         // This should clear all bindings from the current config
@@ -183,7 +204,7 @@ namespace OpenVR2Key
             var dataItem = element.DataContext as BindingItem;
             var active = _controller.ToggleRegisteringKey(dataItem.Index, element, out object activeElement);
             UpdateLabel(activeElement as Label, active);
-            if (active) this._activeElement = activeElement;
+            if (active) _activeElement = activeElement;
         }
 
         private void UpdateLabel(Label label, bool active)
@@ -213,7 +234,7 @@ namespace OpenVR2Key
             MainModel.RemoveBinding(dataItem.Index);
             DockPanel sp = VisualTreeHelper.GetParent(button) as DockPanel;
             var element = sp.Children[2] as Label;
-            element.Content = "[Not configured]";
+            element.Content = DEFAULT_KEY_LABEL;
         }
         #endregion
 

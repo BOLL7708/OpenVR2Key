@@ -94,6 +94,11 @@ namespace OpenVR2Key
             _configName = configName;
         }
 
+        static public bool IsDefaultConfig()
+        {
+            return _configName == CONFIG_DEFAULT;
+        }
+
         static private void CleanConfigName(ref string configName)
         {
             Regex rgx = new Regex(@"[^a-zA-Z0-9\.]");

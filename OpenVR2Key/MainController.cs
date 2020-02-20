@@ -118,7 +118,7 @@ namespace OpenVR2Key
             {
                 result.Add(k.ToString());
             }
-            return String.Join(" + ", result.ToArray());
+            return string.Join(" + ", result.ToArray());
         }
 
         #endregion
@@ -138,6 +138,7 @@ namespace OpenVR2Key
                         _ovr.LoadAppManifest("./app.vrmanifest");
                         _ovr.LoadActionManifest("./actions.json");
                         RegisterActions();
+                        LoadConfig(true);
                         UpdateAppId();
                         StatusUpdateAction.Invoke(true);
                         UpdateInputSourceHandles();
@@ -199,16 +200,25 @@ namespace OpenVR2Key
         {
             StopRegisteringKeys();
             _currentApplicationId = _ovr.GetRunningApplicationId();
-            if (_currentApplicationId == String.Empty) _currentApplicationId = MainModel.CONFIG_DEFAULT;
+            if (_currentApplicationId == string.Empty) _currentApplicationId = MainModel.CONFIG_DEFAULT;
             AppUpdateAction.Invoke(_currentApplicationId);
+            LoadConfig();
+        }
 
-            // Load app-specific config if it exists
-            var config = MainModel.RetrieveConfig();
-            if (config != null)
-            {
-                Debug.WriteLine($"Config for {_currentApplicationId} found.");
-                ConfigRetrievedAction.Invoke(config);
-            }
+        // Load config, if it exists
+        private void LoadConfig(bool forceDefault=false)
+        {
+            var configName = forceDefault ? MainModel.CONFIG_DEFAULT : _currentApplicationId;
+            var config = MainModel.RetrieveConfig(configName);
+            if (config != null) MainModel.SetConfigName(configName);
+            Debug.WriteLine($"Config for {configName} found´: {config != null}");
+            ConfigRetrievedAction.Invoke(config);
+        }
+
+        public bool AppIsRunning()
+        {
+            Debug.WriteLine($"Running app: {_currentApplicationId}");
+            return _currentApplicationId != MainModel.CONFIG_DEFAULT;
         }
         #endregion
 
