@@ -12,8 +12,9 @@ namespace OpenVR2Key
     {
         #region bindings
         public static readonly string CONFIG_DEFAULT = "default";
-        public static readonly object _bindingsLock = new object();
+        private static readonly object _bindingsLock = new object();
         private static Dictionary<int, Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]>> _bindings = new Dictionary<int, Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]>>();
+        
         /**
          * Store key codes as virtual key codes.
          */
@@ -33,7 +34,7 @@ namespace OpenVR2Key
                 StoreConfig(config);
             }
         }
-        static public void RegisterBindings(Dictionary<int, Key[]> config)
+        static private void RegisterBindings(Dictionary<int, Key[]> config)
         {
             var bindings = new Dictionary<int, Tuple<Key[], VirtualKeyCode[], VirtualKeyCode[]>>();
             foreach (var keyNumber in config.Keys)
@@ -42,10 +43,9 @@ namespace OpenVR2Key
                 var binding = MainUtils.ConvertKeys(keys);
                 bindings[keyNumber] = binding;
             }
-
             lock (_bindingsLock)
             {
-                MainModel._bindings = bindings;
+                _bindings = bindings;
             }
         }
         static public bool BindingExists(int index)
@@ -68,6 +68,7 @@ namespace OpenVR2Key
             {
                 _bindings.Clear();
             }
+            StoreConfig();
         }
         static public void RemoveBinding(int keyNumber)
         {
@@ -129,8 +130,9 @@ namespace OpenVR2Key
             var jsonString = File.Exists(configFilePath) ? File.ReadAllText(configFilePath) : null;
             if (jsonString != null)
             {
-                var config = JsonConvert.DeserializeObject(jsonString, typeof(Dictionary<int, Key[]>));
-                return config as Dictionary<int, Key[]>;
+                var config = JsonConvert.DeserializeObject(jsonString, typeof(Dictionary<int, Key[]>)) as Dictionary<int, Key[]>;
+                RegisterBindings(config);
+                return config;
             }
             return null;
         }

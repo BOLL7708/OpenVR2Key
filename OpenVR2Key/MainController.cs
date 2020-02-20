@@ -24,7 +24,7 @@ namespace OpenVR2Key
         // Actions
         public Action<bool> StatusUpdateAction { get; set; } = (status) => { Debug.WriteLine("No status action set."); };
         public Action<string> AppUpdateAction { get; set; } = (appId) => { Debug.WriteLine("No appID action set."); };
-        public Action<string> KeyTextUpdateAction { get; set; } = (status) => { Debug.WriteLine("No key text action set."); };
+        public Action<string, bool> KeyTextUpdateAction { get; set; } = (status, cancel) => { Debug.WriteLine("No key text action set."); };
         public Action<Dictionary<int, Key[]>> ConfigRetrievedAction { get; set; } = (config) => { Debug.WriteLine("No config loaded."); };
 
         // Other
@@ -74,7 +74,7 @@ namespace OpenVR2Key
         // TODO: Should be used to interrupt recording keys
         private void StopRegisteringKeys()
         {
-            // TODO: We need to be able to affect the GUI here to turn off recording.
+            UpdateCurrentObject(true);
             _keysDown.Clear();
             _keys.Clear();
             _registeringKey = 0;
@@ -100,9 +100,9 @@ namespace OpenVR2Key
         }
 
         // Send text to UI to update label
-        private void UpdateCurrentObject()
+        private void UpdateCurrentObject(bool cancel=false)
         {
-            KeyTextUpdateAction.Invoke(GetKeysLabel());
+            KeyTextUpdateAction.Invoke(GetKeysLabel(), cancel);
         }
 
         // Generate label text from keys

@@ -55,12 +55,16 @@ namespace OpenVR2Key
                 },
 
                 // We should update the text on the current binding we are recording
-                KeyTextUpdateAction = (keyText) =>
+                KeyTextUpdateAction = (keyText, cancel) =>
                 {
                     Debug.WriteLine($"Key Text Update Action: keyText={keyText}");
                     Dispatcher.Invoke(() =>
                     {
-                        if (_activeElement != null) (_activeElement as Label).Content = keyText;
+                        if (_activeElement != null)
+                        {
+                            (_activeElement as Label).Content = keyText;
+                            if(cancel) UpdateLabel(_activeElement as Label, false);
+                        }
                     });
                 },
 
@@ -109,7 +113,7 @@ namespace OpenVR2Key
                 _items.Add(new BindingItem()
                 {
                     Index = i,
-                    Label = $"Key {i}", // TODO: Replace with stored labels
+                    Label = $"Key {i}",
                     Text = text
                 });
             }
@@ -123,13 +127,6 @@ namespace OpenVR2Key
             public int Index { get; set; }
             public string Label { get; set; }
             public string Text { get; set; }
-            public BindingState State { get; set; }
-        }
-
-        // State that decides visual style
-        public enum BindingState
-        {
-            Unset, Set, Recording
         }
         #endregion
 
@@ -169,12 +166,11 @@ namespace OpenVR2Key
             // MainModel.StoreConfig();
         }
 
-        // This should clear all bindings from the current config, might even delete the config?
+        // This should clear all bindings from the current config
         private void Button_ClearAll_Click(object sender, RoutedEventArgs e)
         {
             MainModel.ClearBindings();
             InitList();
-            // TODO: This needs to save the config as well, or remove it?
         }
         #endregion
 
@@ -186,11 +182,27 @@ namespace OpenVR2Key
             var element = sender as Label;
             var dataItem = element.DataContext as BindingItem;
             var active = _controller.ToggleRegisteringKey(dataItem.Index, element, out object activeElement);
-            var label = activeElement as Label;
-            label.Foreground = active ? Brushes.Tomato : Brushes.Black;
-            label.BorderBrush = active ? Brushes.Tomato : Brushes.Gray;
-            label.Background = active ? Brushes.LightPink : Brushes.Olive;
+            UpdateLabel(activeElement as Label, active);
             if (active) this._activeElement = activeElement;
+        }
+
+        private void UpdateLabel(Label label, bool active)
+        {
+            {
+                label.Foreground = active ? Brushes.DarkRed : Brushes.Black;
+                label.BorderBrush = active ? Brushes.Tomato : Brushes.DarkGray;
+                label.Background = active ? Brushes.LightPink : Brushes.LightGray;
+            }
+        }
+
+        private void Label_HighlightOn(object sender, RoutedEventArgs e)
+        {
+            if (_activeElement != sender) (sender as Label).Background = Brushes.WhiteSmoke;
+        }
+
+        private void Label_HighlightOff(object sender, RoutedEventArgs e)
+        {
+            if (_activeElement != sender) (sender as Label).Background = Brushes.LightGray;
         }
 
         // Clear the current binding completely, TODO: cancel recording?
