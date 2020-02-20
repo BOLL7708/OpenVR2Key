@@ -47,6 +47,7 @@ namespace OpenVR2Key
                     }
                     Dispatcher.Invoke(() =>
                     {
+                        Debug.WriteLine($"Setting AppID to: {appId}");
                         Label_Application.Content = appId;
                         Label_Application.Background = color;
                     });

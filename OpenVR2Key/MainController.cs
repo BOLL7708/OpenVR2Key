@@ -40,7 +40,7 @@ namespace OpenVR2Key
         public void Init()
         {
             StatusUpdateAction.Invoke(false);
-            AppUpdateAction.Invoke(_currentApplicationId);
+            AppUpdateAction.Invoke(MainModel.CONFIG_DEFAULT);
             var workerThread = new Thread(WorkerThread);
             workerThread.Start();
         }
@@ -162,7 +162,7 @@ namespace OpenVR2Key
                                 _ovr.AcknowledgeShutdown();
                                 _ovr.Shutdown();
                                 StatusUpdateAction.Invoke(false);
-                                break;
+                                return;
                             case EVREventType.VREvent_SceneApplicationChanged:
                                 UpdateAppId();
                                 break;
@@ -190,8 +190,8 @@ namespace OpenVR2Key
         // Controller roles have updated, refresh controller handles
         private void UpdateInputSourceHandles()
         {
-            _inputSourceHandleLeft = _ovr.GetInputSourceHandle("/user/hand/left");
-            _inputSourceHandleRight = _ovr.GetInputSourceHandle("/user/hand/right");
+            _inputSourceHandleLeft = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.LeftHand);
+            _inputSourceHandleRight = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.RightHand);
         }
 
         // New app is running, distribute new app ID
@@ -201,6 +201,8 @@ namespace OpenVR2Key
             _currentApplicationId = _ovr.GetRunningApplicationId();
             if (_currentApplicationId == String.Empty) _currentApplicationId = MainModel.CONFIG_DEFAULT;
             AppUpdateAction.Invoke(_currentApplicationId);
+
+            // Load app-specific config if it exists
             var config = MainModel.RetrieveConfig();
             if (config != null)
             {
