@@ -206,7 +206,7 @@ namespace OpenVR2Key
         }
 
         // Load config, if it exists
-        private void LoadConfig(bool forceDefault=false)
+        public void LoadConfig(bool forceDefault=false)
         {
             var configName = forceDefault ? MainModel.CONFIG_DEFAULT : _currentApplicationId;
             var config = MainModel.RetrieveConfig(configName);

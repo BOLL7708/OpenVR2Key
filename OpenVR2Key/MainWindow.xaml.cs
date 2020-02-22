@@ -18,6 +18,7 @@ namespace OpenVR2Key
         private MainController _controller;
         private List<BindingItem> _items = new List<BindingItem>();
         private object _activeElement;
+        private string _currentlyRunningAppId = MainModel.CONFIG_DEFAULT;
 
         public MainWindow()
         {
@@ -41,6 +42,7 @@ namespace OpenVR2Key
                 AppUpdateAction = (appId) =>
                 {
                     Debug.WriteLine($"App Update Action: appId={appId}");
+                    _currentlyRunningAppId = appId;
                     var color = Brushes.OliveDrab;
                     if (appId == MainModel.CONFIG_DEFAULT)
                     {
@@ -181,9 +183,20 @@ namespace OpenVR2Key
             var tag = (sender as Button).Tag;
             switch(tag)
             {
-                case null: Debug.WriteLine("DEFAULT CONFIG"); break;
-                case true: Debug.WriteLine("REMOVE CONFIG"); break;
-                case false: Debug.WriteLine("ADD CONFIG"); break;
+                case null:
+                    // This should never happen as the button cannot be pressed while disabled.
+                    break;
+                case true:
+                    MainModel.DeleteConfig();
+                    _controller.LoadConfig(true); // Loads default
+                    UpdateConfigButton(false);
+                    break;
+                case false:
+                    MainModel.SetConfigName(_currentlyRunningAppId);
+                    MainModel.StoreConfig(new Dictionary<int, Key[]>());
+                    _controller.LoadConfig(); // Loads the empty new one
+                    UpdateConfigButton(true);
+                    break;
             }
         }
 

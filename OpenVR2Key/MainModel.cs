@@ -127,6 +127,18 @@ namespace OpenVR2Key
             File.WriteAllText(configFilePath, jsonString);
         }
 
+        static public void DeleteConfig(string configName = null)
+        {
+            if (configName == null) configName = _configName;
+            var configDir = $"{Directory.GetCurrentDirectory()}\\config\\";
+            var configFilePath = $"{configDir}{configName}.json";
+            if(File.Exists(configFilePath))
+            {
+                File.Delete(configFilePath);
+                _configName = CONFIG_DEFAULT;
+            }
+        }
+
         static public Dictionary<int, Key[]> RetrieveConfig(string configName = null)
         {
             if (configName == null) configName = _configName;

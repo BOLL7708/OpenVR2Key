@@ -34,26 +34,28 @@
                 <TextBox Margin="5" x:Name="TextBox_Log" IsEnabled="False"></TextBox>
             </GroupBox>
         </DockPanel>
-        <GroupBox Header="Actions" Margin="10 0 10 10" HorizontalAlignment="Stretch"  DockPanel.Dock="Top">
+        <GroupBox Header="Actions" Margin="10 0 10 10" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
             <WrapPanel Orientation="Horizontal" Margin="5">
                 <Button x:Name="Button_AppBinding"  Margin="5,0,5,5" Focusable="False" Content="Add/remove app specific config" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_AppBinding_Click" />
                 <Button x:Name="Button_ClearAll"  Margin="5,0,5,5" Focusable="False" Content="Clear all current bindings" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_ClearAll_Click"/>
             </WrapPanel>
         </GroupBox>
-        <ScrollViewer Focusable="False" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                <ItemsControl x:Name="ItemsControl_Bindings">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:Name="DateTemplate_Binding">
-                            <DockPanel LastChildFill="True" x:Name="ListViewItem_Binding" HorizontalAlignment="Stretch">
-                                <Label x:Name="Label_Key" Width="50" HorizontalContentAlignment="Right" Content="{Binding Label}" DockPanel.Dock="Left"/>
-                                <Button x:Name="Button_ClearCancel" Content="Clear" Width="75" DockPanel.Dock="Left" Click="Button_ClearCancel_Click" Focusable="False" BorderBrush="Gray"/>
-                                <Label x:Name="Label_RecordSave" BorderThickness="1" MouseEnter="Label_HighlightOn" MouseLeave="Label_HighlightOff" BorderBrush="DarkGray" Background="LightGray" Foreground="Black" HorizontalContentAlignment="Center" Content="{Binding Text}" MouseUp="Label_RecordSave_Click"/>
-                            </DockPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </ScrollViewer>
+        <GroupBox Header="Bindings" Margin="10 0 10 10" HorizontalAlignment="Stretch">
+            <ScrollViewer Focusable="False" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                    <ItemsControl x:Name="ItemsControl_Bindings">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:Name="DateTemplate_Binding">
+                                <DockPanel LastChildFill="True" x:Name="ListViewItem_Binding" HorizontalAlignment="Stretch">
+                                    <Label x:Name="Label_Key" Width="50" HorizontalContentAlignment="Right" Content="{Binding Label}" DockPanel.Dock="Left"/>
+                                    <Button x:Name="Button_ClearCancel" Content="Clear" Width="75" DockPanel.Dock="Left" Click="Button_ClearCancel_Click" Focusable="False" BorderBrush="Gray"/>
+                                    <Label x:Name="Label_RecordSave" BorderThickness="1" MouseEnter="Label_HighlightOn" MouseLeave="Label_HighlightOff" BorderBrush="DarkGray" Background="LightGray" Foreground="Black" HorizontalContentAlignment="Center" Content="{Binding Text}" MouseUp="Label_RecordSave_Click"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
     </DockPanel>
 </Window>
