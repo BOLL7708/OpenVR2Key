@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace OpenVR2Key
 {
@@ -19,9 +21,11 @@ namespace OpenVR2Key
         private List<BindingItem> _items = new List<BindingItem>();
         private object _activeElement;
         private string _currentlyRunningAppId = MainModel.CONFIG_DEFAULT;
+        private System.Windows.Forms.NotifyIcon _notifyIcon;
 
         public MainWindow()
         {
+            InitWindow();
             InitializeComponent();
             _controller = new MainController
             {
@@ -103,6 +107,28 @@ namespace OpenVR2Key
             InitList();
             _controller.Init();
             InitSettings();
+            InitTrayIcon();
+        }
+
+        private void InitWindow()
+        {
+            var shouldMinimize = MainModel.LoadSetting(MainModel.Setting.Minimize);
+            var onlyInTray = MainModel.LoadSetting(MainModel.Setting.Tray);
+
+            if (shouldMinimize)
+            {
+                WindowState = WindowState.Minimized;
+                ShowInTaskbar = !onlyInTray;
+            }
+        }
+
+        private void InitTrayIcon()
+        {
+            var icon = Properties.Resources.app_icon.Clone() as System.Drawing.Icon;
+            _notifyIcon = new System.Windows.Forms.NotifyIcon();
+            _notifyIcon.Click += NotifyIcon_Click;
+            _notifyIcon.Icon = icon;
+            _notifyIcon.Visible = true;            
         }
 
         #region bindings
@@ -157,6 +183,23 @@ namespace OpenVR2Key
             if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt) e.Handled = true;
             else base.OnKeyUp(e);
         }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            _notifyIcon.Dispose();
+            base.OnClosing(e);
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            var onlyInTray = MainModel.LoadSetting(MainModel.Setting.Tray);
+            switch (WindowState)
+            {
+                case WindowState.Minimized: ShowInTaskbar = !onlyInTray; break;
+                default: ShowInTaskbar = true; break;
+            }
+        }
+
         #endregion
 
         #region actions
@@ -285,6 +328,14 @@ namespace OpenVR2Key
         private void CheckBox_HapticFeedback_Checked(object sender, RoutedEventArgs e)
         {
             MainModel.UpdateSetting(MainModel.Setting.Haptic, CheckboxValue(e));
+        }
+        #endregion
+
+        #region trayicon
+        private void NotifyIcon_Click(object sender, EventArgs e)
+        {
+            WindowState = WindowState.Normal;
+            Activate();
         }
         #endregion
     }
