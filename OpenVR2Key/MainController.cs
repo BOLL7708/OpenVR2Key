@@ -25,7 +25,7 @@ namespace OpenVR2Key
         public Action<bool> StatusUpdateAction { get; set; } = (status) => { Debug.WriteLine("No status action set."); };
         public Action<string> AppUpdateAction { get; set; } = (appId) => { Debug.WriteLine("No appID action set."); };
         public Action<string, bool> KeyTextUpdateAction { get; set; } = (status, cancel) => { Debug.WriteLine("No key text action set."); };
-        public Action<Dictionary<int, Key[]>> ConfigRetrievedAction { get; set; } = (config) => { Debug.WriteLine("No config loaded."); };
+        public Action<Dictionary<int, Key[]>, bool> ConfigRetrievedAction { get; set; } = (config, forceButtonOff) => { Debug.WriteLine("No config loaded."); };
 
         // Other
         private string _currentApplicationId = "";
@@ -41,6 +41,7 @@ namespace OpenVR2Key
         {
             StatusUpdateAction.Invoke(false);
             AppUpdateAction.Invoke(MainModel.CONFIG_DEFAULT);
+            LoadConfig(true);
             var workerThread = new Thread(WorkerThread);
             workerThread.Start();
         }
@@ -138,7 +139,6 @@ namespace OpenVR2Key
                         _ovr.LoadAppManifest("./app.vrmanifest");
                         _ovr.LoadActionManifest("./actions.json");
                         RegisterActions();
-                        LoadConfig(true);
                         UpdateAppId();
                         StatusUpdateAction.Invoke(true);
                         UpdateInputSourceHandles();
@@ -211,8 +211,8 @@ namespace OpenVR2Key
             var configName = forceDefault ? MainModel.CONFIG_DEFAULT : _currentApplicationId;
             var config = MainModel.RetrieveConfig(configName);
             if (config != null) MainModel.SetConfigName(configName);
-            Debug.WriteLine($"Config for {configName} found´: {config != null}");
-            ConfigRetrievedAction.Invoke(config);
+            Debug.WriteLine($"Config for {configName} found: {config != null}");
+            ConfigRetrievedAction.Invoke(config, _currentApplicationId == MainModel.CONFIG_DEFAULT);
         }
 
         public bool AppIsRunning()

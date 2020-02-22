@@ -72,14 +72,14 @@ namespace OpenVR2Key
                 },
 
                 // We have loaded a config
-                ConfigRetrievedAction = (config) =>
+                ConfigRetrievedAction = (config, forceButtonOff) =>
                 {
                     var loaded = config != null;
                     if(loaded) Debug.WriteLine($"Config Retrieved Action: count()={config.Count}");
                     Dispatcher.Invoke(() =>
                     {
                         if(loaded) InitList(config);
-                        UpdateConfigButton(loaded);
+                        UpdateConfigButton(loaded, forceButtonOff);
                     });
                 }
             };
@@ -99,7 +99,7 @@ namespace OpenVR2Key
             });
 
             // Init the things
-            UpdateConfigButton(true);
+            // UpdateConfigButton(false, true);
             InitList();
             _controller.Init();
             InitSettings();
@@ -161,17 +161,17 @@ namespace OpenVR2Key
 
         #region actions
 
-        private void UpdateConfigButton(bool hasConfig)
+        private void UpdateConfigButton(bool hasConfig, bool forceButtonOff=false)
         {
             Debug.WriteLine($"Update Config Button: {hasConfig}");
-            if(_controller.AppIsRunning())
+            if(!forceButtonOff && _controller.AppIsRunning())
             {
                 Button_AppBinding.Content = hasConfig ? "Remove app-specific config" : "Add app-specific config";
                 Button_AppBinding.IsEnabled = true;
                 Button_AppBinding.Tag = hasConfig;
             } else
             {
-                Button_AppBinding.Content = "Current config is the default";
+                Button_AppBinding.Content = "No application running right now";
                 Button_AppBinding.IsEnabled = false;
                 Button_AppBinding.Tag = null;
             }
@@ -187,6 +187,7 @@ namespace OpenVR2Key
                     // This should never happen as the button cannot be pressed while disabled.
                     break;
                 case true:
+                    MainModel.ClearBindings();
                     MainModel.DeleteConfig();
                     _controller.LoadConfig(true); // Loads default
                     UpdateConfigButton(false);
