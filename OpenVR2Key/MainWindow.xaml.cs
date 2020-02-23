@@ -126,6 +126,7 @@ namespace OpenVR2Key
 
             if (shouldMinimize)
             {
+                Hide();
                 WindowState = WindowState.Minimized;
                 ShowInTaskbar = !onlyInTray;
             }
@@ -205,8 +206,14 @@ namespace OpenVR2Key
             var onlyInTray = MainModel.LoadSetting(MainModel.Setting.Tray);
             switch (WindowState)
             {
-                case WindowState.Minimized: ShowInTaskbar = !onlyInTray; break;
-                default: ShowInTaskbar = true; break;
+                case WindowState.Minimized: 
+                    ShowInTaskbar = !onlyInTray;
+                    Hide();
+                    break;
+                default:
+                    ShowInTaskbar = true;
+                    Show();
+                    break;
             }
         }
 
@@ -268,7 +275,7 @@ namespace OpenVR2Key
         {
             var result = MessageBox.Show(
                 Application.Current.MainWindow, 
-                "Are you sure you want to clear all bindings in this configuration?",
+                "Are you sure you want to clear all mappings in this configuration?",
                 "OpenVR2Key",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning
@@ -295,6 +302,7 @@ namespace OpenVR2Key
             var active = _controller.ToggleRegisteringKey(dataItem.Index, element, out object activeElement);
             UpdateLabel(activeElement as Label, active);
             if (active) _activeElement = activeElement;
+            else _activeElement = null;
         }
 
         private void UpdateLabel(Label label, bool active)
@@ -373,6 +381,7 @@ namespace OpenVR2Key
         #region trayicon
         private void NotifyIcon_Click(object sender, EventArgs e)
         {
+            Show();
             WindowState = WindowState.Normal;
             Activate();
         }

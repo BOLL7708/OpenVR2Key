@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenVR2Key"
         mc:Ignorable="d"
-        Title="OpenVR2Key" Height="500" Width="750" StateChanged="Window_StateChanged" Icon="resources/icon.ico" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
+        Title="OpenVR2Key" Height="550" Width="750" StateChanged="Window_StateChanged" Icon="resources/icon.ico" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
     <DockPanel LastChildFill="True">
         <DockPanel LastChildFill="True" DockPanel.Dock="Top">
             <GroupBox Header="Settings &amp; Help" HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Top" DockPanel.Dock="Left">
@@ -53,12 +53,12 @@
         <GroupBox Header="Actions" Margin="10 0 10 10" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
             <WrapPanel Orientation="Horizontal" Margin="5">
                 <Button x:Name="Button_AppBinding" Margin="5,0,5,5" Focusable="False" Content="Add/remove app specific config" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_AppBinding_Click" />
-                <Button x:Name="Button_ClearAll" Margin="5,0,5,5" Focusable="False" Content="Clear all current bindings" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_ClearAll_Click"/>
+                <Button x:Name="Button_ClearAll" Margin="5,0,5,5" Focusable="False" Content="Clear all current mappings" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_ClearAll_Click"/>
                 <Button x:Name="Button_Folder" Visibility="Hidden" Margin="5,0,5,5" Focusable="False" Content="Open config folder" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_Folder_Click"/>
             </WrapPanel>
         </GroupBox>
-        <GroupBox Header="Bindings" Margin="10 0 10 10" HorizontalAlignment="Stretch">
-            <ScrollViewer Focusable="False" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
+        <GroupBox Header="Mapping" Margin="10 0 10 10" HorizontalAlignment="Stretch">
+            <ScrollViewer Focusable="False" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible" Margin="0 5 0 0">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
                     <ItemsControl x:Name="ItemsControl_Bindings">
                         <ItemsControl.ItemTemplate>
