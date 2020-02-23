@@ -1,5 +1,5 @@
 # OpenVR2Key
-Simulate key presses on your Windows desktop from SteamVR input
+Simulate key presses on your Windows desktop from SteamVR input, download the latest release [here](https://github.com/BOLL7708/OpenVR2Key/releases).
 
 ## How does it work?
 It uses the SteamVR input system to listen to VR controller input and maps that to keyboard input that it then simulates.
