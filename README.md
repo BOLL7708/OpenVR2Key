@@ -17,7 +17,7 @@ Key configurations can be automatically loaded per title, but the SteamVR input 
 Here locate `OPENVR2KEY` in the drop down, then switch the `Active Controller Binding` to `CUSTOM` and click `EDIT THIS BINDING`. This will open the `Controller Binding` interface.
 
 ### Controller Binding
-[Clip](https://streamable.com/jvokn) - The application currently only comes with Index controller bindings, because that is what I use and have tested with. It should in theory work with any controllers that are recognized by the input system.
+[Clip](https://streamable.com/8q2ti) - The application currently only comes with Index controller bindings, because that is what I use and have tested with. It should in theory work with any controllers that are recognized by the input system.
 
 When editing the default bindings you'll see that most inputs have a button option added to it, even if the click and touch events are not registered to anything. This is to have the inputs show up in the chord interface which otherwise would be empty.
 
