@@ -87,6 +87,7 @@ namespace OpenVR2Key
         {
             if (MainUtils.MatchVirtualKey(key) != null)
             {
+                if (_registeringElement == null) return;
                 if (_keysDown.Count == 0) _keys.Clear();
                 _keys.Add(key);
                 _keysDown.Add(key);
@@ -95,6 +96,7 @@ namespace OpenVR2Key
         }
         public void OnKeyUp(Key key)
         {
+            if (_registeringElement == null) return;
             if (key == Key.RightAlt) _keysDown.Remove(Key.LeftCtrl); // Because AltGr records as RightAlt+LeftCtrl
             _keysDown.Remove(key);
             UpdateCurrentObject();
@@ -143,7 +145,8 @@ namespace OpenVR2Key
                         StatusUpdateAction.Invoke(true);
                         UpdateInputSourceHandles();
                         _notificationOverlayHandle = _ovr.InitNotificationOverlay("OpenVR2Key");
-                        /* // TODO: Bitmap loads but it crashes on trying to use it for the notification. Cannot read from protected memory.
+                        /* 
+                        // TODO: Bitmap loads but it crashes on trying to use it for the notification. Cannot read from protected memory. Try resources later.
                         var bitmapPath = $"{Directory.GetCurrentDirectory()}\\icon.png";
                         notificationBitmap = EasyOpenVRSingleton.BitmapUtils.NotificationBitmapFromBitmap(new System.Drawing.Bitmap(bitmapPath));
                         */

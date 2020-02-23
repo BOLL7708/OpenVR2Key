@@ -10,9 +10,6 @@ using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace OpenVR2Key
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly static int NO_OF_KEYS = 32;
@@ -22,6 +19,7 @@ namespace OpenVR2Key
         private object _activeElement;
         private string _currentlyRunningAppId = MainModel.CONFIG_DEFAULT;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
+        private bool _altKeyDown = false;
 
         public MainWindow()
         {
@@ -103,7 +101,6 @@ namespace OpenVR2Key
             });
 
             // Init the things
-            // UpdateConfigButton(false, true);
             InitList();
             _controller.Init();
             InitSettings();
@@ -163,25 +160,21 @@ namespace OpenVR2Key
         #endregion
 
         #region events
-
         // All key down events in the app
-        protected override void OnKeyDown(KeyEventArgs e)
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            _controller.OnKeyDown(e.Key);
-
-            // TODO: Doesn't seem like this is preventing the ALT behavior at all. https://stackoverflow.com/a/2277355
-            if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt) e.Handled = true;
-            else base.OnKeyDown(e);
+            Debug.WriteLine($"Key: {Enum.GetName(typeof(Key), e.Key)}, SystemKey: {Enum.GetName(typeof(Key), e.SystemKey)}");
+            e.Handled = true;
+            var key = e.Key == Key.System ? e.SystemKey : e.Key;
+            _controller.OnKeyDown(key);
         }
 
         // All key up events in the app
-        protected override void OnKeyUp(KeyEventArgs e)
+        private void Window_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            _controller.OnKeyUp(e.Key);
-
-            // TODO: Fix Alt behavior
-            if (e.Key == Key.LeftAlt || e.Key == Key.RightAlt) e.Handled = true;
-            else base.OnKeyUp(e);
+            e.Handled = true;
+            var key = e.Key == Key.System ? e.SystemKey : e.Key;
+            _controller.OnKeyUp(key);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -203,7 +196,6 @@ namespace OpenVR2Key
         #endregion
 
         #region actions
-
         private void UpdateConfigButton(bool hasConfig, bool forceButtonOff=false)
         {
             Debug.WriteLine($"Update Config Button: {hasConfig}");
@@ -253,7 +245,6 @@ namespace OpenVR2Key
         #endregion
 
         #region bindings
-
         // Main action that is clicked from the list to start and end registration of keys
         private void Label_RecordSave_Click(object sender, MouseButtonEventArgs e)
         {
@@ -296,7 +287,6 @@ namespace OpenVR2Key
         #endregion
 
         #region settings
-
         // Load settings and apply them to the checkboxes
         private void InitSettings()
         {

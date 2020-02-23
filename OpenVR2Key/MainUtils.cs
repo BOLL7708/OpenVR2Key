@@ -14,10 +14,13 @@ namespace OpenVR2Key
             { Key.LeftCtrl, VirtualKeyCode.LCONTROL },
             { Key.RightCtrl, VirtualKeyCode.RCONTROL },
             { Key.LeftShift, VirtualKeyCode.LSHIFT },
-            { Key.RightShift, VirtualKeyCode.RSHIFT }
+            { Key.RightShift, VirtualKeyCode.RSHIFT },
+            { Key.System, VirtualKeyCode.MENU }
         };
         private static Dictionary<Key, VirtualKeyCode> translationTableKeys = new Dictionary<Key, VirtualKeyCode>()
         {
+            { Key.PageUp, VirtualKeyCode.PRIOR },
+            { Key.PageDown, VirtualKeyCode.NEXT },
             { Key.MediaNextTrack, VirtualKeyCode.MEDIA_NEXT_TRACK },
             { Key.MediaPreviousTrack, VirtualKeyCode.MEDIA_PREV_TRACK },
             { Key.MediaPlayPause, VirtualKeyCode.MEDIA_PLAY_PAUSE },
@@ -25,7 +28,12 @@ namespace OpenVR2Key
             { Key.SelectMedia, VirtualKeyCode.LAUNCH_MEDIA_SELECT },
             { Key.VolumeMute, VirtualKeyCode.VOLUME_MUTE },
             { Key.VolumeUp, VirtualKeyCode.VOLUME_UP },
-            { Key.VolumeDown, VirtualKeyCode.VOLUME_DOWN }
+            { Key.VolumeDown, VirtualKeyCode.VOLUME_DOWN },
+            { Key.OemClear, VirtualKeyCode.OEM_CLEAR},
+            { Key.OemComma, VirtualKeyCode.OEM_COMMA },
+            { Key.OemMinus, VirtualKeyCode.OEM_MINUS},
+            { Key.OemPeriod, VirtualKeyCode.OEM_PERIOD},
+            { Key.OemPlus, VirtualKeyCode.OEM_PLUS}
         };
 
         /**
@@ -45,6 +53,9 @@ namespace OpenVR2Key
 
             // Number keys which come in as D0-D9
             else if (keyStr.Length == 2 && keyStr[0] == 'D' && Char.IsDigit(keyStr[1])) keyStr = $"VK_{keyStr[1]}";
+
+            // OEM Number keys
+            else if (keyStr.StartsWith("OEM") && (int.TryParse(keyStr.Substring(3), out _))) keyStr = $"OEM_{keyStr.Substring(3)}";
 
             var success = Enum.TryParse(keyStr, out VirtualKeyCode result);
             return success ? new Tuple<VirtualKeyCode, bool>(result, false) : null;
