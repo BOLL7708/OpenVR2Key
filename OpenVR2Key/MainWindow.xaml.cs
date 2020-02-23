@@ -19,7 +19,7 @@ namespace OpenVR2Key
         private object _activeElement;
         private string _currentlyRunningAppId = MainModel.CONFIG_DEFAULT;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
-        private bool _altKeyDown = false;
+        private HashSet<int> _activeKeys = new HashSet<int>();
 
         public MainWindow()
         {
@@ -83,6 +83,17 @@ namespace OpenVR2Key
                         if(loaded) InitList(config);
                         UpdateConfigButton(loaded, forceButtonOff);
                     });
+                },
+
+                KeyActivatedAction = (index, on) =>
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        if (on) _activeKeys.Add(index);
+                        else _activeKeys.Remove(index);
+                        if (_activeKeys.Count > 0) Label_Keys.Content = string.Join(", ", _activeKeys);
+                        else Label_Keys.Content = "None";
+                    });
                 }
             };
 
@@ -142,12 +153,17 @@ namespace OpenVR2Key
                 _items.Add(new BindingItem()
                 {
                     Index = i,
-                    Label = $"Key {i}",
+                    Label = GetKeyLabelText(i),
                     Text = text
                 });
             }
             ItemsControl_Bindings.ItemsSource = null;
             ItemsControl_Bindings.ItemsSource = _items;
+        }
+
+        private string GetKeyLabelText(int index)
+        {
+            return $"Key {index}";
         }
 
         // Binding data class
@@ -163,7 +179,6 @@ namespace OpenVR2Key
         // All key down events in the app
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            Debug.WriteLine($"Key: {Enum.GetName(typeof(Key), e.Key)}, SystemKey: {Enum.GetName(typeof(Key), e.SystemKey)}");
             e.Handled = true;
             var key = e.Key == Key.System ? e.SystemKey : e.Key;
             _controller.OnKeyDown(key);

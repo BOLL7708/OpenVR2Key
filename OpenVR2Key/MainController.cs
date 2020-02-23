@@ -26,6 +26,7 @@ namespace OpenVR2Key
         public Action<string> AppUpdateAction { get; set; } = (appId) => { Debug.WriteLine("No appID action set."); };
         public Action<string, bool> KeyTextUpdateAction { get; set; } = (status, cancel) => { Debug.WriteLine("No key text action set."); };
         public Action<Dictionary<int, Key[]>, bool> ConfigRetrievedAction { get; set; } = (config, forceButtonOff) => { Debug.WriteLine("No config loaded."); };
+        public Action<int, bool> KeyActivatedAction { get; set; } = (index, on) => { Debug.WriteLine("No key simulated action set."); };
 
         // Other
         private string _currentApplicationId = "";
@@ -39,9 +40,15 @@ namespace OpenVR2Key
 
         public void Init()
         {
+            // Sets default values for status labels
             StatusUpdateAction.Invoke(false);
             AppUpdateAction.Invoke(MainModel.CONFIG_DEFAULT);
+            KeyActivatedAction.Invoke(0, false);
+
+            // Loads default config
             LoadConfig(true);
+
+            // Start background thread
             var workerThread = new Thread(WorkerThread);
             workerThread.Start();
         }
@@ -72,7 +79,6 @@ namespace OpenVR2Key
             return active;
         }
 
-        // TODO: Should be used to interrupt recording keys
         private void StopRegisteringKeys()
         {
             UpdateCurrentObject(true);
@@ -241,6 +247,7 @@ namespace OpenVR2Key
         // Action was triggered, handle it
         private void OnAction(int index, InputDigitalActionData_t data, ulong inputSourceHandle)
         {
+            KeyActivatedAction.Invoke(index, data.bState);
             var inputName = inputSourceHandle == _inputSourceHandleLeft ? "Left" :
                 inputSourceHandle == _inputSourceHandleRight ? "Right" :
                 "N/A";

@@ -28,6 +28,10 @@
                         <Label Content="Current AppID:" VerticalAlignment="Center"/>
                         <Label x:Name="Label_Application" Background="Gray" HorizontalAlignment="Left" Content="Current AppID" Padding="5" Foreground="White" VerticalAlignment="Center"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
+                        <Label Content="Active Keys:" VerticalAlignment="Center"/>
+                        <Label x:Name="Label_Keys" Background="Gray" HorizontalAlignment="Left" Content="Active Keys" Padding="5" Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Log" Margin="0 10 10 10" DockPanel.Dock="Left" VerticalAlignment="Stretch">
