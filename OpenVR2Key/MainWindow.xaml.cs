@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -135,6 +136,7 @@ namespace OpenVR2Key
             var icon = Properties.Resources.app_icon.Clone() as System.Drawing.Icon;
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
             _notifyIcon.Click += NotifyIcon_Click;
+            _notifyIcon.Text = "Click to show main OpenVR2Key window.";
             _notifyIcon.Icon = icon;
             _notifyIcon.Visible = true;            
         }
@@ -227,7 +229,7 @@ namespace OpenVR2Key
             }
         }
 
-        // Click to either create new config for current app or remote the existing config.
+        // Click to either create new config for current app or remove the existing config.
         private void Button_AppBinding_Click(object sender, RoutedEventArgs e)
         {
             var tag = (sender as Button).Tag;
@@ -237,10 +239,20 @@ namespace OpenVR2Key
                     // This should never happen as the button cannot be pressed while disabled.
                     break;
                 case true:
-                    MainModel.ClearBindings();
-                    MainModel.DeleteConfig();
-                    _controller.LoadConfig(true); // Loads default
-                    UpdateConfigButton(false);
+                    var result = MessageBox.Show(
+                        Application.Current.MainWindow,
+                        "Are you sure you want to delete this configuration?",
+                        "OpenVR2Key",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning
+                    );
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        MainModel.ClearBindings();
+                        MainModel.DeleteConfig();
+                        _controller.LoadConfig(true); // Loads default
+                        UpdateConfigButton(false);
+                    }
                     break;
                 case false:
                     MainModel.SetConfigName(_currentlyRunningAppId);
@@ -254,8 +266,23 @@ namespace OpenVR2Key
         // This should clear all bindings from the current config
         private void Button_ClearAll_Click(object sender, RoutedEventArgs e)
         {
-            MainModel.ClearBindings();
-            InitList();
+            var result = MessageBox.Show(
+                Application.Current.MainWindow, 
+                "Are you sure you want to clear all bindings in this configuration?",
+                "OpenVR2Key",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning
+            );
+            if(result == MessageBoxResult.Yes)
+            {
+                MainModel.ClearBindings();
+                InitList();
+            }
+        }
+
+        private void Button_Folder_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.OpenConfigFolder();
         }
         #endregion
 
@@ -289,7 +316,7 @@ namespace OpenVR2Key
             if (_activeElement != sender) (sender as Label).Background = Brushes.LightGray;
         }
 
-        // Clear the current binding completely, TODO: cancel recording?
+        // Clear the current binding
         private void Button_ClearCancel_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -309,6 +336,7 @@ namespace OpenVR2Key
             CheckBox_Tray.IsChecked = MainModel.LoadSetting(MainModel.Setting.Tray);
             CheckBox_DebugNotifications.IsChecked = MainModel.LoadSetting(MainModel.Setting.Notification);
             CheckBox_HapticFeedback.IsChecked = MainModel.LoadSetting(MainModel.Setting.Haptic);
+            Label_Version.Content = MainModel.GetVersion();
         }
         private bool CheckboxValue(RoutedEventArgs e)
         {
@@ -333,6 +361,12 @@ namespace OpenVR2Key
         private void CheckBox_HapticFeedback_Checked(object sender, RoutedEventArgs e)
         {
             MainModel.UpdateSetting(MainModel.Setting.Haptic, CheckboxValue(e));
+        }
+
+        private void ClickedURL(object sender, RoutedEventArgs e)
+        {
+            var link = (Hyperlink)sender;
+            Process.Start(link.NavigateUri.ToString());
         }
         #endregion
 

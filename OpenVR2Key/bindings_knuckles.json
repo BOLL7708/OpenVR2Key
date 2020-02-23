@@ -4,56 +4,24 @@
    "app_key" : "boll7708.openvr2key",
    "bindings" : {
       "/actions/default" : {
-		 "chords" : [
-            {
-               "inputs" : [
-                  [ "/user/hand/left/input/trigger", "click" ],
-                  [ "/user/hand/right/input/trigger", "click" ]
-               ],
-               "output" : "/actions/default/in/key13"
-            },
-			{
-               "inputs" : [
-                  [ "/user/hand/left/input/trackpad", "click" ],
-                  [ "/user/hand/right/input/trackpad", "click" ]
-               ],
-               "output" : "/actions/default/in/key14"
-            }
-         ],
          "sources" : [
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/key1"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/left/input/b"
             },
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/key2"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/left/input/a"
             },
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/enable_chord"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/left/input/trigger"
             },
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/enable_chord"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/left/input/trackpad"
             },
@@ -67,104 +35,52 @@
                "path" : "/user/hand/left/input/thumbstick"
             },
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/enable_chord"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/left/input/grip"
             },
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/enable_chord"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/right/input/trigger"
             },
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/enable_chord"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/right/input/trackpad"
             },
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/enable_chord"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/right/input/thumbstick"
             },
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/key3"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/right/input/b"
             },
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/key4"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/right/input/a"
             },
             {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/enable_chord"
-                  }
-               },
+               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/right/input/grip"
             },
             {
-               "inputs" : {
-                  "grab" : {
-                     "output" : "/actions/default/in/enable_chord"
-                  }
-               },
+               "inputs" : {},
                "mode" : "grab",
                "path" : "/user/hand/left/input/pinch"
             },
             {
-               "inputs" : {
-                  "grab" : {
-                     "output" : "/actions/default/in/enable_chord"
-                  }
-               },
+               "inputs" : {},
                "mode" : "grab",
                "path" : "/user/hand/right/input/pinch"
             },
             {
-               "inputs" : {
-                  "center" : {
-                     "output" : "/actions/default/in/key9"
-                  },
-                  "east" : {
-                     "output" : "/actions/default/in/key6"
-                  },
-                  "north" : {
-                     "output" : "/actions/default/in/key5"
-                  },
-                  "south" : {
-                     "output" : "/actions/default/in/key7"
-                  },
-                  "west" : {
-                     "output" : "/actions/default/in/key8"
-                  }
-               },
+               "inputs" : {},
                "mode" : "dpad",
                "parameters" : {
                   "sub_mode" : "touch"
@@ -172,33 +88,30 @@
                "path" : "/user/hand/left/input/thumbstick"
             },
             {
-               "inputs" : {
-                  "east" : {
-                     "output" : "/actions/default/in/key10"
-                  },
-                  "north" : {
-                     "output" : "/actions/default/in/key9"
-                  },
-                  "south" : {
-                     "output" : "/actions/default/in/key11"
-                  },
-                  "west" : {
-                     "output" : "/actions/default/in/key12"
-                  }
-               },
+               "inputs" : {},
                "mode" : "dpad",
                "parameters" : {
                   "sub_mode" : "touch"
                },
                "path" : "/user/hand/right/input/thumbstick"
+            },
+            {
+               "inputs" : {},
+               "mode" : "button",
+               "path" : "/user/hand/left/input/system"
+            },
+            {
+               "inputs" : {},
+               "mode" : "button",
+               "path" : "/user/hand/right/input/system"
             }
          ]
       }
    },
    "category" : "steamvr_input",
    "controller_type" : "knuckles",
-   "description" : "Default Index Controller Bindings",
-   "name" : "My OpenVR2Key configuration for Index Controller",
+   "description" : "Empty OpenVR2Key input configuration for Index Controllers, edit this to map the keys you want to trigger in OpenVR2Key.\nInputs are currently configured as buttons with no actions to still have them show up when configuring chords.\nMapping the system button only works for touch, the click event is consumed by SteamVR itself.",
+   "name" : "Default Index Controller Bindings",
    "options" : {},
    "simulated_actions" : []
 }

@@ -106,6 +106,11 @@ namespace OpenVR2Key
             configName = cleaned == String.Empty ? CONFIG_DEFAULT : cleaned;
         }
 
+        static public string GetConfigFolderPath()
+        {
+            return $"{Directory.GetCurrentDirectory()}\\config\\";
+        }
+
         static public void StoreConfig(Dictionary<int, Key[]> config = null, string configName = null)
         {
             if (config == null)
@@ -121,7 +126,7 @@ namespace OpenVR2Key
             }
             if (configName == null) configName = _configName;
             var jsonString = JsonConvert.SerializeObject(config);
-            var configDir = $"{Directory.GetCurrentDirectory()}\\config\\";
+            var configDir = GetConfigFolderPath();
             var configFilePath = $"{configDir}{configName}.json";
             if (!Directory.Exists(configDir)) Directory.CreateDirectory(configDir);
             File.WriteAllText(configFilePath, jsonString);
@@ -130,7 +135,7 @@ namespace OpenVR2Key
         static public void DeleteConfig(string configName = null)
         {
             if (configName == null) configName = _configName;
-            var configDir = $"{Directory.GetCurrentDirectory()}\\config\\";
+            var configDir = GetConfigFolderPath();
             var configFilePath = $"{configDir}{configName}.json";
             if(File.Exists(configFilePath))
             {
@@ -174,6 +179,11 @@ namespace OpenVR2Key
         {
             var propertyName = Enum.GetName(typeof(Setting), setting);
             return (bool)p[propertyName];
+        }
+
+        static public string GetVersion()
+        {
+            return (string) p["Version"];
         }
         #endregion
 

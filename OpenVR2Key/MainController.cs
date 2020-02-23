@@ -4,7 +4,9 @@ using GregsStack.InputSimulatorStandard.Native;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
+using System.Windows;
 using System.Windows.Input;
 using Valve.VR;
 
@@ -228,6 +230,25 @@ namespace OpenVR2Key
         {
             Debug.WriteLine($"Running app: {_currentApplicationId}");
             return _currentApplicationId != MainModel.CONFIG_DEFAULT;
+        }
+        #endregion
+
+        #region actions
+        public void OpenConfigFolder() // TODO: This refuses to open the righy folder so the button is hidden.
+        {
+            var folderPath = MainModel.GetConfigFolderPath();
+            if (Directory.Exists(folderPath))
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    Arguments = folderPath,
+                    FileName = "explorer.exe"
+                };
+                Process.Start(startInfo);
+        } else
+            {
+                MessageBox.Show("Folder does not exist yet as no config has been saved.");
+            }
         }
         #endregion
 

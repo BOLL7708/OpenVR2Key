@@ -7,11 +7,6 @@
 	],
 	"actions": [
 		{
-			"name": "/actions/default/in/enable_chord",
-			"requirement": "optional",
-			"type": "boolean"
-		},
-		{
 			"name": "/actions/default/in/key1",
 			"requirement": "optional",
 			"type": "boolean"
@@ -179,7 +174,6 @@
 	"localization" : [
 		{
 			"language_tag": "en_US",
-			"/actions/default/in/enable_chord": "Enable Chord (dummy)",
 			"/actions/default/in/key1": "Key 1",
 			"/actions/default/in/key2": "Key 2",
 			"/actions/default/in/key3": "Key 3",
