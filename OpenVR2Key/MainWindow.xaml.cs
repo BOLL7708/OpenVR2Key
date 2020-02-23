@@ -208,7 +208,6 @@ namespace OpenVR2Key
             {
                 case WindowState.Minimized: 
                     ShowInTaskbar = !onlyInTray;
-                    Hide();
                     break;
                 default:
                     ShowInTaskbar = true;
@@ -381,9 +380,9 @@ namespace OpenVR2Key
         #region trayicon
         private void NotifyIcon_Click(object sender, EventArgs e)
         {
-            Show();
             WindowState = WindowState.Normal;
             Activate();
+            Show();
         }
         #endregion
     }
