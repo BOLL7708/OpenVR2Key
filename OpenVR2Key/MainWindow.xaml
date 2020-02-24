@@ -64,7 +64,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:Name="DateTemplate_Binding">
                                 <DockPanel LastChildFill="True" x:Name="ListViewItem_Binding" HorizontalAlignment="Stretch">
-                                    <Label x:Name="Label_Key" Width="50" HorizontalContentAlignment="Right" Content="{Binding Label}" DockPanel.Dock="Left"/>
+                                    <Label x:Name="Label_Key" Width="60" HorizontalContentAlignment="Right" Content="{Binding Label}" DockPanel.Dock="Left"/>
                                     <Button x:Name="Button_ClearCancel" Content="Clear" Width="75" DockPanel.Dock="Left" Click="Button_ClearCancel_Click" Focusable="False" BorderBrush="Gray"/>
                                     <Label x:Name="Label_RecordSave" BorderThickness="1" MouseEnter="Label_HighlightOn" MouseLeave="Label_HighlightOff" BorderBrush="DarkGray" Background="LightGray" Foreground="Black" HorizontalContentAlignment="Center" Content="{Binding Text}" MouseUp="Label_RecordSave_Click"/>
                                 </DockPanel>

@@ -3,111 +3,289 @@
    "alias_info" : {},
    "app_key" : "boll7708.openvr2key",
    "bindings" : {
-      "/actions/default" : {
+      "/actions/keys" : {
          "sources" : [
             {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/left/input/b"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/left/input/a"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/left/input/trigger"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/left/input/trackpad"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/left/input/thumbstick"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/left/input/grip"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/right/input/trigger"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/right/input/trackpad"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/right/input/thumbstick"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/right/input/b"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/right/input/a"
-            },
-            {
-               "inputs" : {},
-               "mode" : "button",
-               "path" : "/user/hand/right/input/grip"
-            },
-            {
-               "inputs" : {},
-               "mode" : "grab",
-               "path" : "/user/hand/left/input/pinch"
-            },
-            {
-               "inputs" : {},
-               "mode" : "grab",
-               "path" : "/user/hand/right/input/pinch"
-            },
-            {
-               "inputs" : {},
-               "mode" : "dpad",
-               "parameters" : {
-                  "sub_mode" : "touch"
+               "inputs" : {
+                  "touch" : {
+                     "output" : "/actions/keys/in/keyl1"
+                  }
                },
-               "path" : "/user/hand/left/input/thumbstick"
-            },
-            {
-               "inputs" : {},
-               "mode" : "dpad",
-               "parameters" : {
-                  "sub_mode" : "touch"
-               },
-               "path" : "/user/hand/right/input/thumbstick"
-            },
-            {
-               "inputs" : {},
                "mode" : "button",
                "path" : "/user/hand/left/input/system"
             },
             {
-               "inputs" : {},
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl2"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl3"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/trackpad"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl8"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/thumbstick"
+            },
+            {
+               "inputs" : {
+                  "east" : {
+                     "output" : "/actions/keys/in/keyl10"
+                  },
+                  "north" : {
+                     "output" : "/actions/keys/in/keyl9"
+                  },
+                  "south" : {
+                     "output" : "/actions/keys/in/keyl11"
+                  },
+                  "west" : {
+                     "output" : "/actions/keys/in/keyl12"
+                  }
+               },
+               "mode" : "dpad",
+               "parameters" : {
+                  "sub_mode" : "touch"
+               },
+               "path" : "/user/hand/left/input/thumbstick"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl13"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/b"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl14"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/a"
+            },
+            {
+               "inputs" : {
+                  "grab" : {
+                     "output" : "/actions/keys/in/keyl15"
+                  }
+               },
+               "mode" : "grab",
+               "path" : "/user/hand/left/input/grip"
+            },
+            {
+               "inputs" : {
+                  "grab" : {
+                     "output" : "/actions/keys/in/keyl16"
+                  }
+               },
+               "mode" : "grab",
+               "path" : "/user/hand/left/input/pinch"
+            },
+            {
+               "inputs" : {
+                  "east" : {
+                     "output" : "/actions/keys/in/keyl5"
+                  },
+                  "north" : {
+                     "output" : "/actions/keys/in/keyl4"
+                  },
+                  "south" : {
+                     "output" : "/actions/keys/in/keyl6"
+                  },
+                  "west" : {
+                     "output" : "/actions/keys/in/keyl7"
+                  }
+               },
+               "mode" : "dpad",
+               "parameters" : {
+                  "sub_mode" : "touch"
+               },
+               "path" : "/user/hand/left/input/trackpad"
+            },
+            {
+               "inputs" : {
+                  "grab" : {
+                     "output" : "/actions/keys/in/keyr16"
+                  }
+               },
+               "mode" : "grab",
+               "path" : "/user/hand/right/input/pinch"
+            },
+            {
+               "inputs" : {
+                  "grab" : {
+                     "output" : "/actions/keys/in/keyr15"
+                  }
+               },
+               "mode" : "grab",
+               "path" : "/user/hand/right/input/grip"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyr14"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/a"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyr13"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/b"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyr8"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/thumbstick"
+            },
+            {
+               "inputs" : {
+                  "east" : {
+                     "output" : "/actions/keys/in/keyr10"
+                  },
+                  "north" : {
+                     "output" : "/actions/keys/in/keyr9"
+                  },
+                  "south" : {
+                     "output" : "/actions/keys/in/keyr11"
+                  },
+                  "west" : {
+                     "output" : "/actions/keys/in/keyr12"
+                  }
+               },
+               "mode" : "dpad",
+               "parameters" : {
+                  "sub_mode" : "touch"
+               },
+               "path" : "/user/hand/right/input/thumbstick"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyr3"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/trackpad"
+            },
+            {
+               "inputs" : {
+                  "east" : {
+                     "output" : "/actions/keys/in/keyr5"
+                  },
+                  "north" : {
+                     "output" : "/actions/keys/in/keyr4"
+                  },
+                  "south" : {
+                     "output" : "/actions/keys/in/keyr6"
+                  },
+                  "west" : {
+                     "output" : "/actions/keys/in/keyr7"
+                  }
+               },
+               "mode" : "dpad",
+               "parameters" : {
+                  "sub_mode" : "touch"
+               },
+               "path" : "/user/hand/right/input/trackpad"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyr2"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "touch" : {
+                     "output" : "/actions/keys/in/keyr1"
+                  }
+               },
                "mode" : "button",
                "path" : "/user/hand/right/input/system"
+            }
+         ]
+      },
+      "/actions/left" : {
+         "chords" : [ {} ],
+         "sources" : [
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/left/in/key1"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/left/in/key2"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/trigger"
+            }
+         ]
+      },
+      "/actions/right" : {
+         "chords" : [ {} ],
+         "sources" : [
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/right/in/key18"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/system"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/right/in/key17"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/trigger"
             }
          ]
       }
    },
    "category" : "steamvr_input",
    "controller_type" : "knuckles",
-   "description" : "Empty OpenVR2Key input configuration for Index Controllers, edit this to map the keys you want to trigger in OpenVR2Key.\nInputs are currently configured as buttons with no actions to still have them show up when configuring chords.\nMapping the system button only works for touch, the click event is consumed by SteamVR itself.",
-   "name" : "Default Index Controller Bindings",
+   "description" : "OpenVR2Key input configuration for Index Controllers, feel free to edit this to fit your use case. Mapping the system button only works for touch, the click event is consumed by SteamVR itself.",
+   "name" : "Default Index Controller Binding",
    "options" : {},
    "simulated_actions" : []
 }

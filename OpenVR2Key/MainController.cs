@@ -18,7 +18,7 @@ namespace OpenVR2Key
         private InputSimulator _sim = new InputSimulator();
 
         // Active key registration
-        private int _registeringKey = 0;
+        private string _registeringKey = string.Empty;
         private object _registeringElement = null;
         private HashSet<Key> _keys = new HashSet<Key>();
         private HashSet<Key> _keysDown = new HashSet<Key>();
@@ -27,25 +27,28 @@ namespace OpenVR2Key
         public Action<bool> StatusUpdateAction { get; set; } = (status) => { Debug.WriteLine("No status action set."); };
         public Action<string> AppUpdateAction { get; set; } = (appId) => { Debug.WriteLine("No appID action set."); };
         public Action<string, bool> KeyTextUpdateAction { get; set; } = (status, cancel) => { Debug.WriteLine("No key text action set."); };
-        public Action<Dictionary<int, Key[]>, bool> ConfigRetrievedAction { get; set; } = (config, forceButtonOff) => { Debug.WriteLine("No config loaded."); };
-        public Action<int, bool> KeyActivatedAction { get; set; } = (index, on) => { Debug.WriteLine("No key simulated action set."); };
+        public Action<Dictionary<string, Key[]>, bool> ConfigRetrievedAction { get; set; } = (config, forceButtonOff) => { Debug.WriteLine("No config loaded."); };
+        public Action<string, bool> KeyActivatedAction { get; set; } = (key, on) => { Debug.WriteLine("No key simulated action set."); };
 
         // Other
         private string _currentApplicationId = "";
         private ulong _inputSourceHandleLeft = 0, _inputSourceHandleRight = 0;
         private ulong _notificationOverlayHandle = 0;
         private NotificationBitmap_t _notificationBitmap = new NotificationBitmap_t();
+        private string[] _actionKeys = new string[0];
 
         public MainController()
         {
         }
 
-        public void Init()
+        public void Init(string[] actionKeys)
         {
+            _actionKeys = actionKeys;
+
             // Sets default values for status labels
             StatusUpdateAction.Invoke(false);
             AppUpdateAction.Invoke(MainModel.CONFIG_DEFAULT);
-            KeyActivatedAction.Invoke(0, false);
+            KeyActivatedAction.Invoke(string.Empty, false);
 
             // Loads default config
             LoadConfig(true);
@@ -60,12 +63,12 @@ namespace OpenVR2Key
         }
 
         #region bindings
-        public bool ToggleRegisteringKey(int index, object sender, out object activeElement)
+        public bool ToggleRegisteringKey(string actionKey, object sender, out object activeElement)
         {
-            var active = _registeringKey == 0;
+            var active = _registeringKey == string.Empty;
             if (active)
             {
-                _registeringKey = index;
+                _registeringKey = actionKey;
                 _registeringElement = sender;
                 _keysDown.Clear();
                 _keys.Clear();
@@ -75,7 +78,7 @@ namespace OpenVR2Key
             {
                 activeElement = _registeringElement;
                 MainModel.RegisterBinding(_registeringKey, _keys); // TODO: Should only save existing configs
-                _registeringKey = 0;
+                _registeringKey = string.Empty;
                 _registeringElement = null;
             }
             return active;
@@ -86,7 +89,7 @@ namespace OpenVR2Key
             UpdateCurrentObject(true);
             _keysDown.Clear();
             _keys.Clear();
-            _registeringKey = 0;
+            _registeringKey = string.Empty;
             _registeringElement = null;
         }
 
@@ -257,24 +260,22 @@ namespace OpenVR2Key
         // Register all actions with the input system
         private void RegisterActions()
         {
-            _ovr.RegisterActionSet("/actions/default");
-            for (var i = 1; i <= 32; i++)
+            _ovr.RegisterActionSet("/actions/keys");
+            foreach (var actionKey in _actionKeys)
             {
-                int localI = i;
-                _ovr.RegisterDigitalAction($"/actions/default/in/key{i}", (data, handle) => { OnAction(localI, data, handle); });
+                var localActionKey = actionKey;
+                _ovr.RegisterDigitalAction($"/actions/keys/in/Key{actionKey}", (data, handle) => { OnAction(localActionKey, data, handle); });
             }
         }
 
         // Action was triggered, handle it
-        private void OnAction(int index, InputDigitalActionData_t data, ulong inputSourceHandle)
+        private void OnAction(string actionKey, InputDigitalActionData_t data, ulong inputSourceHandle)
         {
-            KeyActivatedAction.Invoke(index, data.bState);
-            var inputName = inputSourceHandle == _inputSourceHandleLeft ? "Left" :
-                inputSourceHandle == _inputSourceHandleRight ? "Right" :
-                "N/A";
-            Debug.WriteLine($"Key{index} - {inputName} : " + (data.bState ? "PRESSED" : "RELEASED"));
-            if (MainModel.BindingExists(index))
+            KeyActivatedAction.Invoke(actionKey, data.bState);
+            Debug.WriteLine($"{actionKey} : " + (data.bState ? "PRESSED" : "RELEASED"));
+            if (MainModel.BindingExists(actionKey))
             {
+                var binding = MainModel.GetBinding(actionKey);
                 if (data.bState)
                 {
                     if (MainModel.LoadSetting(MainModel.Setting.Haptic))
@@ -284,10 +285,9 @@ namespace OpenVR2Key
                     }
                     if (MainModel.LoadSetting(MainModel.Setting.Notification))
                     {
-                        _ovr.EnqueueNotification(_notificationOverlayHandle, $"{inputName} Controller activated: Key {index}", _notificationBitmap);
+                        _ovr.EnqueueNotification(_notificationOverlayHandle, $"{actionKey} simulated {GetKeysLabel(binding.Item1)}", _notificationBitmap);
                     }
                 }
-                var binding = MainModel.GetBinding(index);
                 SimulateKeyPress(data, binding);
             }
         }

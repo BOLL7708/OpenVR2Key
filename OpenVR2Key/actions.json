@@ -7,205 +7,255 @@
 	],
 	"actions": [
 		{
-			"name": "/actions/default/in/key1",
-			"requirement": "optional",
-			"type": "boolean"
-		},		{
-			"name": "/actions/default/in/key2",
+			"name": "/actions/keys/in/KeyL1",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key3",
+			"name": "/actions/keys/in/KeyL2",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key4",
+			"name": "/actions/keys/in/KeyL3",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key5",
+			"name": "/actions/keys/in/KeyL4",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key6",
+			"name": "/actions/keys/in/KeyL5",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key7",
+			"name": "/actions/keys/in/KeyL6",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key8",
+			"name": "/actions/keys/in/KeyL7",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key9",
+			"name": "/actions/keys/in/KeyL8",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key10",
+			"name": "/actions/keys/in/KeyL9",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key11",
+			"name": "/actions/keys/in/KeyL10",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key12",
+			"name": "/actions/keys/in/KeyL11",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key13",
+			"name": "/actions/keys/in/KeyL12",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key14",
+			"name": "/actions/keys/in/KeyL13",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key15",
+			"name": "/actions/keys/in/KeyL14",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key16",
+			"name": "/actions/keys/in/KeyL15",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key17",
-			"requirement": "optional",
-			"type": "boolean"
-		},		{
-			"name": "/actions/default/in/key18",
+			"name": "/actions/keys/in/KeyL16",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key19",
+			"name": "/actions/keys/in/KeyR1",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key20",
+			"name": "/actions/keys/in/KeyR2",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key21",
+			"name": "/actions/keys/in/KeyR3",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key22",
+			"name": "/actions/keys/in/KeyR4",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key23",
+			"name": "/actions/keys/in/KeyR5",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key24",
+			"name": "/actions/keys/in/KeyR6",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key25",
+			"name": "/actions/keys/in/KeyR7",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key26",
+			"name": "/actions/keys/in/KeyR8",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key27",
+			"name": "/actions/keys/in/KeyR9",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key28",
+			"name": "/actions/keys/in/KeyR10",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key29",
+			"name": "/actions/keys/in/KeyR11",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key30",
+			"name": "/actions/keys/in/KeyR12",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key31",
+			"name": "/actions/keys/in/KeyR13",
 			"requirement": "optional",
 			"type": "boolean"
 		},
 		{
-			"name": "/actions/default/in/key32",
+			"name": "/actions/keys/in/KeyR14",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyR15",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyR16",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC1",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC2",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC3",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC4",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC5",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC6",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC7",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC8",
 			"requirement": "optional",
 			"type": "boolean"
 		}
 	],
 	"action_sets": [
 		{
-			"name": "/actions/default",
+			"name": "/actions/keys",
 			"usage": "leftright"
 		}
 	],
 	"localization" : [
 		{
 			"language_tag": "en_US",
-			"/actions/default/in/key1": "Key 1",
-			"/actions/default/in/key2": "Key 2",
-			"/actions/default/in/key3": "Key 3",
-			"/actions/default/in/key4": "Key 4",
-			"/actions/default/in/key5": "Key 5",
-			"/actions/default/in/key6": "Key 6",
-			"/actions/default/in/key7": "Key 7",
-			"/actions/default/in/key8": "Key 8",
-			"/actions/default/in/key9": "Key 9",
-			"/actions/default/in/key10": "Key 10",
-			"/actions/default/in/key11": "Key 11",
-			"/actions/default/in/key12": "Key 12",
-			"/actions/default/in/key13": "Key 13",
-			"/actions/default/in/key14": "Key 14",
-			"/actions/default/in/key15": "Key 15",
-			"/actions/default/in/key16": "Key 16",
-			"/actions/default/in/key17": "Key 17",
-			"/actions/default/in/key18": "Key 18",
-			"/actions/default/in/key19": "Key 19",
-			"/actions/default/in/key20": "Key 20",
-			"/actions/default/in/key21": "Key 21",
-			"/actions/default/in/key22": "Key 22",
-			"/actions/default/in/key23": "Key 23",
-			"/actions/default/in/key24": "Key 24",
-			"/actions/default/in/key25": "Key 25",
-			"/actions/default/in/key26": "Key 26",
-			"/actions/default/in/key27": "Key 27",
-			"/actions/default/in/key28": "Key 28",
-			"/actions/default/in/key29": "Key 29",
-			"/actions/default/in/key30": "Key 30",
-			"/actions/default/in/key31": "Key 31",
-			"/actions/default/in/key32": "Key 32"
+			"/actions/keys/in/KeyL1": "Key Left 1",
+			"/actions/keys/in/KeyL2": "Key Left 2",
+			"/actions/keys/in/KeyL3": "Key Left 3",
+			"/actions/keys/in/KeyL4": "Key Left 4",
+			"/actions/keys/in/KeyL5": "Key Left 5",
+			"/actions/keys/in/KeyL6": "Key Left 6",
+			"/actions/keys/in/KeyL7": "Key Left 7",
+			"/actions/keys/in/KeyL8": "Key Left 8",
+			"/actions/keys/in/KeyL9": "Key Left 9",
+			"/actions/keys/in/KeyL10": "Key Left 10",
+			"/actions/keys/in/KeyL11": "Key Left 11",
+			"/actions/keys/in/KeyL12": "Key Left 12",
+			"/actions/keys/in/KeyL13": "Key Left 13",
+			"/actions/keys/in/KeyL14": "Key Left 14",
+			"/actions/keys/in/KeyL15": "Key Left 15",
+			"/actions/keys/in/KeyL16": "Key Left 16",
+			"/actions/keys/in/KeyR1": "Key Right 1",
+			"/actions/keys/in/KeyR2": "Key Right 2",
+			"/actions/keys/in/KeyR3": "Key Right 3",
+			"/actions/keys/in/KeyR4": "Key Right 4",
+			"/actions/keys/in/KeyR5": "Key Right 5",
+			"/actions/keys/in/KeyR6": "Key Right 6",
+			"/actions/keys/in/KeyR7": "Key Right 7",
+			"/actions/keys/in/KeyR8": "Key Right 8",
+			"/actions/keys/in/KeyR9": "Key Right 9",
+			"/actions/keys/in/KeyR10": "Key Right 10",
+			"/actions/keys/in/KeyR11": "Key Right 11",
+			"/actions/keys/in/KeyR12": "Key Right 12",
+			"/actions/keys/in/KeyR13": "Key Right 13",
+			"/actions/keys/in/KeyR14": "Key Right 14",
+			"/actions/keys/in/KeyR15": "Key Right 15",
+			"/actions/keys/in/KeyR16": "Key Right 16",
+			"/actions/keys/in/KeyC1": "Key Chord 1",
+			"/actions/keys/in/KeyC2": "Key Chord 2",
+			"/actions/keys/in/KeyC3": "Key Chord 3",
+			"/actions/keys/in/KeyC4": "Key Chord 4",
+			"/actions/keys/in/KeyC5": "Key Chord 5",
+			"/actions/keys/in/KeyC6": "Key Chord 6",
+			"/actions/keys/in/KeyC7": "Key Chord 7",
+			"/actions/keys/in/KeyC8": "Key Chord 8"
 		}
 	]
 }

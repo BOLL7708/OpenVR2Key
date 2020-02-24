@@ -13,15 +13,14 @@ namespace OpenVR2Key
 {
     public partial class MainWindow : Window
     {
-        private readonly static int NO_OF_KEYS = 32;
         private readonly static string DEFAULT_KEY_LABEL = "Unbound: Click to bind keys to simulate";
         private MainController _controller;
         private List<BindingItem> _items = new List<BindingItem>();
         private object _activeElement;
         private string _currentlyRunningAppId = MainModel.CONFIG_DEFAULT;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
-        private HashSet<int> _activeKeys = new HashSet<int>();
-
+        private HashSet<string> _activeKeys = new HashSet<string>();
+        private string[] _actionKeys = new string[0];
         public MainWindow()
         {
             InitWindow();
@@ -49,7 +48,7 @@ namespace OpenVR2Key
                     var color = Brushes.OliveDrab;
                     if (appId == MainModel.CONFIG_DEFAULT)
                     {
-                        color = Brushes.Tomato;
+                        color = Brushes.Gray;
                     }
                     Dispatcher.Invoke(() =>
                     {
@@ -86,12 +85,12 @@ namespace OpenVR2Key
                     });
                 },
 
-                KeyActivatedAction = (index, on) =>
+                KeyActivatedAction = (key, on) =>
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        if (on) _activeKeys.Add(index);
-                        else _activeKeys.Remove(index);
+                        if (on) _activeKeys.Add(key);
+                        else _activeKeys.Remove(key);
                         if (_activeKeys.Count > 0) Label_Keys.Content = string.Join(", ", _activeKeys);
                         else Label_Keys.Content = "None";
                     });
@@ -113,8 +112,8 @@ namespace OpenVR2Key
             });
 
             // Init the things
-            InitList();
-            _controller.Init();
+            var actionKeys = InitList();
+            _controller.Init(actionKeys);
             InitSettings();
             InitTrayIcon();
         }
@@ -145,34 +144,42 @@ namespace OpenVR2Key
         #region bindings
 
         // Fill list with entries
-        private void InitList(Dictionary<int, Key[]> config = null)
+        private string[] InitList(Dictionary<string, Key[]> config = null)
         {
-            if (config == null) config = new Dictionary<int, Key[]>();
-            _items.Clear();
-            for (var i = 1; i <= NO_OF_KEYS; i++)
+            var actionKeys = new List<string>();
+            actionKeys.AddRange(GenerateActionKeyRange(16, 'L')); // Left
+            actionKeys.AddRange(GenerateActionKeyRange(16, 'R')); // Right
+            actionKeys.AddRange(GenerateActionKeyRange(8, 'C')); // Chord
+            string[] GenerateActionKeyRange(int count, char type)
             {
-                var text = config.ContainsKey(i) ? _controller.GetKeysLabel(config[i]) : string.Empty;
+                var keys = new List<string>();
+                for (var i = 1; i <= count; i++) keys.Add($"{type}{i}");
+                return keys.ToArray();
+            }
+
+            if (config == null) config = new Dictionary<string, Key[]>();
+            _items.Clear();
+            foreach (var actionKey in actionKeys)
+            {
+                var text = config.ContainsKey(actionKey) ? _controller.GetKeysLabel(config[actionKey]) : string.Empty;
                 if (text == string.Empty) text = DEFAULT_KEY_LABEL;
                 _items.Add(new BindingItem()
                 {
-                    Index = i,
-                    Label = GetKeyLabelText(i),
+                    Key = actionKey,
+                    Label = $"Key {actionKey}",
                     Text = text
                 });
             }
             ItemsControl_Bindings.ItemsSource = null;
             ItemsControl_Bindings.ItemsSource = _items;
-        }
 
-        private string GetKeyLabelText(int index)
-        {
-            return $"Key {index}";
+            return actionKeys.ToArray();
         }
 
         // Binding data class
         public class BindingItem
         {
-            public int Index { get; set; }
+            public string Key { get; set; }
             public string Label { get; set; }
             public string Text { get; set; }
         }
@@ -262,7 +269,7 @@ namespace OpenVR2Key
                     break;
                 case false:
                     MainModel.SetConfigName(_currentlyRunningAppId);
-                    MainModel.StoreConfig(new Dictionary<int, Key[]>());
+                    MainModel.StoreConfig(new Dictionary<string, Key[]>());
                     _controller.LoadConfig(); // Loads the empty new one
                     UpdateConfigButton(true);
                     break;
@@ -298,7 +305,7 @@ namespace OpenVR2Key
         {
             var element = sender as Label;
             var dataItem = element.DataContext as BindingItem;
-            var active = _controller.ToggleRegisteringKey(dataItem.Index, element, out object activeElement);
+            var active = _controller.ToggleRegisteringKey(dataItem.Key, element, out object activeElement);
             UpdateLabel(activeElement as Label, active);
             if (active) _activeElement = activeElement;
             else _activeElement = null;
@@ -328,7 +335,7 @@ namespace OpenVR2Key
         {
             var button = sender as Button;
             var dataItem = button.DataContext as BindingItem;
-            MainModel.RemoveBinding(dataItem.Index);
+            MainModel.RemoveBinding(dataItem.Key);
             DockPanel sp = VisualTreeHelper.GetParent(button) as DockPanel;
             var element = sp.Children[2] as Label;
             element.Content = DEFAULT_KEY_LABEL;
