@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -13,6 +14,7 @@ namespace OpenVR2Key
 {
     public partial class MainWindow : Window
     {
+        private static Mutex _mutex = null;
         private readonly static string DEFAULT_KEY_LABEL = "Unbound: Click to bind keys to simulate";
         private MainController _controller;
         private List<BindingItem> _items = new List<BindingItem>();
@@ -25,6 +27,23 @@ namespace OpenVR2Key
         {
             InitWindow();
             InitializeComponent();
+
+            // Prevent multiple instances running at once
+            const string appName = "OpenVR2Key";
+            _mutex = new Mutex(true, appName, out bool createdNew);
+            if (!createdNew)
+            {
+                MessageBox.Show(
+                    Application.Current.MainWindow,
+                    "This application is already running!",
+                    "OpenVR2Key",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information
+                );
+                Application.Current.Shutdown();
+            }
+
+
             _controller = new MainController
             {
                 // Reports on the status of OpenVR
