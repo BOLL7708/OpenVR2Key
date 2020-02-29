@@ -22,7 +22,6 @@ namespace OpenVR2Key
         private string _currentlyRunningAppId = MainModel.CONFIG_DEFAULT;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private HashSet<string> _activeKeys = new HashSet<string>();
-        private string[] _actionKeys = new string[0];
         public MainWindow()
         {
             InitWindow();

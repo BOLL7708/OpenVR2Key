@@ -216,6 +216,7 @@
 	"localization" : [
 		{
 			"language_tag": "en_US",
+			"/actions/keys": "Keys",
 			"/actions/keys/in/KeyL1": "Key Left 1",
 			"/actions/keys/in/KeyL2": "Key Left 2",
 			"/actions/keys/in/KeyL3": "Key Left 3",
