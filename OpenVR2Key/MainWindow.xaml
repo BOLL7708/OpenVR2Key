@@ -8,7 +8,7 @@
         Title="OpenVR2Key" Height="550" Width="750" StateChanged="Window_StateChanged" Icon="resources/icon.ico" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
     <DockPanel LastChildFill="True">
         <DockPanel LastChildFill="True" DockPanel.Dock="Top">
-            <GroupBox Header="Settings &amp; Help" HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Top" DockPanel.Dock="Left">
+            <GroupBox Header="Settings &amp; Help" HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Top" DockPanel.Dock="Left" Background="AliceBlue">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <CheckBox x:Name="CheckBox_Minimize" Margin="5" Focusable="False" Content="Minimize on launch" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="CheckBox_Minimize_Checked" Unchecked="CheckBox_Minimize_Checked"/>
@@ -30,7 +30,7 @@
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Status" Margin="0 10 10 10" VerticalAlignment="Top" DockPanel.Dock="Left">
+            <GroupBox Header="Status" Margin="0 10 10 10" VerticalAlignment="Top" DockPanel.Dock="Left" Background="WhiteSmoke">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="5">
                         <Label Content="OpenVR Status:" VerticalAlignment="Center"/>
@@ -46,18 +46,18 @@
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Log" Margin="0 10 10 10" DockPanel.Dock="Left" VerticalAlignment="Stretch">
+            <GroupBox Header="Log" Margin="0 10 10 10" DockPanel.Dock="Left" VerticalAlignment="Stretch" Background="Ivory">
                 <TextBox Margin="5" x:Name="TextBox_Log" IsEnabled="False"></TextBox>
             </GroupBox>
         </DockPanel>
-        <GroupBox Header="Actions" Margin="10 0 10 10" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+        <GroupBox Header="Actions" Margin="10 0 10 10" HorizontalAlignment="Stretch" DockPanel.Dock="Top" Background="LavenderBlush">
             <WrapPanel Orientation="Horizontal" Margin="5">
                 <Button x:Name="Button_AppBinding" Margin="5,0,5,5" Focusable="False" Content="Add/remove app specific config" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_AppBinding_Click" />
                 <Button x:Name="Button_ClearAll" Margin="5,0,5,5" Focusable="False" Content="Clear all current mappings" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_ClearAll_Click"/>
                 <Button x:Name="Button_Folder" Visibility="Hidden" Margin="5,0,5,5" Focusable="False" Content="Open config folder" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_Folder_Click"/>
             </WrapPanel>
         </GroupBox>
-        <GroupBox Header="Mapping" Margin="10 0 10 10" HorizontalAlignment="Stretch">
+        <GroupBox Header="Mapping" Margin="10 0 10 10" HorizontalAlignment="Stretch" Background="MintCream">
             <ScrollViewer Focusable="False" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible" Margin="0 5 0 0">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
                     <ItemsControl x:Name="ItemsControl_Bindings">
