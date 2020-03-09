@@ -68,13 +68,13 @@ namespace OpenVR2Key
                     {
                         color = Brushes.Gray;
                     }
+                    var appIdFixed = appId.Replace("_", "__"); // Single underscores makes underlined chars
                     Dispatcher.Invoke(() =>
                     {
                         Debug.WriteLine($"Setting AppID to: {appId}");
-                        Label_Application.Content = appId;
+                        Label_Application.Content = appIdFixed;
                         Label_Application.Background = color;
                     });
-
                 },
 
                 // We should update the text on the current binding we are recording
