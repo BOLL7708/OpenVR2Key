@@ -1,18 +1,20 @@
 # OpenVR2Key
 Simulate key presses on your Windows desktop from SteamVR input, download the latest release [here](https://github.com/BOLL7708/OpenVR2Key/releases).
 
+![Applicatioun window](https://i.imgur.com/Jocd7J9.png)
+
 ## How does it work?
 It uses the SteamVR input system to listen to VR controller input and maps that to keyboard input that it then simulates.
 
-The application only comes with Key actions 1-32, these are mapped against whatever you configure inside the application. 
+The application comes with ear tagged key actions, 1-16 for left and right respectively and 1-8 for chords, these are mapped against whatever you configure inside this application. 
 
-Key configurations can be automatically loaded per title, but the SteamVR input bindings stay the same regardless.
+Key configurations can be automatically loaded for the running title, but the SteamVR input bindings stay the same regardless.
 
 ## How do I use it?
 ### SteamVR Input
 [Clip](https://streamable.com/jvokn) -  To get started, we begin in SteamVR, open the `Settings` from the hamburger menu in the SteamVR status window, then navigate to...
 
-    ```Settings > Controller Options > Manage Controller Bindings```
+    Settings > Controller Options > Manage Controller Bindings
     
 Here locate `OPENVR2KEY` in the drop down, then switch the `Active Controller Binding` to `CUSTOM` and click `EDIT THIS BINDING`. This will open the `Controller Binding` interface.
 
@@ -29,6 +31,8 @@ To bind a key, simply click any of the available events and pick a key. Alternat
 The row label to the left denotes which action this maps to in SteamVR, it can be benefitial to have both interfaces open at the same time if you have a lot of keys bound.
 
 On the row you want to configure, click the big button to start registering keys, now press the keys you want to be in the mapping. As long as you don't let all keys go you can add more without holding down all the previous ones, it will restart the current registration if you press any key after letting go of all them. To finish the registration click the row again. That's it!
+
+![Example of keys being triggered](https://i.imgur.com/IlRDESr.png)
 
 ### Notes
 I've tried to add support for as many keys as possible, report anything you feel is missing as I have to match codes from input to output, they are not the same.
