@@ -16,6 +16,7 @@ namespace OpenVR2Key
     {
         private EasyOpenVRSingleton _ovr = EasyOpenVRSingleton.Instance;
         private InputSimulator _sim = new InputSimulator();
+        private bool _shouldShutDown = false;
 
         // Active key registration
         private string _registeringKey = string.Empty;
@@ -157,38 +158,43 @@ namespace OpenVR2Key
                         StatusUpdateAction.Invoke(true);
                         UpdateInputSourceHandles();
                         _notificationOverlayHandle = _ovr.InitNotificationOverlay("OpenVR2Key");
-                    }
 
-                    // TODO: Update to new event system, try to find out why we don't reconnect, or update the UI at least.
-                    var vrEvents = _ovr.GetNewEvents();
-                    foreach (var e in vrEvents)
-                    {
-                        var message = Enum.GetName(typeof(EVREventType), e.eventType);
-                        Debug.WriteLine(message);
-
-                        switch ((EVREventType)e.eventType)
+                        _ovr.RegisterEvent(EVREventType.VREvent_Quit, (data) =>
                         {
-                            case EVREventType.VREvent_Quit:
-                                initComplete = false;
-                                _ovr.AcknowledgeShutdown();
-                                _ovr.Shutdown();
-                                StatusUpdateAction.Invoke(false);
-                                return;
-                            case EVREventType.VREvent_SceneApplicationChanged:
-                                UpdateAppId();
-                                break;
-                            case EVREventType.VREvent_TrackedDeviceRoleChanged:
-                            case EVREventType.VREvent_TrackedDeviceUpdated:
-                            case EVREventType.VREvent_TrackedDeviceActivated:
+                            _shouldShutDown = true;
+                        });
+                        _ovr.RegisterEvent(EVREventType.VREvent_SceneApplicationChanged, (data) =>
+                        {
+                            UpdateAppId();
+                        });
+                        _ovr.RegisterEvents(new EVREventType[] {
+                            EVREventType.VREvent_TrackedDeviceActivated,
+                            EVREventType.VREvent_TrackedDeviceRoleChanged,
+                            EVREventType.VREvent_TrackedDeviceUpdated }, 
+                            (data) =>
+                            {
                                 UpdateInputSourceHandles();
-                                break;
+                            }
+                        );
+                    }
+                    else
+                    {
+                        _ovr.UpdateActionStates(new ulong[] {
+                            _inputSourceHandleLeft,
+                            _inputSourceHandleRight
+                        });
+
+                        _ovr.UpdateEvents();
+
+                        if (_shouldShutDown)
+                        {
+                            _shouldShutDown = false;
+                            initComplete = false;
+                            _ovr.AcknowledgeShutdown();
+                            _ovr.Shutdown();
+                            StatusUpdateAction.Invoke(false);
                         }
                     }
-
-                    _ovr.UpdateActionStates(new ulong[] {
-                        _inputSourceHandleLeft,
-                        _inputSourceHandleRight
-                    });
                 }
                 else
                 {
