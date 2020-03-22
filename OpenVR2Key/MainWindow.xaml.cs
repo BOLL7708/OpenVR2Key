@@ -406,6 +406,7 @@ namespace OpenVR2Key
         private void NotifyIcon_Click(object sender, EventArgs e)
         {
             WindowState = WindowState.Normal;
+            ShowInTaskbar = true;
             Show();
             Activate();
         }

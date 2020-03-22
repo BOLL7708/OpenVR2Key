@@ -73,7 +73,7 @@ namespace OpenVR2Key.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("v0.42")]
+        [global::System.Configuration.DefaultSettingValueAttribute("v0.43")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
