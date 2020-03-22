@@ -34,7 +34,6 @@ namespace OpenVR2Key
         private string _currentApplicationId = "";
         private ulong _inputSourceHandleLeft = 0, _inputSourceHandleRight = 0;
         private ulong _notificationOverlayHandle = 0;
-        private NotificationBitmap_t _notificationBitmap = new NotificationBitmap_t();
         private string[] _actionKeys = new string[0];
 
         public MainController()
@@ -149,6 +148,8 @@ namespace OpenVR2Key
                 {
                     if (!initComplete)
                     {
+                        initComplete = true;
+
                         _ovr.LoadAppManifest("./app.vrmanifest");
                         _ovr.LoadActionManifest("./actions.json");
                         RegisterActions();
@@ -156,14 +157,9 @@ namespace OpenVR2Key
                         StatusUpdateAction.Invoke(true);
                         UpdateInputSourceHandles();
                         _notificationOverlayHandle = _ovr.InitNotificationOverlay("OpenVR2Key");
-                        /* 
-                        // TODO: Bitmap loads but it crashes on trying to use it for the notification. Cannot read from protected memory. Try resources later.
-                        var bitmapPath = $"{Directory.GetCurrentDirectory()}\\icon.png";
-                        notificationBitmap = EasyOpenVRSingleton.BitmapUtils.NotificationBitmapFromBitmap(new System.Drawing.Bitmap(bitmapPath));
-                        */
-                        initComplete = true;
                     }
 
+                    // TODO: Update to new event system, try to find out why we don't reconnect, or update the UI at least.
                     var vrEvents = _ovr.GetNewEvents();
                     foreach (var e in vrEvents)
                     {
@@ -237,7 +233,7 @@ namespace OpenVR2Key
         #endregion
 
         #region actions
-        public void OpenConfigFolder() // TODO: This refuses to open the righy folder so the button is hidden.
+        public void OpenConfigFolder() // TODO: This refuses to open the right folder so the button is hidden.
         {
             var folderPath = MainModel.GetConfigFolderPath();
             if (Directory.Exists(folderPath))
@@ -285,7 +281,8 @@ namespace OpenVR2Key
                     }
                     if (MainModel.LoadSetting(MainModel.Setting.Notification))
                     {
-                        _ovr.EnqueueNotification(_notificationOverlayHandle, $"{actionKey} simulated {GetKeysLabel(binding.Item1)}", _notificationBitmap);
+                        var notificationBitmap = EasyOpenVRSingleton.BitmapUtils.NotificationBitmapFromBitmap(Properties.Resources.logo);
+                        _ovr.EnqueueNotification(_notificationOverlayHandle, $"{actionKey} simulated {GetKeysLabel(binding.Item1)}", notificationBitmap);
                     }
                 }
                 SimulateKeyPress(data, binding);

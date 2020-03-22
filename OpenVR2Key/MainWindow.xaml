@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenVR2Key"
         mc:Ignorable="d"
-        Title="OpenVR2Key" Height="550" Width="750" StateChanged="Window_StateChanged" Icon="resources/icon.ico" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
+        Title="OpenVR2Key" Height="550" Width="750" StateChanged="Window_StateChanged" Icon="resources/logo.ico" PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
     <DockPanel LastChildFill="True">
         <DockPanel LastChildFill="True" DockPanel.Dock="Top">
             <GroupBox Header="Settings &amp; Help" HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Top" DockPanel.Dock="Left" Background="AliceBlue">

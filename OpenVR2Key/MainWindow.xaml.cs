@@ -151,7 +151,7 @@ namespace OpenVR2Key
 
         private void InitTrayIcon()
         {
-            var icon = Properties.Resources.app_icon.Clone() as System.Drawing.Icon;
+            var icon = Properties.Resources.icon.Clone() as System.Drawing.Icon;
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
             _notifyIcon.Click += NotifyIcon_Click;
             _notifyIcon.Text = "Click to show main OpenVR2Key window.";
@@ -406,8 +406,8 @@ namespace OpenVR2Key
         private void NotifyIcon_Click(object sender, EventArgs e)
         {
             WindowState = WindowState.Normal;
-            Activate();
             Show();
+            Activate();
         }
         #endregion
     }
