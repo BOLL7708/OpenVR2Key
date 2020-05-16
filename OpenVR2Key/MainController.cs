@@ -94,15 +94,20 @@ namespace OpenVR2Key
         }
 
         // Add incoming keys to the current binding
-        public void OnKeyDown(Key key)
+        public bool OnKeyDown(Key key)
         {
+            if (_registeringElement == null) return true;
             if (MainUtils.MatchVirtualKey(key) != null)
             {
-                if (_registeringElement == null) return;
                 if (_keysDown.Count == 0) _keys.Clear();
                 _keys.Add(key);
                 _keysDown.Add(key);
                 UpdateCurrentObject();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         public void OnKeyUp(Key key)

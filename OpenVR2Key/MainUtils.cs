@@ -33,7 +33,12 @@ namespace OpenVR2Key
             { Key.OemComma, VirtualKeyCode.OEM_COMMA },
             { Key.OemMinus, VirtualKeyCode.OEM_MINUS},
             { Key.OemPeriod, VirtualKeyCode.OEM_PERIOD},
-            { Key.OemPlus, VirtualKeyCode.OEM_PLUS}
+            { Key.OemPlus, VirtualKeyCode.OEM_PLUS},
+            // Keys added [ = '
+            { Key.OemOpenBrackets, VirtualKeyCode.OEM_4},
+            { Key.OemQuestion, VirtualKeyCode.OEM_2},
+            { Key.OemQuotes, VirtualKeyCode.OEM_7}
+
         };
 
         /**
@@ -45,8 +50,16 @@ namespace OpenVR2Key
             var keyStr = key.ToString().ToUpper();
 
             // Check for direct translation
-            if (translationTableKeys.ContainsKey(key)) return new Tuple<VirtualKeyCode, bool>(translationTableKeys[key], false);
-            if (translationTableModifiers.ContainsKey(key)) return new Tuple<VirtualKeyCode, bool>(translationTableModifiers[key], true);
+            if (translationTableKeys.ContainsKey(key))
+                return new Tuple<VirtualKeyCode, bool>(translationTableKeys[key], false);
+
+            // Check for translation as modifier key
+            if (translationTableModifiers.ContainsKey(key))
+                return new Tuple<VirtualKeyCode, bool>(translationTableModifiers[key], true);
+
+
+            // Check for translation using some rules based on how GregsStack names the keys
+            // Looks related to this info: http://www.kbdedit.com/manual/low_level_vk_list.html
 
             // Character keys which come in as A-Z
             if (keyStr.Length == 1) keyStr = $"VK_{keyStr}";
@@ -54,11 +67,14 @@ namespace OpenVR2Key
             // Number keys which come in as D0-D9
             else if (keyStr.Length == 2 && keyStr[0] == 'D' && Char.IsDigit(keyStr[1])) keyStr = $"VK_{keyStr[1]}";
 
-            // OEM Number keys
+            // OEM Number keys (these are weird and some require direct mapping from translation dictionaries translationTables above)
             else if (keyStr.StartsWith("OEM") && (int.TryParse(keyStr.Substring(3), out _))) keyStr = $"OEM_{keyStr.Substring(3)}";
 
             var success = Enum.TryParse(keyStr, out VirtualKeyCode result);
+            if (!success)
+                Debug.WriteLine("Key not found.");
             return success ? new Tuple<VirtualKeyCode, bool>(result, false) : null;
+            // If no key found, returns null
         }
 
         /**

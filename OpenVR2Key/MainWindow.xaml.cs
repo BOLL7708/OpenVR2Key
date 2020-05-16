@@ -209,7 +209,20 @@ namespace OpenVR2Key
         {
             e.Handled = true;
             var key = e.Key == Key.System ? e.SystemKey : e.Key;
-            _controller.OnKeyDown(key);
+            if (!_controller.OnKeyDown(key))
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    string message = $"Key not mapped: " + key.ToString();
+                    var time = DateTime.Now.ToString("HH:mm:ss");
+                    var oldLog = TextBox_Log.Text;
+                    var lines = oldLog.Split('\n');
+                    Array.Resize(ref lines, 3);
+                    var newLog = string.Join("\n", lines);
+                    TextBox_Log.Text = $"{time}: {message}\n{newLog}";
+                });
+            }
+
         }
 
         // All key up events in the app
