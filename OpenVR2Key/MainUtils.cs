@@ -34,11 +34,16 @@ namespace OpenVR2Key
             { Key.OemMinus, VirtualKeyCode.OEM_MINUS},
             { Key.OemPeriod, VirtualKeyCode.OEM_PERIOD},
             { Key.OemPlus, VirtualKeyCode.OEM_PLUS},
-            // Keys added [ = '
+            /*
+             * References for virtual key codes.
+             * https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+             * https://sites.google.com/site/douglaslash/Home/programming/c-notes--snippets/c-keycodes
+             * http://www.kbdedit.com/manual/low_level_vk_list.html
+             */
             { Key.OemOpenBrackets, VirtualKeyCode.OEM_4},
             { Key.OemQuestion, VirtualKeyCode.OEM_2},
-            { Key.OemQuotes, VirtualKeyCode.OEM_7}
-
+            { Key.OemQuotes, VirtualKeyCode.OEM_7},
+            { Key.OemBackslash, VirtualKeyCode.OEM_102}
         };
 
         /**
@@ -51,28 +56,34 @@ namespace OpenVR2Key
 
             // Check for direct translation
             if (translationTableKeys.ContainsKey(key))
+            {
                 return new Tuple<VirtualKeyCode, bool>(translationTableKeys[key], false);
+            }
 
             // Check for translation as modifier key
             if (translationTableModifiers.ContainsKey(key))
+            {
                 return new Tuple<VirtualKeyCode, bool>(translationTableModifiers[key], true);
-
-
-            // Check for translation using some rules based on how GregsStack names the keys
-            // Looks related to this info: http://www.kbdedit.com/manual/low_level_vk_list.html
+            }
 
             // Character keys which come in as A-Z
             if (keyStr.Length == 1) keyStr = $"VK_{keyStr}";
 
             // Number keys which come in as D0-D9
-            else if (keyStr.Length == 2 && keyStr[0] == 'D' && Char.IsDigit(keyStr[1])) keyStr = $"VK_{keyStr[1]}";
-
+            else if (keyStr.Length == 2 && keyStr[0] == 'D' && Char.IsDigit(keyStr[1]))
+            {
+                keyStr = $"VK_{keyStr[1]}";
+            }
             // OEM Number keys (these are weird and some require direct mapping from translation dictionaries translationTables above)
-            else if (keyStr.StartsWith("OEM") && (int.TryParse(keyStr.Substring(3), out _))) keyStr = $"OEM_{keyStr.Substring(3)}";
-
+            else if (keyStr.StartsWith("OEM") && (int.TryParse(keyStr.Substring(3), out _)))
+            {
+                keyStr = $"OEM_{keyStr.Substring(3)}";
+            }
             var success = Enum.TryParse(keyStr, out VirtualKeyCode result);
             if (!success)
+            {
                 Debug.WriteLine("Key not found.");
+            }
             return success ? new Tuple<VirtualKeyCode, bool>(result, false) : null;
             // If no key found, returns null
         }

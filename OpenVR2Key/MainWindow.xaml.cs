@@ -120,12 +120,7 @@ namespace OpenVR2Key
             {
                 Dispatcher.Invoke(() =>
                 {
-                    var time = DateTime.Now.ToString("HH:mm:ss");
-                    var oldLog = TextBox_Log.Text;
-                    var lines = oldLog.Split('\n');
-                    Array.Resize(ref lines, 3);
-                    var newLog = string.Join("\n", lines);
-                    TextBox_Log.Text = $"{time}: {message}\n{newLog}";
+                    WriteToLog(message);
                 });
             });
 
@@ -134,6 +129,16 @@ namespace OpenVR2Key
             _controller.Init(actionKeys);
             InitSettings();
             InitTrayIcon();
+        }
+
+        private void WriteToLog(String message)
+        {
+            var time = DateTime.Now.ToString("HH:mm:ss");
+            var oldLog = TextBox_Log.Text;
+            var lines = oldLog.Split('\n');
+            Array.Resize(ref lines, 3);
+            var newLog = string.Join("\n", lines);
+            TextBox_Log.Text = $"{time}: {message}\n{newLog}";
         }
 
         private void InitWindow()
@@ -154,7 +159,7 @@ namespace OpenVR2Key
             var icon = Properties.Resources.icon.Clone() as System.Drawing.Icon;
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
             _notifyIcon.Click += NotifyIcon_Click;
-            _notifyIcon.Text = "Click to show main OpenVR2Key window.";
+            _notifyIcon.Text = "Click to show the OpenVR2Key window";
             _notifyIcon.Icon = icon;
             _notifyIcon.Visible = true;            
         }
@@ -211,16 +216,8 @@ namespace OpenVR2Key
             var key = e.Key == Key.System ? e.SystemKey : e.Key;
             if (!_controller.OnKeyDown(key))
             {
-                Dispatcher.Invoke(() =>
-                {
-                    string message = $"Key not mapped: " + key.ToString();
-                    var time = DateTime.Now.ToString("HH:mm:ss");
-                    var oldLog = TextBox_Log.Text;
-                    var lines = oldLog.Split('\n');
-                    Array.Resize(ref lines, 3);
-                    var newLog = string.Join("\n", lines);
-                    TextBox_Log.Text = $"{time}: {message}\n{newLog}";
-                });
+                string message = $"Key not mapped: " + key.ToString();
+                WriteToLog(message);
             }
 
         }

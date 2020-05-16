@@ -14,8 +14,5 @@
     <Setting Name="Haptic" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Version" Type="System.String" Scope="User">
-      <Value Profile="(Default)">v0.43</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

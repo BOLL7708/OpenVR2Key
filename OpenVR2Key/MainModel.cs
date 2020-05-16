@@ -183,7 +183,7 @@ namespace OpenVR2Key
 
         static public string GetVersion()
         {
-            return (string) p["Version"];
+            return (string)Properties.Resources.Version;
         }
         #endregion
 
