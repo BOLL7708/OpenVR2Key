@@ -26,16 +26,16 @@ namespace OpenVR2Key
         {
             InitWindow();
             InitializeComponent();
+            Title = Properties.Resources.AppName;
 
             // Prevent multiple instances running at once
-            const string appName = "OpenVR2Key";
-            _mutex = new Mutex(true, appName, out bool createdNew);
+            _mutex = new Mutex(true, Properties.Resources.AppName, out bool createdNew);
             if (!createdNew)
             {
                 MessageBox.Show(
                     Application.Current.MainWindow,
                     "This application is already running!",
-                    "OpenVR2Key",
+                    Properties.Resources.AppName,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
                 );
@@ -159,7 +159,7 @@ namespace OpenVR2Key
             var icon = Properties.Resources.icon.Clone() as System.Drawing.Icon;
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
             _notifyIcon.Click += NotifyIcon_Click;
-            _notifyIcon.Text = "Click to show the OpenVR2Key window";
+            _notifyIcon.Text = $"Click to show the {Properties.Resources.AppName} window";
             _notifyIcon.Icon = icon;
             _notifyIcon.Visible = true;            
         }

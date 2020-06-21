@@ -61,6 +61,15 @@ namespace OpenVR2Key.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OpenVR2Key.
+        /// </summary>
+        public static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         public static System.Drawing.Icon icon {
