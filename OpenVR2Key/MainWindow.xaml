@@ -14,6 +14,7 @@
                         <CheckBox x:Name="CheckBox_Minimize" Margin="5" Focusable="False" Content="Minimize on launch" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="CheckBox_Minimize_Checked" Unchecked="CheckBox_Minimize_Checked"/>
                         <CheckBox x:Name="CheckBox_Tray" Margin="5" Focusable="False" Content="to system tray" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="CheckBox_Tray_Checked" Unchecked="CheckBox_Tray_Checked"/>
                     </StackPanel>
+                    <CheckBox x:Name="CheckBox_ExitWithSteamVR" Content="Exit with SteamVR" Margin="5 0 5 5" Checked="CheckBox_ExitWithSteamVR_Checked" Unchecked="CheckBox_ExitWithSteamVR_Checked"/>
                     <CheckBox x:Name="CheckBox_DebugNotifications" Content="Show debug notifications in headset" Margin="5 0 5 5" Focusable="False" Checked="CheckBox_DebugNotifications_Checked" Unchecked="CheckBox_DebugNotifications_Checked"/>
                     <CheckBox x:Name="CheckBox_HapticFeedback" Content="Do haptic pulse on triggering key" Margin="5 0 5 5" Focusable="False" Checked="CheckBox_HapticFeedback_Checked" Unchecked="CheckBox_HapticFeedback_Checked"/>
                     <StackPanel Orientation="Horizontal" Margin="5 0 5 5">

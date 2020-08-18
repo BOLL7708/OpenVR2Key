@@ -22,6 +22,7 @@ namespace OpenVR2Key
         private string _currentlyRunningAppId = MainModel.CONFIG_DEFAULT;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private HashSet<string> _activeKeys = new HashSet<string>();
+        private bool _initDone = false;
         public MainWindow()
         {
             InitWindow();
@@ -55,6 +56,10 @@ namespace OpenVR2Key
                     {
                         Label_OpenVR.Content = message;
                         Label_OpenVR.Background = color;
+                        if (!connected && _initDone && MainModel.LoadSetting(MainModel.Setting.ExitWithSteam)) {
+                            if (_notifyIcon != null) _notifyIcon.Dispose();
+                            System.Windows.Application.Current.Shutdown();
+                        }
                     });
                 },
 
@@ -129,6 +134,7 @@ namespace OpenVR2Key
             _controller.Init(actionKeys);
             InitSettings();
             InitTrayIcon();
+            _initDone = true;
         }
 
         private void WriteToLog(String message)
@@ -376,9 +382,14 @@ namespace OpenVR2Key
         {
             CheckBox_Minimize.IsChecked = MainModel.LoadSetting(MainModel.Setting.Minimize);
             CheckBox_Tray.IsChecked = MainModel.LoadSetting(MainModel.Setting.Tray);
+            CheckBox_ExitWithSteamVR.IsChecked = MainModel.LoadSetting(MainModel.Setting.ExitWithSteam);
             CheckBox_DebugNotifications.IsChecked = MainModel.LoadSetting(MainModel.Setting.Notification);
             CheckBox_HapticFeedback.IsChecked = MainModel.LoadSetting(MainModel.Setting.Haptic);
+#if DEBUG
+            Label_Version.Content = $"{MainModel.GetVersion()}d";
+#else
             Label_Version.Content = MainModel.GetVersion();
+#endif
         }
         private bool CheckboxValue(RoutedEventArgs e)
         {
@@ -421,5 +432,10 @@ namespace OpenVR2Key
             Activate();
         }
         #endregion
+
+        private void CheckBox_ExitWithSteamVR_Checked(object sender, RoutedEventArgs e)
+        {
+            MainModel.UpdateSetting(MainModel.Setting.ExitWithSteam, CheckboxValue(e));
+        }
     }
 }

@@ -163,7 +163,7 @@ namespace OpenVR2Key
         #region Settings
         public enum Setting
         {
-            Minimize, Tray, Notification, Haptic
+            Minimize, Tray, Notification, Haptic, ExitWithSteam
         }
 
         private static readonly Properties.Settings p = Properties.Settings.Default;

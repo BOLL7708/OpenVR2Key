@@ -70,5 +70,17 @@ namespace OpenVR2Key.Properties {
                 this["Haptic"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ExitWithSteam {
+            get {
+                return ((bool)(this["ExitWithSteam"]));
+            }
+            set {
+                this["ExitWithSteam"] = value;
+            }
+        }
     }
 }
