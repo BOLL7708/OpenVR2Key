@@ -10,6 +10,8 @@ The application comes with ear tagged key actions, 1-16 for left and right respe
 
 Key configurations can be automatically loaded for the running title, but the SteamVR input bindings stay the same regardless.
 
+To get the application to launch with SteamVR, have the application and SteamVR running, go into the SteamVR settings > Startup / Shutdown > Choose Startup Overlay Apps, and toggle OpenVR2Key to On.
+
 ## How do I use it?
 ### SteamVR Input
 [Clip](https://streamable.com/jvokn) -  To get started, we begin in SteamVR, open the `Settings` from the hamburger menu in the SteamVR status window, then navigate to...
