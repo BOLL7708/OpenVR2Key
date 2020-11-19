@@ -143,6 +143,12 @@
     <None Include="bindings_knuckles.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="bindings_oculus_touch.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_controller.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="EasyOpenVR\README.md" />
     <None Include="FodyWeavers.xsd">
       <SubType>Designer</SubType>

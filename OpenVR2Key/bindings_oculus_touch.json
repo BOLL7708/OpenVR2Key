@@ -1,0 +1,176 @@
+{
+   "action_manifest_version" : 0,
+   "alias_info" : {},
+   "app_key" : "boll7708.openvr2key",
+   "bindings" : {
+      "/actions/keys" : {
+         "sources" : [
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl2"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl8"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/thumbstick"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl10"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/grip"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyr10"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/grip"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyr9"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/a"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyr8"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/b"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyr2"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "touch" : {
+                     "output" : "/actions/keys/in/keyr1"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/system"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl1"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/system"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl9"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/x"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl8"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/y"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyl3"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/joystick"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/keys/in/keyr3"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/joystick"
+            },
+            {
+               "inputs" : {
+                  "east" : {
+                     "output" : "/actions/keys/in/keyl5"
+                  },
+                  "north" : {
+                     "output" : "/actions/keys/in/keyl4"
+                  },
+                  "south" : {
+                     "output" : "/actions/keys/in/keyl6"
+                  },
+                  "west" : {
+                     "output" : "/actions/keys/in/keyl7"
+                  }
+               },
+               "mode" : "dpad",
+               "parameters" : {
+                  "sub_mode" : "touch"
+               },
+               "path" : "/user/hand/left/input/joystick"
+            },
+            {
+               "inputs" : {
+                  "east" : {
+                     "output" : "/actions/keys/in/keyr5"
+                  },
+                  "north" : {
+                     "output" : "/actions/keys/in/keyr4"
+                  },
+                  "south" : {
+                     "output" : "/actions/keys/in/keyr6"
+                  },
+                  "west" : {
+                     "output" : "/actions/keys/in/keyr7"
+                  }
+               },
+               "mode" : "dpad",
+               "parameters" : {
+                  "sub_mode" : "touch"
+               },
+               "path" : "/user/hand/right/input/joystick"
+            }
+         ]
+      }
+   },
+   "category" : "steamvr_input",
+   "controller_type" : "oculus_touch",
+   "description" : "OpenVR2Key input configuration for Oculus Touch, feel free to edit this to fit your use case.",
+   "name" : "Default Oculus Touch Binding",
+   "options" : {},
+   "simulated_actions" : []
+}
