@@ -156,7 +156,7 @@ namespace OpenVR2Key
                     {
                         initComplete = true;
 
-                        _ovr.LoadAppManifest("./app.vrmanifest");
+                        _ovr.AddApplicationManifest("./app.vrmanifest", "boll7708.openvr2key", true);
                         _ovr.LoadActionManifest("./actions.json");
                         RegisterActions();
                         UpdateAppId();
@@ -271,7 +271,7 @@ namespace OpenVR2Key
             foreach (var actionKey in _actionKeys)
             {
                 var localActionKey = actionKey;
-                _ovr.RegisterDigitalAction($"/actions/keys/in/Key{actionKey}", (data, handle) => { OnAction(localActionKey, data, handle); });
+                _ovr.RegisterDigitalAction($"/actions/keys/in/Key{actionKey}", (data, inputAction) => { OnAction(localActionKey, data, inputAction.handle); });
             }
         }
 
