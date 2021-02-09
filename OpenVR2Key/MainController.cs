@@ -271,7 +271,7 @@ namespace OpenVR2Key
             foreach (var actionKey in _actionKeys)
             {
                 var localActionKey = actionKey;
-                _ovr.RegisterDigitalAction($"/actions/keys/in/Key{actionKey}", (data, inputAction) => { OnAction(localActionKey, data, inputAction.handle); });
+                _ovr.RegisterDigitalAction($"/actions/keys/in/Key{actionKey}", (data, inputAction) => { OnAction(localActionKey, data, inputAction.handle); }, actionKey.Contains("C"));
             }
         }
 
