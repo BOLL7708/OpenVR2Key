@@ -1,0 +1,24 @@
+{
+   "bindings" : {
+      "/actions/keys" : {
+         "chords" : [],
+         "haptics" : [],
+         "poses" : [],
+         "skeleton" : [],
+         "sources" : [
+         	{
+				"path": "/user/foot/left/input/power",
+				"mode": "button",
+				"inputs": {
+					"click": {
+						"output": "/actions/keys/in/keyt3"
+					}
+				}
+			}
+         ]
+      }
+   },
+   "controller_type" : "vive_tracker_left_foot",
+   "description" : "Default OpenVR2Key input configuration for Vive Tracker Left Foot",
+   "name" : "Left Foot Tracker"
+}

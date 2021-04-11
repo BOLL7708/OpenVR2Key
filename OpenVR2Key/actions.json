@@ -11,6 +11,38 @@
 		{
 			"controller_type": "oculus_touch",
 			"binding_url": "bindings_oculus_touch.json"
+		},
+		{
+			"controller_type": "vive_tracker_chest",
+			"binding_url": "bindings_vive_tracker_chest.json"
+		},
+		{
+			"controller_type": "vive_tracker_left_elbow",
+			"binding_url": "bindings_vive_tracker_left_elbow.json"
+		},
+		{
+			"controller_type": "vive_tracker_right_elbow",
+			"binding_url": "bindings_vive_tracker_right_elbow.json"
+		},
+		{
+			"controller_type": "vive_tracker_waist",
+			"binding_url": "bindings_vive_tracker_waist.json"
+		},
+		{
+			"controller_type": "vive_tracker_left_knee",
+			"binding_url": "bindings_vive_tracker_left_knee.json"
+		},
+		{
+			"controller_type": "vive_tracker_right_knee",
+			"binding_url": "bindings_vive_tracker_right_knee.json"
+		},
+		{
+			"controller_type": "vive_tracker_left_foot",
+			"binding_url": "bindings_vive_tracker_left_foot.json"
+		},
+		{
+			"controller_type": "vive_tracker_right_foot",
+			"binding_url": "bindings_vive_tracker_right_foot.json"
 		}
 	],
 	"actions": [
@@ -213,6 +245,46 @@
 			"name": "/actions/keys/in/KeyC8",
 			"requirement": "optional",
 			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT1",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT2",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT3",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT4",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT5",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT6",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT7",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT8",
+			"requirement": "optional",
+			"type": "boolean"
 		}
 	],
 	"action_sets": [
@@ -264,7 +336,15 @@
 			"/actions/keys/in/KeyC5": "Key Chord 5",
 			"/actions/keys/in/KeyC6": "Key Chord 6",
 			"/actions/keys/in/KeyC7": "Key Chord 7",
-			"/actions/keys/in/KeyC8": "Key Chord 8"
+			"/actions/keys/in/KeyC8": "Key Chord 8",
+			"/actions/keys/in/KeyT1": "Key Tracker 1",
+			"/actions/keys/in/KeyT2": "Key Tracker 2",
+			"/actions/keys/in/KeyT3": "Key Tracker 3",
+			"/actions/keys/in/KeyT4": "Key Tracker 4",
+			"/actions/keys/in/KeyT5": "Key Tracker 5",
+			"/actions/keys/in/KeyT6": "Key Tracker 6",
+			"/actions/keys/in/KeyT7": "Key Tracker 7",
+			"/actions/keys/in/KeyT8": "Key Tracker 8"
 		}
 	]
 }

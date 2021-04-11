@@ -149,6 +149,30 @@
     <None Include="bindings_vive_controller.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="bindings_vive_tracker_chest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_left_elbow.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_left_foot.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_left_knee.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_right_elbow.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_right_foot.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_right_knee.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_waist.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="EasyOpenVR\README.md" />
     <None Include="FodyWeavers.xsd">
       <SubType>Designer</SubType>

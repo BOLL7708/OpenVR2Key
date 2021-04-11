@@ -179,6 +179,7 @@ namespace OpenVR2Key
             actionKeys.AddRange(GenerateActionKeyRange(16, 'L')); // Left
             actionKeys.AddRange(GenerateActionKeyRange(16, 'R')); // Right
             actionKeys.AddRange(GenerateActionKeyRange(8, 'C')); // Chord
+            actionKeys.AddRange(GenerateActionKeyRange(8, 'T')); // Tracker
             string[] GenerateActionKeyRange(int count, char type)
             {
                 var keys = new List<string>();
