@@ -17,15 +17,6 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/keys/in/keyl8"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/left/input/thumbstick"
-            },
-            {
-               "inputs" : {
-                  "click" : {
                      "output" : "/actions/keys/in/keyl10"
                   }
                },
@@ -70,7 +61,7 @@
             },
             {
                "inputs" : {
-                  "touch" : {
+                  "click" : {
                      "output" : "/actions/keys/in/keyr1"
                   }
                },
