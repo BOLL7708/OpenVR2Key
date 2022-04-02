@@ -30,6 +30,7 @@ namespace OpenVR2Key
         public Action<string, bool> KeyTextUpdateAction { get; set; } = (status, cancel) => { Debug.WriteLine("No key text action set."); };
         public Action<Dictionary<string, Key[]>, bool> ConfigRetrievedAction { get; set; } = (config, forceButtonOff) => { Debug.WriteLine("No config loaded."); };
         public Action<string, bool> KeyActivatedAction { get; set; } = (key, on) => { Debug.WriteLine("No key simulated action set."); };
+        public Action<bool> DashboardVisibleAction { get; set; } = (visible) => { Debug.WriteLine("No dashboard visible action set."); };
 
         // Other
         private string _currentApplicationId = "";
@@ -182,6 +183,15 @@ namespace OpenVR2Key
                                 UpdateInputSourceHandles();
                             }
                         );
+                        _ovr.RegisterEvent(EVREventType.VREvent_DashboardActivated, (data) =>
+                        {
+                            DashboardVisibleAction.Invoke(true);
+                        });
+                        _ovr.RegisterEvent(EVREventType.VREvent_DashboardDeactivated, (data) =>
+                        {
+                            DashboardVisibleAction.Invoke(false);
+                        });
+                        DashboardVisibleAction.Invoke(OpenVR.Overlay.IsDashboardVisible()); // To convey the initial state if the Dashboard is visible on launch of application.
                     }
                     else
                     {

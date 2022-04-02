@@ -23,6 +23,7 @@ namespace OpenVR2Key
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private HashSet<string> _activeKeys = new HashSet<string>();
         private bool _initDone = false;
+        private bool _dashboardIsVisible = false;
         public MainWindow()
         {
             InitWindow();
@@ -91,7 +92,7 @@ namespace OpenVR2Key
                         if (_activeElement != null)
                         {
                             (_activeElement as Label).Content = keyText;
-                            if(cancel) UpdateLabel(_activeElement as Label, false);
+                            if (cancel) UpdateLabel(_activeElement as Label, false);
                         }
                     });
                 },
@@ -100,10 +101,10 @@ namespace OpenVR2Key
                 ConfigRetrievedAction = (config, forceButtonOff) =>
                 {
                     var loaded = config != null;
-                    if(loaded) Debug.WriteLine($"Config Retrieved Action: count()={config.Count}");
+                    if (loaded) Debug.WriteLine($"Config Retrieved Action: count()={config.Count}");
                     Dispatcher.Invoke(() =>
                     {
-                        if(loaded) InitList(config);
+                        if (loaded) InitList(config);
                         UpdateConfigButton(loaded, forceButtonOff);
                     });
                 },
@@ -112,10 +113,34 @@ namespace OpenVR2Key
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        if (on) _activeKeys.Add(key);
-                        else _activeKeys.Remove(key);
-                        if (_activeKeys.Count > 0) Label_Keys.Content = string.Join(", ", _activeKeys);
-                        else Label_Keys.Content = "None";
+                        if (!_dashboardIsVisible) {
+                            if (on) _activeKeys.Add(key);
+                            else _activeKeys.Remove(key);
+                            if (_activeKeys.Count > 0) Label_Keys.Content = string.Join(", ", _activeKeys);
+                            else Label_Keys.Content = "None";
+                            Label_Keys.ToolTip = "";
+                            Label_Keys.Background = Brushes.Gray;
+                        }
+                    });
+                },
+
+                // Dashboard Visible
+                DashboardVisibleAction = (visible) => {
+                    Dispatcher.Invoke(() =>
+                    {
+                        _dashboardIsVisible = visible;
+                        if (visible)
+                        {
+                            Label_Keys.Content = "Blocked";
+                            Label_Keys.ToolTip = "The SteamVR Dashboard is visible which will block input from this application.";
+                            Label_Keys.Background = Brushes.Tomato;
+                        }
+                        else
+                        {
+                            Label_Keys.Content = "Unblocked";
+                            Label_Keys.ToolTip = "";
+                            Label_Keys.Background = Brushes.Gray;
+                        }
                     });
                 }
             };
