@@ -247,6 +247,46 @@
 			"type": "boolean"
 		},
 		{
+			"name": "/actions/keys/in/KeyC9",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC10",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC11",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC12",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC13",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC14",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC15",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyC16",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
 			"name": "/actions/keys/in/KeyT1",
 			"requirement": "optional",
 			"type": "boolean"
@@ -283,6 +323,46 @@
 		},
 		{
 			"name": "/actions/keys/in/KeyT8",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT9",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT10",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT11",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT12",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT13",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT14",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT15",
+			"requirement": "optional",
+			"type": "boolean"
+		},
+		{
+			"name": "/actions/keys/in/KeyT16",
 			"requirement": "optional",
 			"type": "boolean"
 		}
@@ -337,6 +417,14 @@
 			"/actions/keys/in/KeyC6": "Key Chord 6",
 			"/actions/keys/in/KeyC7": "Key Chord 7",
 			"/actions/keys/in/KeyC8": "Key Chord 8",
+			"/actions/keys/in/KeyC9": "Key Chord 9",
+			"/actions/keys/in/KeyC10": "Key Chord 10",
+			"/actions/keys/in/KeyC11": "Key Chord 11",
+			"/actions/keys/in/KeyC12": "Key Chord 12",
+			"/actions/keys/in/KeyC13": "Key Chord 13",
+			"/actions/keys/in/KeyC14": "Key Chord 14",
+			"/actions/keys/in/KeyC15": "Key Chord 15",
+			"/actions/keys/in/KeyC16": "Key Chord 16",
 			"/actions/keys/in/KeyT1": "Key Tracker 1",
 			"/actions/keys/in/KeyT2": "Key Tracker 2",
 			"/actions/keys/in/KeyT3": "Key Tracker 3",
@@ -344,7 +432,15 @@
 			"/actions/keys/in/KeyT5": "Key Tracker 5",
 			"/actions/keys/in/KeyT6": "Key Tracker 6",
 			"/actions/keys/in/KeyT7": "Key Tracker 7",
-			"/actions/keys/in/KeyT8": "Key Tracker 8"
+			"/actions/keys/in/KeyT8": "Key Tracker 8",
+			"/actions/keys/in/KeyT9": "Key Tracker 9",
+			"/actions/keys/in/KeyT10": "Key Tracker 10",
+			"/actions/keys/in/KeyT11": "Key Tracker 11",
+			"/actions/keys/in/KeyT12": "Key Tracker 12",
+			"/actions/keys/in/KeyT13": "Key Tracker 13",
+			"/actions/keys/in/KeyT14": "Key Tracker 14",
+			"/actions/keys/in/KeyT15": "Key Tracker 15",
+			"/actions/keys/in/KeyT16": "Key Tracker 16"
 		}
 	]
 }
