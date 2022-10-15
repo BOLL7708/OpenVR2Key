@@ -90,7 +90,7 @@ namespace OpenVR2Key.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to v0.58.
+        ///   Looks up a localized string similar to v0.59.
         /// </summary>
         public static string Version {
             get {

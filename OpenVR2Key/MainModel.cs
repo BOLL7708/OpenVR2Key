@@ -147,6 +147,7 @@ namespace OpenVR2Key
         static public Dictionary<string, Key[]> RetrieveConfig(string configName = null)
         {
             if (configName == null) configName = _configName;
+            CleanConfigName(ref configName);
             var configDir = $"{Directory.GetCurrentDirectory()}\\config\\";
             var configFilePath = $"{configDir}{configName}.json";
             var jsonString = File.Exists(configFilePath) ? File.ReadAllText(configFilePath) : null;
