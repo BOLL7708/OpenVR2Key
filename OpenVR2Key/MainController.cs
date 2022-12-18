@@ -35,7 +35,7 @@ namespace OpenVR2Key
         // Other
         private string _currentApplicationId = "";
         private ulong _inputSourceHandleLeft = 0, _inputSourceHandleRight = 0;
-        private ulong[] _inputSourceHandles = new ulong[10];
+        private ulong[] _inputSourceHandles = new ulong[14];
         private ulong _notificationOverlayHandle = 0;
         private string[] _actionKeys = new string[0];
 
@@ -222,16 +222,21 @@ namespace OpenVR2Key
         {
             _inputSourceHandleLeft = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.LeftHand);
             _inputSourceHandleRight = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.RightHand);
-            _inputSourceHandles[0] = _inputSourceHandleLeft;
-            _inputSourceHandles[1] = _inputSourceHandleRight;
-            _inputSourceHandles[2] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.Chest);
-            _inputSourceHandles[3] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.LeftElbow);
-            _inputSourceHandles[4] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.LeftKnee);
-            _inputSourceHandles[5] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.LeftFoot);
-            _inputSourceHandles[6] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.RightElbow);
-            _inputSourceHandles[7] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.RightKnee);
-            _inputSourceHandles[8] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.RightFoot);
-            _inputSourceHandles[9] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.Waist);
+            ulong index = 0L;
+            _inputSourceHandles[index++] = _inputSourceHandleLeft;
+            _inputSourceHandles[index++] = _inputSourceHandleRight;
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.Head);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.Chest);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.LeftShoulder);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.LeftElbow);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.LeftKnee);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.LeftFoot);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.RightShoulder);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.RightElbow);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.RightKnee);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.RightFoot);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.Waist);
+            _inputSourceHandles[index++] = _ovr.GetInputSourceHandle(EasyOpenVRSingleton.InputSource.Camera);
         }
 
         // New app is running, distribute new app ID
