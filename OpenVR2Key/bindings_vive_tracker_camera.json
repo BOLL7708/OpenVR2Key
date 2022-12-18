@@ -7,7 +7,7 @@
       "skeleton": [],
       "sources": [
         {
-          "path": "/user/waist/input/power",
+          "path": "/user/camera/input/power",
           "mode": "button",
           "inputs": {
             "click": {
@@ -18,7 +18,7 @@
       ]
     }
   },
-  "controller_type": "vive_tracker_waist",
-  "description": "Default OpenVR2Key input configuration for Vive Tracker Waist",
-  "name": "Waist Tracker"
+  "controller_type": "vive_tracker_camera",
+  "description": "Default OpenVR2Key input configuration for Vive Tracker Camera",
+  "name": "Camera Tracker"
 }

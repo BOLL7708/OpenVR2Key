@@ -1,24 +1,24 @@
 {
-   "bindings" : {
-      "/actions/keys" : {
-         "chords" : [],
-         "haptics" : [],
-         "poses" : [],
-         "skeleton" : [],
-         "sources" : [
-         	{
-				"path": "/user/elbow/right/input/power",
-				"mode": "button",
-				"inputs": {
-					"click": {
-						"output": "/actions/keys/in/keyt5"
-					}
-				}
-			}
-         ]
-      }
-   },
-   "controller_type" : "vive_tracker_right_elbow",
-   "description" : "Default OpenVR2Key input configuration for Vive Tracker Right Elbow",
-   "name" : "Right Elbow Tracker"
+  "bindings": {
+    "/actions/keys": {
+      "chords": [],
+      "haptics": [],
+      "poses": [],
+      "skeleton": [],
+      "sources": [
+        {
+          "path": "/user/elbow/right/input/power",
+          "mode": "button",
+          "inputs": {
+            "click": {
+              "output": "/actions/keys/in/keyt1"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "controller_type": "vive_tracker_right_elbow",
+  "description": "Default OpenVR2Key input configuration for Vive Tracker Right Elbow",
+  "name": "Right Elbow Tracker"
 }

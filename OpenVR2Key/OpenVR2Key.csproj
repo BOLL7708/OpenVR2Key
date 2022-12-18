@@ -170,6 +170,21 @@
     <None Include="bindings_vive_tracker_right_knee.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="bindings_vive_tracker_handed.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_left_shoulder.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_right_shoulder.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_head.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bindings_vive_tracker_camera.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="bindings_vive_tracker_waist.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

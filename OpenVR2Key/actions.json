@@ -13,8 +13,24 @@
 			"binding_url": "bindings_oculus_touch.json"
 		},
 		{
+			"controller_type": "vive_tracker_head",
+			"binding_url": "bindings_vive_tracker_head.json"
+		},
+		{
+			"controller_type": "vive_tracker_left_shoulder",
+			"binding_url": "bindings_vive_tracker_left_shoulder.json"
+		},
+		{
+			"controller_type": "vive_tracker_right_shoulder",
+			"binding_url": "bindings_vive_tracker_right_shoulder.json"
+		},
+		{
 			"controller_type": "vive_tracker_chest",
 			"binding_url": "bindings_vive_tracker_chest.json"
+		},
+		{
+			"controller_type": "vive_tracker_handed",
+			"binding_url": "bindings_vive_tracker_handed.json"
 		},
 		{
 			"controller_type": "vive_tracker_left_elbow",
@@ -43,6 +59,10 @@
 		{
 			"controller_type": "vive_tracker_right_foot",
 			"binding_url": "bindings_vive_tracker_right_foot.json"
+		},
+		{
+			"controller_type": "vive_tracker_camera",
+			"binding_url": "bindings_vive_tracker_camera.json"
 		}
 	],
 	"actions": [
