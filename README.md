@@ -13,6 +13,13 @@ Key configurations can be automatically loaded for the running title, but the St
 To get the application to launch with SteamVR, have the application and SteamVR running, go into the SteamVR settings > Startup / Shutdown > Choose Startup Overlay Apps, and toggle OpenVR2Key to On.
 
 ## How do I use it?
+### Steam Library
+To get OpenVR2Key to show up in the list of applications with bindings, you need to add it to your Steam library as an external application and flag it as a VR application.
+1. In the Steam client, in the bottom left corner, click: `ADD A GAME` then `Add a Non-Steam Game...`
+2. Click `Browse...` and locate the executable on your machine, then click `ADD SELECTED PROGRAMS`
+3. Search for `OpenVR2Key` in your Steam library, in the list, right click it and choose `Properties...`
+4. In the properties window check `Include in VR Library` and then close the window. That should be it!
+
 ### SteamVR Input
 [Clip](https://streamable.com/jvokn) -  To get started, we begin in SteamVR, open the `Settings` from the hamburger menu in the SteamVR status window, then navigate to...
 
