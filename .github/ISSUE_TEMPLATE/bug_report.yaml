@@ -1,0 +1,90 @@
+name: Bug report
+description: Create a report to help resolve issues with the software
+body:
+- type: textarea
+  attributes:
+    label: Current behavior
+    description: A clear and concise description of what the bug is.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Steps to reproduce the behavior
+    description: Steps to reproduce the behavior.
+    placeholder: |
+        1. Run game '...'
+        2. Run software '....'
+        3. Set input to '....'
+        4. Set keys to '...'
+        5. See error
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Expected behavior
+    description: A clear and concise description of what you expected to happen.
+  validations:
+    required: true
+- type: input
+  id: os
+  attributes:
+    label: Operating system version
+    description: "Which operating system version do you run?"
+    placeholder: "Example: Windows 10 Pro"
+  validations:
+    required: true
+- type: input
+  id: steamvr
+  attributes:
+    label: SteamVR version
+    description: "Which version of SteamVR are you using?"
+    placeholder: "Example: 1.26"
+  validations:
+    required: true
+- type: input
+  id: app
+  attributes:
+    label: Application version
+    description: "Which version of OpenVR2Key are you using?"
+    placeholder: "Example: Windows 10 Pro"
+  validations:
+    required: true
+- type: input
+  id: hmd
+  attributes:
+    label: VR HMD
+    description: "What VR headset are you using?"
+    placeholder: "Example: Valve Index"
+  validations:
+    required: true
+- type: input
+  id: input
+  attributes:
+    label: VR hardware
+    description: "What VR controllers are you using?"
+    placeholder: "Example: Valve Index Controllers"
+  validations:
+    required: true
+- type: input
+  id: software
+  attributes:
+    label: Software to control
+    description: "What software are you trying to control with OpenVR2Key?"
+    placeholder: "Example: Discord"
+  validations:
+    required: true
+- type: input
+  id: game
+  attributes:
+    label: Game
+    description: "What game are you running?"
+    placeholder: "Example: Half-Life: Alyx"
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Additional information
+    description: Any supplemental information
+    placeholder: Tip: you can drag screenshits into this field to attach them.
+  validations:
+    required: false
