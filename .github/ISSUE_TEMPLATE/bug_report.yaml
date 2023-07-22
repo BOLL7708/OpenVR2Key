@@ -1,3 +1,4 @@
+---
 name: Bug report
 description: Create a report to help resolve issues with the software
 body:
@@ -84,7 +85,7 @@ body:
 - type: textarea
   attributes:
     label: Additional information
-    description: Any supplemental information
-    placeholder: Tip: you can drag screenshits into this field to attach them.
+    description: "Any additional information?"
+    placeholder: "Tip: you can drag screenshots into this field to attach them."
   validations:
     required: false
