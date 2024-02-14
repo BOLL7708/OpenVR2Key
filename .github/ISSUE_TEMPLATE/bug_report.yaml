@@ -51,6 +51,14 @@ body:
   validations:
     required: true
 - type: input
+  id: apploc
+  attributes:
+    label: Application location
+    description: "Where on your disk are you running OpenVR2Key from?"
+    placeholder: "Example: C:\\Temp\\OpenVR2Key\\"
+  validations:
+    required: true
+- type: input
   id: hmd
   attributes:
     label: VR HMD
