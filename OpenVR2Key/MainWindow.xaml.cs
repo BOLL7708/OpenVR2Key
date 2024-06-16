@@ -384,7 +384,7 @@ namespace OpenVR2Key
 #if DEBUG
             LabelVersion.Content = $"{MainModel.GetVersion()}d";
 #else
-            Label_Version.Content = MainModel.GetVersion();
+            LabelVersion.Content = MainModel.GetVersion();
 #endif
         }
         private bool CheckboxValue(RoutedEventArgs e)
