@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using EasyFramework;
+using Brushes = System.Windows.Media.Brushes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace OpenVR2Key
 {
+    [SupportedOSPlatform("windows7.0")]
     public partial class MainWindow : Window
     {
         private static Mutex _mutex = null;
@@ -20,7 +25,6 @@ namespace OpenVR2Key
         private List<BindingItem> _items = new List<BindingItem>();
         private object _activeElement;
         private string _currentlyRunningAppId = MainModel.CONFIG_DEFAULT;
-        private System.Windows.Forms.NotifyIcon _notifyIcon;
         private HashSet<string> _activeKeys = new HashSet<string>();
         private bool _initDone = false;
         private bool _dashboardIsVisible = false;
@@ -30,20 +34,12 @@ namespace OpenVR2Key
             InitializeComponent();
             Title = Properties.Resources.AppName;
 
-            // Prevent multiple instances running at once
-            _mutex = new Mutex(true, Properties.Resources.AppName, out bool createdNew);
-            if (!createdNew)
-            {
-                MessageBox.Show(
-                    Application.Current.MainWindow,
-                    "This application is already running!",
-                    Properties.Resources.AppName,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information
-                );
-                Application.Current.Shutdown();
-            }
-
+            // Prevent multiple instances
+            WindowUtils.CheckIfAlreadyRunning(Properties.Resources.AppName);
+            
+            // Tray icon
+            var icon = Properties.Resources.icon.Clone() as Icon;
+            WindowUtils.CreateTrayIcon(this, icon, Properties.Resources.AppName, Properties.Resources.Version);
 
             _controller = new MainController
             {
@@ -55,11 +51,11 @@ namespace OpenVR2Key
                     var color = connected ? Brushes.OliveDrab : Brushes.Tomato;
                     Dispatcher.Invoke(() =>
                     {
-                        Label_OpenVR.Content = message;
-                        Label_OpenVR.Background = color;
+                        LabelOpenVr.Content = message;
+                        LabelOpenVr.Background = color;
                         if (!connected && _initDone && MainModel.LoadSetting(MainModel.Setting.ExitWithSteam)) {
-                            if (_notifyIcon != null) _notifyIcon.Dispose();
-                            System.Windows.Application.Current.Shutdown();
+                            WindowUtils.DestroyTrayIcon();
+                            Application.Current.Shutdown();
                         }
                     });
                 },
@@ -78,8 +74,8 @@ namespace OpenVR2Key
                     Dispatcher.Invoke(() =>
                     {
                         Debug.WriteLine($"Setting AppID to: {appId}");
-                        Label_Application.Content = appIdFixed;
-                        Label_Application.Background = color;
+                        LabelApplication.Content = appIdFixed;
+                        LabelApplication.Background = color;
                     });
                 },
 
@@ -116,10 +112,10 @@ namespace OpenVR2Key
                         if (!_dashboardIsVisible) {
                             if (on) _activeKeys.Add(key);
                             else _activeKeys.Remove(key);
-                            if (_activeKeys.Count > 0) Label_Keys.Content = string.Join(", ", _activeKeys);
-                            else Label_Keys.Content = "None";
-                            Label_Keys.ToolTip = "";
-                            Label_Keys.Background = Brushes.Gray;
+                            if (_activeKeys.Count > 0) LabelKeys.Content = string.Join(", ", _activeKeys);
+                            else LabelKeys.Content = "None";
+                            LabelKeys.ToolTip = "";
+                            LabelKeys.Background = Brushes.Gray;
                         }
                     });
                 },
@@ -131,15 +127,15 @@ namespace OpenVR2Key
                         _dashboardIsVisible = visible;
                         if (visible)
                         {
-                            Label_Keys.Content = "Blocked";
-                            Label_Keys.ToolTip = "The SteamVR Dashboard is visible which will block input from this application.";
-                            Label_Keys.Background = Brushes.Tomato;
+                            LabelKeys.Content = "Blocked";
+                            LabelKeys.ToolTip = "The SteamVR Dashboard is visible which will block input from this application.";
+                            LabelKeys.Background = Brushes.Tomato;
                         }
                         else
                         {
-                            Label_Keys.Content = "Unblocked";
-                            Label_Keys.ToolTip = "";
-                            Label_Keys.Background = Brushes.Gray;
+                            LabelKeys.Content = "Unblocked";
+                            LabelKeys.ToolTip = "";
+                            LabelKeys.Background = Brushes.Gray;
                         }
                     });
                 }
@@ -158,41 +154,25 @@ namespace OpenVR2Key
             var actionKeys = InitList();
             _controller.Init(actionKeys);
             InitSettings();
-            InitTrayIcon();
+            
             _initDone = true;
         }
 
         private void WriteToLog(String message)
         {
             var time = DateTime.Now.ToString("HH:mm:ss");
-            var oldLog = TextBox_Log.Text;
+            var oldLog = TextBoxLog.Text;
             var lines = oldLog.Split('\n');
             Array.Resize(ref lines, 3);
             var newLog = string.Join("\n", lines);
-            TextBox_Log.Text = $"{time}: {message}\n{newLog}";
+            TextBoxLog.Text = $"{time}: {message}\n{newLog}";
         }
 
         private void InitWindow()
         {
             var shouldMinimize = MainModel.LoadSetting(MainModel.Setting.Minimize);
             var onlyInTray = MainModel.LoadSetting(MainModel.Setting.Tray);
-
-            if (shouldMinimize)
-            {
-                Hide();
-                WindowState = WindowState.Minimized;
-                ShowInTaskbar = !onlyInTray;
-            }
-        }
-
-        private void InitTrayIcon()
-        {
-            var icon = Properties.Resources.icon.Clone() as System.Drawing.Icon;
-            _notifyIcon = new System.Windows.Forms.NotifyIcon();
-            _notifyIcon.Click += NotifyIcon_Click;
-            _notifyIcon.Text = $"Click to show the {Properties.Resources.AppName} window";
-            _notifyIcon.Icon = icon;
-            _notifyIcon.Visible = true;            
+            if(shouldMinimize) WindowUtils.Minimize(this, !onlyInTray);
         }
 
         #region bindings
@@ -225,8 +205,8 @@ namespace OpenVR2Key
                     Text = text
                 });
             }
-            ItemsControl_Bindings.ItemsSource = null;
-            ItemsControl_Bindings.ItemsSource = _items;
+            ItemsControlBindings.ItemsSource = null;
+            ItemsControlBindings.ItemsSource = _items;
 
             return actionKeys.ToArray();
         }
@@ -264,23 +244,13 @@ namespace OpenVR2Key
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            _notifyIcon.Dispose();
-            base.OnClosing(e);
+            WindowUtils.DestroyTrayIcon();
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
             var onlyInTray = MainModel.LoadSetting(MainModel.Setting.Tray);
-            switch (WindowState)
-            {
-                case WindowState.Minimized: 
-                    ShowInTaskbar = !onlyInTray;
-                    break;
-                default:
-                    ShowInTaskbar = true;
-                    Show();
-                    break;
-            }
+            WindowUtils.OnStateChange(this, !onlyInTray);
         }
 
         #endregion
@@ -291,14 +261,14 @@ namespace OpenVR2Key
             Debug.WriteLine($"Update Config Button: {hasConfig}");
             if(!forceButtonOff && _controller.AppIsRunning())
             {
-                Button_AppBinding.Content = hasConfig ? "Remove app-specific config" : "Add app-specific config";
-                Button_AppBinding.IsEnabled = true;
-                Button_AppBinding.Tag = hasConfig;
+                ButtonAppBinding.Content = hasConfig ? "Remove app-specific config" : "Add app-specific config";
+                ButtonAppBinding.IsEnabled = true;
+                ButtonAppBinding.Tag = hasConfig;
             } else
             {
-                Button_AppBinding.Content = "No application running right now";
-                Button_AppBinding.IsEnabled = false;
-                Button_AppBinding.Tag = null;
+                ButtonAppBinding.Content = "No application running right now";
+                ButtonAppBinding.IsEnabled = false;
+                ButtonAppBinding.Tag = null;
             }
         }
 
@@ -406,13 +376,13 @@ namespace OpenVR2Key
         // Load settings and apply them to the checkboxes
         private void InitSettings()
         {
-            CheckBox_Minimize.IsChecked = MainModel.LoadSetting(MainModel.Setting.Minimize);
-            CheckBox_Tray.IsChecked = MainModel.LoadSetting(MainModel.Setting.Tray);
-            CheckBox_ExitWithSteamVR.IsChecked = MainModel.LoadSetting(MainModel.Setting.ExitWithSteam);
-            CheckBox_DebugNotifications.IsChecked = MainModel.LoadSetting(MainModel.Setting.Notification);
-            CheckBox_HapticFeedback.IsChecked = MainModel.LoadSetting(MainModel.Setting.Haptic);
+            CheckBoxMinimize.IsChecked = MainModel.LoadSetting(MainModel.Setting.Minimize);
+            CheckBoxTray.IsChecked = MainModel.LoadSetting(MainModel.Setting.Tray);
+            CheckBoxExitWithSteamVr.IsChecked = MainModel.LoadSetting(MainModel.Setting.ExitWithSteam);
+            CheckBoxDebugNotifications.IsChecked = MainModel.LoadSetting(MainModel.Setting.Notification);
+            CheckBoxHapticFeedback.IsChecked = MainModel.LoadSetting(MainModel.Setting.Haptic);
 #if DEBUG
-            Label_Version.Content = $"{MainModel.GetVersion()}d";
+            LabelVersion.Content = $"{MainModel.GetVersion()}d";
 #else
             Label_Version.Content = MainModel.GetVersion();
 #endif
@@ -442,23 +412,13 @@ namespace OpenVR2Key
             MainModel.UpdateSetting(MainModel.Setting.Haptic, CheckboxValue(e));
         }
 
-        private void ClickedURL(object sender, RoutedEventArgs e)
+        private void ClickedUrl(object sender, RoutedEventArgs e)
         {
             var link = (Hyperlink)sender;
-            Process.Start(link.NavigateUri.ToString());
+            MiscUtils.OpenUrl(link.NavigateUri.ToString());
         }
         #endregion
-
-        #region trayicon
-        private void NotifyIcon_Click(object sender, EventArgs e)
-        {
-            WindowState = WindowState.Normal;
-            ShowInTaskbar = true;
-            Show();
-            Activate();
-        }
-        #endregion
-
+        
         private void CheckBox_ExitWithSteamVR_Checked(object sender, RoutedEventArgs e)
         {
             MainModel.UpdateSetting(MainModel.Setting.ExitWithSteam, CheckboxValue(e));
