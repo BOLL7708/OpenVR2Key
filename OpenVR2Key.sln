@@ -1,9 +1,13 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenVR2Key", "OpenVR2Key\OpenVR2Key.csproj", "{752648BE-C543-40AA-98B2-722C886F5944}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenVR2Key", "OpenVR2Key\OpenVR2Key.csproj", "{752648BE-C543-40AA-98B2-722C886F5944}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOpenVR", "EasyOpenVR\EasyOpenVR.csproj", "{E8F2F033-F02F-43F0-BC76-39C8497D739F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyFramework", "EasyFramework\EasyFramework.csproj", "{3D8BE5FB-558D-4481-8C79-78272F8B2BDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,22 @@ Global
 		{752648BE-C543-40AA-98B2-722C886F5944}.Release|Any CPU.Build.0 = Release|Any CPU
 		{752648BE-C543-40AA-98B2-722C886F5944}.Release|x64.ActiveCfg = Release|x64
 		{752648BE-C543-40AA-98B2-722C886F5944}.Release|x64.Build.0 = Release|x64
+		{E8F2F033-F02F-43F0-BC76-39C8497D739F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8F2F033-F02F-43F0-BC76-39C8497D739F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8F2F033-F02F-43F0-BC76-39C8497D739F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E8F2F033-F02F-43F0-BC76-39C8497D739F}.Debug|x64.Build.0 = Debug|Any CPU
+		{E8F2F033-F02F-43F0-BC76-39C8497D739F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8F2F033-F02F-43F0-BC76-39C8497D739F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8F2F033-F02F-43F0-BC76-39C8497D739F}.Release|x64.ActiveCfg = Release|Any CPU
+		{E8F2F033-F02F-43F0-BC76-39C8497D739F}.Release|x64.Build.0 = Release|Any CPU
+		{3D8BE5FB-558D-4481-8C79-78272F8B2BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D8BE5FB-558D-4481-8C79-78272F8B2BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D8BE5FB-558D-4481-8C79-78272F8B2BDC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3D8BE5FB-558D-4481-8C79-78272F8B2BDC}.Debug|x64.Build.0 = Debug|Any CPU
+		{3D8BE5FB-558D-4481-8C79-78272F8B2BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D8BE5FB-558D-4481-8C79-78272F8B2BDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D8BE5FB-558D-4481-8C79-78272F8B2BDC}.Release|x64.ActiveCfg = Release|Any CPU
+		{3D8BE5FB-558D-4481-8C79-78272F8B2BDC}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
-﻿using BOLL7708;
+﻿using EasyOpenVR;
+using EasyFramework;
 using GregsStack.InputSimulatorStandard;
 using GregsStack.InputSimulatorStandard.Native;
 using System;
@@ -8,6 +9,7 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using EasyOpenVR.Utils;
 using Valve.VR;
 
 namespace OpenVR2Key
@@ -195,7 +197,7 @@ namespace OpenVR2Key
                     }
                     else
                     {
-                        _ovr.UpdateActionStates(_inputSourceHandles);
+                        _ovr.UpdateActionStates(_inputSourceHandles, 0);
 
                         _ovr.UpdateEvents();
 
@@ -315,7 +317,7 @@ namespace OpenVR2Key
                     }
                     if (MainModel.LoadSetting(MainModel.Setting.Notification))
                     {
-                        var notificationBitmap = EasyOpenVRSingleton.BitmapUtils.NotificationBitmapFromBitmap(Properties.Resources.logo);
+                        var notificationBitmap = BitmapUtils.NotificationBitmapFromBitmap(Properties.Resources.logo);
                         _ovr.EnqueueNotification(_notificationOverlayHandle, $"{actionKey} simulated {GetKeysLabel(binding.Item1)}", notificationBitmap);
                     }
                 }

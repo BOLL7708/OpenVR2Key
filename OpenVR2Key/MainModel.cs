@@ -1,10 +1,10 @@
 ﻿using GregsStack.InputSimulatorStandard.Native;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using System.Text.Json;
 
 namespace OpenVR2Key
 {
@@ -125,7 +125,7 @@ namespace OpenVR2Key
                 }
             }
             if (configName == null) configName = _configName;
-            var jsonString = JsonConvert.SerializeObject(config);
+            var jsonString = JsonSerializer.Serialize(config);
             var configDir = GetConfigFolderPath();
             var configFilePath = $"{configDir}{configName}.json";
             if (!Directory.Exists(configDir)) Directory.CreateDirectory(configDir);
@@ -153,7 +153,7 @@ namespace OpenVR2Key
             var jsonString = File.Exists(configFilePath) ? File.ReadAllText(configFilePath) : null;
             if (jsonString != null)
             {
-                var config = JsonConvert.DeserializeObject(jsonString, typeof(Dictionary<string, Key[]>)) as Dictionary<string, Key[]>;
+                var config = JsonSerializer.Deserialize(jsonString, typeof(Dictionary<string, Key[]>)) as Dictionary<string, Key[]>;
                 RegisterBindings(config);
                 return config;
             }
