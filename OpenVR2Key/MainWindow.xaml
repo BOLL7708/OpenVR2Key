@@ -54,7 +54,8 @@
             <WrapPanel Orientation="Horizontal" Margin="5">
                 <Button x:Name="ButtonAppBinding" Margin="5,0,5,5" Focusable="False" Content="Add/remove app specific config" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_AppBinding_Click" />
                 <Button x:Name="ButtonClearAll" Margin="5,0,5,5" Focusable="False" Content="Clear all current mappings" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_ClearAll_Click"/>
-                <Button x:Name="ButtonFolder" Visibility="Hidden" Margin="5,0,5,5" Focusable="False" Content="Open config folder" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_Folder_Click"/>
+                <Button x:Name="ButtonLaunchBindings" Margin="5, 0, 5, 5" Focusable="False" Content="Launch bindings editor" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_LaunchBindings_Click" IsEnabled="False"/>
+                <Button x:Name="ButtonFolder" Visibility="Collapsed" Margin="5,0,5,5" Focusable="False" Content="Open config folder" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Click="Button_Folder_Click"/>
             </WrapPanel>
         </GroupBox>
         <GroupBox Header="Mapping" Margin="10 0 10 10" HorizontalAlignment="Stretch" Background="MintCream">

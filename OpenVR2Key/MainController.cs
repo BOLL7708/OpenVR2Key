@@ -343,5 +343,10 @@ namespace OpenVR2Key
             }
         }
         #endregion
+
+        public void LaunchBindings()
+        {
+            OpenVR.Input.OpenBindingUI("", 0, 0, true);
+        }
     }
 }

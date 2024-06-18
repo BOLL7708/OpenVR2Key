@@ -53,6 +53,7 @@ namespace OpenVR2Key
                     {
                         LabelOpenVr.Content = message;
                         LabelOpenVr.Background = color;
+                        ButtonLaunchBindings.IsEnabled = connected;
                         if (!connected && _initDone && MainModel.LoadSetting(MainModel.Setting.ExitWithSteam)) {
                             WindowUtils.DestroyTrayIcon();
                             Application.Current.Shutdown();
@@ -326,6 +327,11 @@ namespace OpenVR2Key
         private void Button_Folder_Click(object sender, RoutedEventArgs e)
         {
             _controller.OpenConfigFolder();
+        }
+        
+        private void Button_LaunchBindings_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.LaunchBindings();
         }
         #endregion
 
