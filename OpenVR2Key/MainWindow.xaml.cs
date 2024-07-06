@@ -66,10 +66,12 @@ namespace OpenVR2Key
                 {
                     Debug.WriteLine($"App Update Action: appId={appId}");
                     _currentlyRunningAppId = appId;
+                    var toolTip = "The detected Steam app ID for currently running title.";
                     var color = Brushes.OliveDrab;
                     if (appId == MainModel.CONFIG_DEFAULT)
                     {
                         color = Brushes.Gray;
+                        toolTip = "No application detected.";
                     }
                     var appIdFixed = appId.Replace("_", "__"); // Single underscores makes underlined chars
                     Dispatcher.Invoke(() =>
@@ -77,6 +79,7 @@ namespace OpenVR2Key
                         Debug.WriteLine($"Setting AppID to: {appId}");
                         LabelApplication.Content = appIdFixed;
                         LabelApplication.Background = color;
+                        LabelApplication.ToolTip = toolTip;
                     });
                 },
 
@@ -115,7 +118,7 @@ namespace OpenVR2Key
                             else _activeKeys.Remove(key);
                             if (_activeKeys.Count > 0) LabelKeys.Content = string.Join(", ", _activeKeys);
                             else LabelKeys.Content = "None";
-                            LabelKeys.ToolTip = "";
+                            LabelKeys.ToolTip = "The currently active inputs being detected.";
                             LabelKeys.Background = Brushes.Gray;
                         }
                     });
@@ -129,13 +132,13 @@ namespace OpenVR2Key
                         if (visible)
                         {
                             LabelKeys.Content = "Blocked";
-                            LabelKeys.ToolTip = "The SteamVR Dashboard is visible which will block input from this application.";
+                            LabelKeys.ToolTip = "The SteamVR Dashboard is visible which will block controller input from reaching this application.";
                             LabelKeys.Background = Brushes.Tomato;
                         }
                         else
                         {
-                            LabelKeys.Content = "Unblocked";
-                            LabelKeys.ToolTip = "";
+                            LabelKeys.Content = "None";
+                            LabelKeys.ToolTip = "Listening for incoming inputs from active controllers.";
                             LabelKeys.Background = Brushes.Gray;
                         }
                     });

@@ -37,12 +37,12 @@
                         <Label x:Name="LabelOpenVr" Background="Gray" HorizontalAlignment="Left" Content="OpenVR Status" Padding="5" Foreground="White" VerticalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
-                        <Label Content="Current app ID:" VerticalAlignment="Center"/>
+                        <Label Content="Current app ID:" VerticalAlignment="Center" ToolTip="Used to create app specific mappings, which overrides the default mapping."/>
                         <Label x:Name="LabelApplication" Background="Gray" HorizontalAlignment="Left" Content="Current AppID" Padding="5" Foreground="White" VerticalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
-                        <Label Content="Active keys:" VerticalAlignment="Center"/>
-                        <Label x:Name="LabelKeys" Background="Gray" HorizontalAlignment="Left" Content="Active Keys" Padding="5" Foreground="White" VerticalAlignment="Center"/>
+                        <Label Content="Active input:" VerticalAlignment="Center" ToolTip="Used to see what an activated input is bound to, cross reference the mappings below."/>
+                        <Label x:Name="LabelKeys" Background="Gray" HorizontalAlignment="Left" Content="None" Padding="5" Foreground="White" VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
