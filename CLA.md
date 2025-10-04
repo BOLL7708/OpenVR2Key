@@ -18,3 +18,4 @@ By adding your GitHub username to the list below, you agree to the following:
 Add your GitHub username as a new entry at the end of the list. Do not alter other entries, and leave one blank line below yours.
 
 - BOLL7708
+- jeppevinkel
