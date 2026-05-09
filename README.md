@@ -1,3 +1,6 @@
+# DEPRECATED
+This project has been archived with the intent of transferring the features to [BVRTK](https://github.com/BOLL7708/BVRTK) which will then act as direct replacement.
+
 # OpenVR2Key
 Simulate key presses on your Windows desktop from SteamVR input, download the latest release [here](https://github.com/BOLL7708/OpenVR2Key/releases).
 
